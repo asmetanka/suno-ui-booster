@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Suno UI Booster",
+  "version": "1",
+  "description": "Square song previews, better spacing, bigger controls, and a massive progress bar. Because the default UI was driving me nuts. Removed sidebar clutter too.",
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "declarativeNetRequest",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.suno.ai/*",
+    "*://*.suno.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Suno UI Booster"
+  },
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

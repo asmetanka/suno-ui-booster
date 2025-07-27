@@ -1,0 +1,548 @@
+/* ========================================
+   GLOBAL & ROOT VARIABLES
+   ======================================== */
+
+   :root {
+    --suno-customizer-active: 1;
+}
+
+* {
+    text-transform: none !important;
+}
+
+/* ========================================
+   GENERAL LAYOUT & SPACING
+   ======================================== */
+
+/* Hide unnecessary elements */
+.h-\[156px\],
+div.flex.flex-1.flex-row.items-center.p-2,
+div.flex.h-\[60px\].flex-row.items-center.gap-\[5px\].px-4,
+div.mr-4.h-40px.w-53px,
+div[class*="mr-4"][class*="h-["][class*="w-["],
+span.ml-2.rounded-md.bg-accent-pink.px-1.py-0\.5.text-xs.font-medium.text-foreground-primary-onDark {
+    display: none !important;
+}
+
+/* Remove bottom padding */
+div.w-full.md\:pb-5,
+div[class*="w-full"][class*="md:pb-5"],
+*[class*="md:pb-5"] {
+    padding-bottom: 0 !important;
+}
+
+/* Spacing adjustments */
+.relative.flex.h-auto.w-full.flex-row.items-center.gap-2 {
+    margin-bottom: 80px !important;
+}
+
+.pb-\[120px\] {
+    padding-bottom: 200px !important;
+}
+
+.flex.flex-col.gap-\[5px\] .pb-\[120px\] {
+    padding-bottom: 20px !important;
+}
+
+.mx-4.mt-2 {
+    margin-top: 4px !important;
+}
+
+.flex.flex-col.gap-4 {
+    gap: 0.25rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 0.25rem !important;
+}
+
+.md\:pt-4 {
+    padding-top: 0.5rem !important;
+}
+
+/* ========================================
+   TYPOGRAPHY & TEXT STYLES
+   ======================================== */
+
+/* Force sans-serif font */
+.font-serif {
+    font-family: Neue Montreal, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !important;
+}
+
+/* Remove all underlines from links */
+a, a:hover, a span, a span:hover, .hover\:underline, .hover\:underline:hover {
+    text-decoration: none !important;
+}
+
+/* Credits link styling */
+.flex.items-center.justify-center.gap-1 a,
+.flex.items-center.justify-center.gap-1 a span {
+    font-size: 16px !important;
+    color: rgb(var(--rgb-strawberry-600)) !important;
+}
+
+a[href="/account"],
+a[href="/account"] span {
+    font-weight: bold !important;
+}
+
+.text-foreground-secondary {
+    color: rgb(var(--rgb-strawberry-600)) !important;
+}
+
+/* Keep credits visible */
+.flex.h-\[12px\] {
+    display: flex !important;
+    height: auto !important;
+    padding: 8px 0 !important;
+}
+
+/* ========================================
+   HEADER & SIDEBAR
+   ======================================== */
+
+/* Hide sidebar elements */
+.border-t.border-border-secondary > .flex.flex-row.items-center.justify-center.gap-2.p-2.py-4,
+.flex.flex-col.gap-1.px-4 > button[type="button"] {
+    display: none !important;
+}
+
+/* Remove background images from header */
+*[style*="Aura-1.png"],
+*[style*="auras-v2/Aura-1.png"] {
+    background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.9) 25%) center top / cover !important;
+}
+
+*[style*="url(/auras-v2/"] {
+    background-image: none !important;
+}
+
+/* ========================================
+   SONG LIST & PREVIEWS
+   ======================================== */
+
+/* Shared styles for song list containers */
+.css-c1kosu,
+.css-1jkulof {
+    margin-left: 8px !important;
+}
+
+.css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
+.css-1jkulof .flex.flex-1.flex-row.items-center.gap-3 {
+    gap: 0px !important;
+}
+
+/* --- Square Preview Images --- */
+
+/* 80px preview images (large list) */
+.css-umyjtf,
+img[alt="Song Image"]:not(.css-gkadxh) {
+    aspect-ratio: 1 / 1 !important;
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
+}
+
+.css-1twx8fn {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+    margin-left: -4px !important;
+}
+
+/* 42px preview images (small list) */
+.css-gkadxh {
+    aspect-ratio: 1 / 1 !important;
+    width: 42px !important;
+    height: 42px !important;
+    object-fit: cover !important;
+}
+
+.css-1r7i1wu {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    margin-left: -3px !important;
+}
+
+/* Other square image formats */
+a[aria-label*="Playbar: Title"],
+a[href*="/song/"] img[alt*="Cover image"],
+a.mr-2.h-16.w-10,
+a[class*="mr-2"][class*="h-16"][class*="w-10"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 64px !important;
+    height: 64px !important;
+}
+
+a.mr-2.h-16.w-10 img {
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+}
+
+.css-vvtra8,
+img.chakra-image.css-vvtra8 {
+    aspect-ratio: 1 / 1 !important;
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+}
+
+.flex-0.relative {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    overflow: hidden !important;
+}
+
+img.object-fit.h-77px.w-56px.rounded-xl,
+.flex.flex-row.items-center.gap-2 img[alt*="Image for"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+}
+
+
+/* --- Text Layout & Centering --- */
+
+/* Large song items (list view) */
+.css-c1kosu .line-clamp-1 {
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+}
+
+.css-c1kosu .chakra-stack.css-1u7775a {
+    justify-content: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-left: 12px !important;
+}
+
+/* Small song items (e.g., in a horizontally scrollable list) */
+.css-1jkulof .line-clamp-1 {
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
+    max-width: 20ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h,
+.css-1jkulof .chakra-stack.css-1f0wxn3 {
+    max-width: 100px !important;
+    overflow: hidden !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
+    max-width: 100px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Shared line height for song descriptions */
+.chakra-stack.css-1f0wxn3,
+.chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
+    line-height: 1.2 !important;
+}
+
+/* ========================================
+   PLAYER & PROGRESS BAR
+   ======================================== */
+
+/* --- Progress Bar --- */
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer {
+    height: 100px !important;
+    border-radius: 8px !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer .h-2.bg-foreground-primary {
+    height: 100% !important;
+    border-radius: 8px 0 0 8px !important;
+    position: relative !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer .h-2.bg-foreground-primary::after {
+    content: '' !important;
+    position: absolute !important;
+    right: -4px !important;
+    top: 0 !important;
+    width: 8px !important;
+    height: 100% !important;
+    background-color: rgb(var(--rgb-accent-pink)) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer button {
+    height: 20px !important;
+    width: 20px !important;
+    border-radius: 50% !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer:hover button {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+/* --- Play/Pause/etc. Controls --- */
+button[aria-label="Playbar: Toggle shuffle button"],
+button[aria-label="Playbar: Previous Song button"],
+button[aria-label="Playbar: Play button"],
+button[aria-label="Playbar: Pause button"],
+button[aria-label="Playbar: Next Song button"],
+button[aria-label="Playbar: Toggle repeat button"] {
+    width: 56px !important;
+    height: 56px !important;
+    padding: 12px !important;
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border-radius: 50% !important;
+}
+
+button[aria-label="Playbar: Toggle shuffle button"] svg,
+button[aria-label="Playbar: Previous Song button"] svg,
+button[aria-label="Playbar: Play button"] svg,
+button[aria-label="Playbar: Pause button"] svg,
+button[aria-label="Playbar: Next Song button"] svg,
+button[aria-label="Playbar: Toggle repeat button"] svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* ========================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ======================================== */
+
+/* General button styling */
+button[data-testid="create-button"] {
+    background-image: none !important;
+    background-color: rgb(var(--rgb-strawberry-400)) !important;
+}
+
+button[aria-label="Back"] {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border: none !important;
+}
+
+/* Player action buttons (Like, Dislike, etc.) */
+button[aria-label="Playbar: Like"],
+button[aria-label="Playbar: Dislike"],
+button[aria-label="Pin to Project"],
+button[aria-label="More Options"] {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    padding: 8px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+button[aria-label="Playbar: Like"] svg,
+button[aria-label="Playbar: Dislike"] svg,
+button[aria-label="Pin to Project"] svg,
+button[aria-label="More Options"] svg {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Active state for player action buttons */
+button[aria-label="Playbar: Like"].text-foreground-primary,
+button[aria-label="Playbar: Dislike"].text-foreground-primary,
+button[aria-label="Pin to Project"].text-foreground-primary,
+button[aria-label="More Options"].text-foreground-primary {
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+button[aria-label="Playbar: Like"].text-foreground-primary svg,
+button[aria-label="Playbar: Dislike"].text-foreground-primary svg,
+button[aria-label="Pin to Project"].text-foreground-primary svg,
+button[aria-label="More Options"].text-foreground-primary svg {
+    color: rgb(var(--rgb-background-primary)) !important;
+}
+
+/* Pagination buttons */
+button[aria-label="Previous Page"],
+button[aria-label="Next Page"],
+button.rounded-full.border.border-border-primary {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border: none !important;
+}
+
+/* Male/Female toggle buttons */
+button.bg-transparent.text-foreground-primary\/30 {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    min-width: 80px !important;
+    justify-content: center !important;
+}
+
+button.bg-background-fog-thick {
+    background-color: rgb(var(--rgb-accent-pink)) !important;
+    color: white !important;
+    min-width: 80px !important;
+    justify-content: center !important;
+}
+
+div.flex.flex-row.gap-8 {
+    gap: 8px !important;
+}
+
+/* --- Action Button Reordering & Spacing --- */
+
+.flex.w-full.flex-row.items-center.gap-0.ml-4 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: 12px !important;
+}
+
+.flex.w-full.flex-row.items-center.gap-0.ml-4 > div:last-child {
+    order: -1 !important; /* Move Like/Dislike to the start */
+}
+
+.flex.w-full.flex-row.items-center.gap-0.ml-4 > div:first-child {
+    order: 1 !important; /* Move Edit/Publish after */
+}
+
+div.flex.w-full.flex-row.items-center.gap-0 {
+    gap: 4px !important;
+}
+
+/* Hide comment button */
+a[aria-label="Playbar: Comment"] {
+    display: none !important;
+}
+
+
+/* ========================================
+   MISCELLANEOUS
+   ======================================== */
+
+/* Playing indicator (in song rows) */
+[data-testid="song-row"] [data-testid="song-row-play-button"] svg {
+    width: 40px !important;
+    height: 40px !important;
+    color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+[data-testid="song-row"] [data-testid="song-row-play-button"]:hover svg {
+    color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* Control settings panel styling */
+.m-4.rounded-md.bg-background-tertiary.p-4.font-sans {
+    background-color: rgb(var(--rgb-strawberry-400)) !important;
+}
+
+.m-4.rounded-md.bg-background-tertiary.p-4.font-sans .text-xs {
+    font-size: 16px !important;
+}
+
+/* Accent elements */
+.h-2.w-2.rounded-full.bg-accent {
+    height: 24px !important;
+    width: 8px !important;
+}
+
+.h-2.w-2.rounded-full {
+    height: 72px !important;
+    width: 8px !important;
+}
+
+/* Spacing for horizontal scroll container */
+.custom-scrollbar-transparent.mx-6.flex.overflow-y-hidden.overflow-x-scroll {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    gap: 16px !important;
+}
+
+/* Workspace button - make it full width and style like model dropdown */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button {
+    width: 100% !important;
+    flex: 1 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgb(var(--rgb-accent-pink-onPrimary)) !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button:hover {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button svg {
+    color: rgb(var(--rgb-accent-pink-onPrimary)) !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button::before {
+    border: none !important;
+    display: none !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button::after {
+    border: none !important;
+    display: none !important;
+}
+
+/* Make Workspace dropdown wider and move it left */
+.absolute.z-\[1500\].flex.h-auto.max-h-\[240px\].w-\[260px\].flex-col.gap-3.rounded-lg.bg-background-secondary.p-3.shadow-lg {
+    width: 360px !important;
+    transform: translateX(-100px) !important;
+}
+
+/* Center Workspace button content to the left */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button .relative.flex.flex-row.items-center.justify-center.gap-2 {
+    justify-content: flex-start !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+/* Reduce gap between text and buttons in small song items */
+.css-1jkulof .flex-1.flex.flex-row {
+    gap: 4px !important;
+}
+
+/* Container and spacing for song items */
+.w-\\[230px\\].flex-shrink-0 {
+    width: 320px !important;
+    margin-right: 16px !important;
+}
+
+/* Force wider container for song items */
+.css-1jkulof {
+    width: 230px !important;
+    min-width: 230px !important;
+    margin-right: 16px !important;
+}
+
+/* Ensure buttons have space */
+.css-1jkulof .css-1fuckjf {
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+.css-1jkulof .css-1kcq9v9 {
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+
+

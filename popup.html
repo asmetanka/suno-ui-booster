@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* Main popup container styling */
+        body {
+            width: 300px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            color: black;
+            margin: 0;
+        }
+        
+        /* Chrome popup container styling - ensures proper rounded corners */
+        html {
+            border-radius: 16px !important;
+            overflow: hidden !important;
+        }
+        
+        /* Alternative popup styling for better visual consistency */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Header section with icon and title */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Extension icon styling */
+        .header .icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            display: block;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+        }
+        
+        /* Main title styling */
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Subtitle styling */
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* Toggle switch container with background */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .toggle-container:hover {
+            background: #e5e7eb;
+        }
+        
+        .toggle-container.active {
+            background: #f9a8d4;
+        }
+        
+        /* Toggle label text styling */
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Custom toggle switch styling */
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        /* Active state styling for toggle switch */
+        .toggle-switch.active {
+            background: #e11d48;
+        }
+        
+        /* Toggle switch slider (circle) */
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Active state slider position */
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        
+        /* Features list container */
+        .features {
+            margin-top: 15px;
+        }
+        
+        /* Individual feature item styling */
+        .feature {
+            margin-top: 12px;
+            margin-bottom: 3px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Feature description styling */
+        .feature-desc {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 2px;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        /* Footer section styling */
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section with extension icon and title -->
+    <div class="header">
+        <img src="icon.png" alt="Suno UI Booster" class="icon">
+        <h1>Suno UI Booster<sup>1</sup></h1>
+    </div>
+    
+    <!-- Main toggle switch for enabling/disabling the extension -->
+    <div class="toggle-container">
+        <span class="toggle-label">UI Boost</span>
+        <div class="toggle-switch active" id="toggleSwitch"></div>
+    </div>
+    
+    <!-- List of features provided by the extension -->
+    <div class="features">
+        <div class="feature">Square covers</div>
+        <div class="feature-desc">No more weird cropping! Because why make them rectangular when they're square by default?</div>
+        
+        <div class="feature">Better spacing</div>
+        <div class="feature-desc">Fixed those massive gaps that made it feel like you're using a screen the size of the universe</div>
+        
+        <div class="feature">Enhanced player controls</div>
+        <div class="feature-desc">Bigger buttons, massive progress bar with cursor, pink play indicators and consistent gray styling</div>
+        
+        <div class="feature">Cleaner sidebar & typography</div>
+        <div class="feature-desc">Removed all the clutter and that funny font, now everything looks clean</div>
+    </div>
+    
+    <!-- Footer with author information -->
+    <div class="footer">
+        <small style="margin-top: 5px; display: block; font-size: 13px; color: #000000;">
+            by Aleksandr Smetanka<br>
+            <a href="https://smetanka.me" target="_blank" style="color: #f43f5e; text-decoration: none;">smetanka.me</a><br>
+            Write to me: <a href="mailto:hello@smetanka.me" style="color: #f43f5e; text-decoration: none;">hello@smetanka.me</a>
+        </small>
+    </div>
+    
+    <!-- JavaScript file for popup functionality -->
+    <script src="popup.js"></script>
+</body>
+</html>
