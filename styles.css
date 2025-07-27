@@ -305,12 +305,10 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 }
 
 /* --- Play/Pause/etc. Controls --- */
-button[aria-label="Playbar: Toggle shuffle button"],
 button[aria-label="Playbar: Previous Song button"],
 button[aria-label="Playbar: Play button"],
 button[aria-label="Playbar: Pause button"],
-button[aria-label="Playbar: Next Song button"],
-button[aria-label="Playbar: Toggle repeat button"] {
+button[aria-label="Playbar: Next Song button"] {
     width: 168px !important; /* 3x wider than original 56px */
     height: 56px !important;
     padding: 12px !important;
@@ -318,12 +316,10 @@ button[aria-label="Playbar: Toggle repeat button"] {
     border-radius: 28px !important; /* More rounded - half of height for pill shape */
 }
 
-button[aria-label="Playbar: Toggle shuffle button"] svg,
 button[aria-label="Playbar: Previous Song button"] svg,
 button[aria-label="Playbar: Play button"] svg,
 button[aria-label="Playbar: Pause button"] svg,
-button[aria-label="Playbar: Next Song button"] svg,
-button[aria-label="Playbar: Toggle repeat button"] svg {
+button[aria-label="Playbar: Next Song button"] svg {
     width: 24px !important;
     height: 24px !important;
 }
@@ -547,22 +543,14 @@ a[aria-label="Playbar: Comment"] {
 }
 
 /* Container and spacing for song items */
-.w-\[230px\].flex-shrink-0 {
-    width: 230px !important;
-}
-
-/* Force wider container for song items */
+.w-\[230px\].flex-shrink-0,
 .css-1jkulof {
     width: 230px !important;
     min-width: 230px !important;
 }
 
 /* Ensure buttons have space */
-.css-1jkulof .css-1fuckjf {
-    margin-left: 4px !important;
-    flex-shrink: 0 !important;
-}
-
+.css-1jkulof .css-1fuckjf,
 .css-1jkulof .css-1kcq9v9 {
     margin-left: 4px !important;
     flex-shrink: 0 !important;
