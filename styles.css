@@ -24,7 +24,7 @@
 
 /* --- Element Hiding --- */
 /* Hide unnecessary UI elements */
-.h-\[156px\],
+div.h-\[156px\].px-4,
 div.flex.flex-1.flex-row.items-center.p-2,
 div.flex.h-\[60px\].flex-row.items-center.gap-\[5px\].px-4,
 div.mr-4.h-40px.w-53px,
@@ -119,8 +119,8 @@ a[href="/account"] span {
 .css-1jkulof .flex.flex-1.flex-row.items-center.gap-3 { gap: 0 !important; }
 
 /* Force wider container for horizontally scrolled items */
-.w-\[230px\].flex-shrink-0 { width: 320px !important; margin-right: 16px !important; }
-.css-1jkulof { width: 230px !important; min-width: 230px !important; margin-right: 16px !important; }
+.w-\[230px\].flex-shrink-0 { width: 230px !important; margin-right: 8px !important; }
+.css-1jkulof { width: 230px !important; min-width: 230px !important; margin-right: 8px !important; }
 
 /* --- Square Preview Images (Unified) --- */
 /* Targets all relevant preview images and containers */
