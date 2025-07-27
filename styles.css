@@ -490,7 +490,8 @@ a[aria-label="Playbar: Comment"] {
 
 /* Remove top padding from main container */
 .custom-scrollbar-transparent.mx-6.flex.overflow-y-hidden.overflow-x-scroll,
-.custom-scrollbar-transparent.flex-1.overflow-y-auto.container\/rows.px-2.md\:px-4 {
+.custom-scrollbar-transparent.flex-1.overflow-y-auto.container\/rows.px-2.md\:px-4,
+[class*="custom-scrollbar-transparent"][class*="flex-1"][class*="overflow-y-auto"][class*="@container/rows"][class*="pt-4"] {
     padding-top: 0 !important;
 }
 
