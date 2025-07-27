@@ -441,7 +441,7 @@ a[aria-label="Playbar: Comment"] {
 
 /* Make button group buttons separate instead of connected tabs */
 .flex.w-full.max-w-full.flex-row.justify-start button {
-    border-radius: 20px !important;
+    border-radius: 50px !important;
     margin: 0 4px !important;
 }
 
@@ -556,5 +556,4 @@ a[aria-label="Playbar: Comment"] {
 .css-1jkulof .css-1kcq9v9 {
     margin-left: 4px !important;
     flex-shrink: 0 !important;
-}
 }
