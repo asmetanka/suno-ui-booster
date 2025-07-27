@@ -1,54 +1,54 @@
 # Suno UI Booster
 
-Chrome расширение для улучшения пользовательского интерфейса Suno AI.
+Chrome extension for improving Suno AI user interface.
 
-## Описание
+## Description
 
-Suno UI Booster - это Chrome расширение, которое улучшает внешний вид и функциональность веб-приложения Suno AI. Расширение добавляет кастомные стили и улучшения для более комфортного использования.
+Suno UI Booster is a Chrome extension that enhances the appearance and functionality of the Suno AI web application. The extension adds custom styles and improvements for a more comfortable user experience.
 
-## Функции
+## Features
 
-- **Улучшенный интерфейс**: Кастомные стили для более современного вида
-- **Оптимизированные элементы**: Улучшенные кнопки, карточки и навигация
-- **Адаптивный дизайн**: Лучшая адаптация под разные размеры экрана
-- **Улучшенная типографика**: Оптимизированные шрифты и отступы
+- **Enhanced Interface**: Custom styles for a more modern look
+- **Optimized Elements**: Improved buttons, cards, and navigation
+- **Responsive Design**: Better adaptation to different screen sizes
+- **Improved Typography**: Optimized fonts and spacing
 
-## Установка
+## Installation
 
-1. Скачайте файл `suno-ui-booster.crx`
-2. Откройте Chrome и перейдите в `chrome://extensions/`
-3. Включите "Режим разработчика" (Developer mode)
-4. Перетащите файл `.crx` в окно браузера
-5. Подтвердите установку
+1. Download the `suno-ui-booster.crx` file
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable "Developer mode"
+4. Drag and drop the `.crx` file into the browser window
+5. Confirm installation
 
-## Разработка
+## Development
 
-### Структура проекта
+### Project Structure
 
 ```
 suno-ui-booster/
-├── manifest.json      # Манифест расширения
-├── popup.html         # HTML для popup окна
-├── popup.js           # JavaScript для popup
-├── content.js         # Скрипт для внедрения в страницу
-├── background.js      # Фоновый скрипт
-├── styles.css         # Основные стили
-├── icon.png           # Иконка расширения
-└── README.md          # Этот файл
+├── manifest.json      # Extension manifest
+├── popup.html         # HTML for popup window
+├── popup.js           # JavaScript for popup
+├── content.js         # Script for page injection
+├── background.js      # Background script
+├── styles.css         # Main styles
+├── icon.png           # Extension icon
+└── README.md          # This file
 ```
 
-### Сборка
+### Building
 
-Для создания `.crx` файла:
+To create a `.crx` file:
 
-1. Упакуйте все файлы в ZIP архив
-2. Переименуйте расширение в `.crx`
-3. Или используйте Chrome Web Store для распространения
+1. Package all files into a ZIP archive
+2. Rename the extension to `.crx`
+3. Or use Chrome Web Store for distribution
 
-## Лицензия
+## License
 
 MIT License
 
-## Автор
+## Author
 
-Создано для улучшения пользовательского опыта Suno AI. 
+Created to improve the Suno AI user experience. 
