@@ -445,8 +445,8 @@ a[aria-label="Playbar: Comment"] {
     margin: 0 4px !important;
     border: none !important;
     outline: none !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    height: 40px !important;
+    padding: 0 16px !important;
 }
 
 /* ========================================
