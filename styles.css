@@ -311,11 +311,11 @@ button[aria-label="Playbar: Play button"],
 button[aria-label="Playbar: Pause button"],
 button[aria-label="Playbar: Next Song button"],
 button[aria-label="Playbar: Toggle repeat button"] {
-    width: 56px !important;
+    width: 168px !important; /* 3x wider than original 56px */
     height: 56px !important;
     padding: 12px !important;
     background-color: rgb(var(--rgb-background-tertiary)) !important;
-    border-radius: 50% !important;
+    border-radius: 12px !important; /* Rounded corners instead of circular */
 }
 
 button[aria-label="Playbar: Toggle shuffle button"] svg,
