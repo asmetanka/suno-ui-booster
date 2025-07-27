@@ -328,6 +328,12 @@ button[aria-label="Playbar: Toggle repeat button"] svg {
     height: 24px !important;
 }
 
+/* Hide shuffle and repeat buttons */
+button[aria-label="Playbar: Toggle shuffle button"],
+button[aria-label="Playbar: Toggle repeat button"] {
+    display: none !important;
+}
+
 /* ========================================
    BUTTONS & INTERACTIVE ELEMENTS
    ======================================== */
@@ -542,15 +548,13 @@ a[aria-label="Playbar: Comment"] {
 
 /* Container and spacing for song items */
 .w-\[230px\].flex-shrink-0 {
-    width: 320px !important;
-    margin-right: 16px !important;
+    width: 230px !important;
 }
 
 /* Force wider container for song items */
 .css-1jkulof {
     width: 230px !important;
     min-width: 230px !important;
-    margin-right: 16px !important;
 }
 
 /* Ensure buttons have space */
