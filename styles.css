@@ -443,6 +443,8 @@ a[aria-label="Playbar: Comment"] {
 .flex.w-full.max-w-full.flex-row.justify-start button {
     border-radius: 50px !important;
     margin: 0 4px !important;
+    border: none !important;
+    outline: none !important;
 }
 
 /* ========================================
