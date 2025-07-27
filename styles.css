@@ -441,26 +441,8 @@ a[aria-label="Playbar: Comment"] {
 
 /* Make button group buttons separate instead of connected tabs */
 .flex.w-full.max-w-full.flex-row.justify-start button {
-    border-radius: 12px !important;
+    border-radius: 20px !important;
     margin: 0 4px !important;
-    border: 1px solid rgb(var(--rgb-border-primary)) !important;
-    border-right: 1px solid rgb(var(--rgb-border-primary)) !important;
-}
-
-.flex.w-full.max-w-full.flex-row.justify-start button:first-child {
-    border-radius: 12px !important;
-    border-right: 1px solid rgb(var(--rgb-border-primary)) !important;
-}
-
-.flex.w-full.max-w-full.flex-row.justify-start button:last-child {
-    border-radius: 12px !important;
-    border-left: 1px solid rgb(var(--rgb-border-primary)) !important;
-}
-
-.flex.w-full.max-w-full.flex-row.justify-start button:not(:first-child):not(:last-child) {
-    border-radius: 12px !important;
-    border-left: 1px solid rgb(var(--rgb-border-primary)) !important;
-    border-right: 1px solid rgb(var(--rgb-border-primary)) !important;
 }
 
 /* ========================================
