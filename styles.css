@@ -315,7 +315,7 @@ button[aria-label="Playbar: Toggle repeat button"] {
     height: 56px !important;
     padding: 12px !important;
     background-color: rgb(var(--rgb-background-tertiary)) !important;
-    border-radius: 12px !important; /* Rounded corners instead of circular */
+    border-radius: 28px !important; /* More rounded - half of height for pill shape */
 }
 
 button[aria-label="Playbar: Toggle shuffle button"] svg,
