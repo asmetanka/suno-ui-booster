@@ -58,4 +58,7 @@ build/
 
 # Backup files
 *_backup.*
-*.backup 
+*.backup
+
+# Generated metadata files
+_metadata/generated_indexed_rulesets/ 
