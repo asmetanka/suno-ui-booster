@@ -235,6 +235,7 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 /* Small song items (e.g., in a horizontally scrollable list) */
 .css-1jkulof .line-clamp-1 {
     -webkit-line-clamp: 1 !important;
+    line-clamp: 1 !important;
     white-space: nowrap !important;
     max-width: 20ch !important;
     overflow: hidden !important;
@@ -540,7 +541,7 @@ a[aria-label="Playbar: Comment"] {
 }
 
 /* Container and spacing for song items */
-.w-\\[230px\\].flex-shrink-0 {
+.w-\[230px\].flex-shrink-0 {
     width: 320px !important;
     margin-right: 16px !important;
 }
