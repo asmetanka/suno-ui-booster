@@ -217,6 +217,7 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 /* Large song items (list view) */
 .css-c1kosu .line-clamp-1 {
     -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
