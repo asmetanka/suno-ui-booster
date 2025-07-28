@@ -221,13 +221,12 @@
         
         /* Design credit section */
         .design-credit {
-            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background: linear-gradient(90deg, rgba(128,0,0,0.5), rgba(128,64,0,0.5), rgba(128,128,0,0.5), rgba(64,128,0,0.5), rgba(0,128,0,0.5), rgba(0,128,64,0.5), rgba(0,128,128,0.5), rgba(0,64,128,0.5), rgba(0,0,128,0.5), rgba(64,0,128,0.5), rgba(128,0,128,0.5), rgba(128,0,64,0.5));
             background-size: 200% 100%;
             color: #ffffff;
             text-align: center;
             margin: 0;
             font-size: 10px;
-            opacity: 0.9;
             width: 100vw;
             position: relative;
             left: 50%;
@@ -240,10 +239,12 @@
         
         .design-credit:hover {
             animation: rainbow 2s linear infinite;
+            background: linear-gradient(90deg, rgba(255,0,0,0.9), rgba(255,128,0,0.9), rgba(255,255,0,0.9), rgba(128,255,0,0.9), rgba(0,255,0,0.9), rgba(0,255,128,0.9), rgba(0,255,255,0.9), rgba(0,128,255,0.9), rgba(0,0,255,0.9), rgba(128,0,255,0.9), rgba(255,0,255,0.9), rgba(255,0,128,0.9));
+            background-size: 200% 100%;
         }
         
         .design-credit a {
-            color: #000000;
+            color: #ffffff !important;
             text-decoration: none;
             display: block;
             width: 100%;
@@ -251,11 +252,13 @@
             padding: 8px 0;
             transition: color 0.3s ease;
             font-weight: bold;
+            mix-blend-mode: normal;
+            isolation: isolate;
         }
         
         .design-credit:hover a {
             text-decoration: none;
-            color: #000000;
+            color: #ffffff !important;
         }
         
         @keyframes rainbow {
