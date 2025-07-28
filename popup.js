@@ -43,23 +43,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add click event to container only (it will handle both)
     toggleContainer.addEventListener('click', toggleFunction);
     
-    // Add animation tracking for text change
-    toggleSwitch.addEventListener('transitionend', () => {
-        // Change text when animation ends
-        if (toggleSwitch.classList.contains('active')) {
-            toggleLabel.textContent = 'Suno UI Boosted';
-        } else {
-            toggleLabel.textContent = 'Boost Suno UI';
-        }
-    });
-    
-    // Add progress tracking during animation
-    toggleSwitch.addEventListener('transitionrun', () => {
-        // Change text when animation runs
-        if (toggleSwitch.classList.contains('active')) {
-            toggleLabel.textContent = 'Suno UI Boosted';
-        } else {
-            toggleLabel.textContent = 'Boost Suno UI';
-        }
+    // Simple text change with fade effect
+    toggleContainer.addEventListener('click', () => {
+        // Fade out
+        toggleLabel.style.opacity = '0';
+        
+        // Change text and fade in after short delay
+        setTimeout(() => {
+            if (toggleSwitch.classList.contains('active')) {
+                toggleLabel.textContent = 'Suno UI Boosted';
+            } else {
+                toggleLabel.textContent = 'Boost Suno UI';
+            }
+            toggleLabel.style.opacity = '1';
+        }, 150);
     });
   });
