@@ -69,11 +69,12 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
-            padding: 10px;
+            padding: 12px 16px;
             background: #f3f4f6;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.2s;
+            height: 48px;
         }
         
         .toggle-container:hover {
@@ -159,16 +160,48 @@
         .support-section {
             text-align: center;
             margin: 15px 0;
-            padding: 10px 0;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .support-section a {
             display: inline-block;
             transition: transform 0.2s;
+            width: 100%;
         }
         
         .support-section a:hover {
             transform: scale(1.02);
+        }
+        
+        .support-section img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        /* Author info under support button */
+        .author-info {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 11px;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        
+        .author-info a {
+            color: #f43f5e;
+            text-decoration: none;
+        }
+        
+        .author-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -192,6 +225,11 @@
                  alt="Support me" 
                  style="width: 100%; max-width: 200px; height: auto; border-radius: 8px; margin: 10px 0;">
         </a>
+        <div class="author-info">
+            by Aleksandr Smetanka<br>
+            <a href="https://smetanka.me" target="_blank">smetanka.me</a><br>
+            Write to me: <a href="mailto:hello@smetanka.me">hello@smetanka.me</a>
+        </div>
     </div>
     
     <!-- List of features provided by the extension -->
@@ -212,9 +250,7 @@
     <!-- Footer with author information -->
     <div class="footer">
         <small style="margin-top: 5px; display: block; font-size: 13px; color: #000000;">
-            by Aleksandr Smetanka<br>
-            <a href="https://smetanka.me" target="_blank" style="color: #f43f5e; text-decoration: none;">smetanka.me</a><br>
-            Write to me: <a href="mailto:hello@smetanka.me" style="color: #f43f5e; text-decoration: none;">hello@smetanka.me</a>
+            Thanks for using Suno UI Booster! 🎨
         </small>
     </div>
     
