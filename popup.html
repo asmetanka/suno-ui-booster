@@ -60,6 +60,7 @@
         .toggle-container {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 12px;
             padding: 0 16px;
             background: #9399A4;
@@ -67,7 +68,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             height: 56px;
-            width: 300px;
+            width: 268px;
             position: relative;
             overflow: hidden;
         }
@@ -85,6 +86,9 @@
             font-size: 20px;
             font-weight: 500;
             color: white;
+            text-align: center;
+            z-index: 1;
+            position: relative;
         }
         
         /* Custom toggle switch styling */
@@ -103,7 +107,7 @@
         
         /* Active state styling for toggle switch */
         .toggle-switch.active {
-            transform: translateX(248px);
+            transform: translateX(216px);
         }
         
         /* Features list container */
