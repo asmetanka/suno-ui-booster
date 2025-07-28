@@ -42,4 +42,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Add click event to container only (it will handle both)
     toggleContainer.addEventListener('click', toggleFunction);
+    
+    // Add animation tracking for text change
+    toggleSwitch.addEventListener('transitionstart', () => {
+        // Change text when animation starts
+        if (toggleSwitch.classList.contains('active')) {
+            toggleLabel.textContent = 'Suno UI Boosted';
+        } else {
+            toggleLabel.textContent = 'Boost Suno UI';
+        }
+    });
   });
