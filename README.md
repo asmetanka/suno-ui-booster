@@ -8,15 +8,15 @@ Suno UI Booster transforms the Suno AI web application with custom styles and im
 
 ## Features
 
+### 🎵 **Enhanced Player Controls**
+- **Professional-Grade Player**: Bigger buttons for precise control, massive progress bar for accurate seeking
+- **Native Feel**: Consistent styling that feels like it belongs in the interface
+- **Pink Play Indicators**: Elegant visual feedback for active states
+- **Hidden Shuffle/Repeat**: Cleaner interface by removing unnecessary controls
+
 ### 🎨 **Visual Enhancements**
 - **Square Cover Images**: Fixes weird cropping by making covers properly square
 - **Cleaner UI**: Fixed massive gaps, removes clutter, improves typography, full-width workspace button, better dropdown positioning and enhanced navigation
-
-### 🎵 **Player Improvements**
-- **Larger Control Buttons**: Rectangular play, next, and previous buttons with rounded corners
-- **Enhanced Progress Bar**: Massive progress bar with cursor for better control
-- **Pink Play Indicators**: Consistent styling with pink accents
-- **Hidden Shuffle/Repeat**: Cleaner player interface by hiding unnecessary controls
 
 ### 📱 **User Experience**
 - **Smart Toggle States**: Dynamic button text ("Suno UI Boosted" / "Boost Suno UI")
