@@ -63,7 +63,7 @@
             justify-content: space-between;
             margin-bottom: 15px;
             padding: 0 16px;
-            background: #e11d48;
+            background: #f472b6;
             border-radius: 12px;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -71,7 +71,7 @@
         }
         
         .toggle-container:hover {
-            background: #be185d;
+            background: #f472b6;
         }
         
         .toggle-container.active {
@@ -208,8 +208,8 @@
     </div>
     
     <!-- Main toggle switch for enabling/disabling the extension -->
-    <div class="toggle-container">
-        <span class="toggle-label">Boost Suno UI</span>
+    <div class="toggle-container active" id="toggleContainer">
+        <span class="toggle-label" id="toggleLabel">Suno UI Boosted</span>
         <div class="toggle-switch active" id="toggleSwitch"></div>
     </div>
     
@@ -253,5 +253,32 @@
     
     <!-- JavaScript file for popup functionality -->
     <script src="popup.js"></script>
+    <script>
+        // Toggle state management
+        const toggleContainer = document.getElementById('toggleContainer');
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const toggleLabel = document.getElementById('toggleLabel');
+        
+        function updateToggleState(isActive) {
+            if (isActive) {
+                toggleContainer.classList.add('active');
+                toggleSwitch.classList.add('active');
+                toggleLabel.textContent = 'Suno UI Boosted';
+            } else {
+                toggleContainer.classList.remove('active');
+                toggleSwitch.classList.remove('active');
+                toggleLabel.textContent = 'Boost Suno UI';
+            }
+        }
+        
+        // Toggle click handler
+        toggleContainer.addEventListener('click', function() {
+            const isCurrentlyActive = toggleContainer.classList.contains('active');
+            updateToggleState(!isCurrentlyActive);
+        });
+        
+        // Initialize with active state
+        updateToggleState(true);
+    </script>
 </body>
 </html>
