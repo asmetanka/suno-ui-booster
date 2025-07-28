@@ -243,6 +243,13 @@
             margin-left: -50vw;
             margin-right: -50vw;
             display: block;
+            transition: background 0.3s ease;
+        }
+        
+        .design-credit:hover {
+            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 200% 100%;
+            animation: rainbow 2s linear infinite;
         }
         
         .design-credit a {
@@ -250,15 +257,11 @@
             text-decoration: none;
             display: block;
             width: 100%;
-            transition: background 0.3s ease;
-            padding: 8px 0;
+            transition: color 0.3s ease;
         }
         
-        .design-credit a:hover {
+        .design-credit:hover a {
             text-decoration: none;
-            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-            background-size: 200% 100%;
-            animation: rainbow 2s linear infinite;
             color: #000000;
         }
         
