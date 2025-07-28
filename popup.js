@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Update text based on state
         if (isActive) {
-            toggleLabel.textContent = 'Suno UI Boosted';
+            toggleLabel.textContent = 'UI BOOSTED';
         } else {
-            toggleLabel.textContent = 'Boost Suno UI';
+            toggleLabel.textContent = 'BOOST MUSIC';
         }
     };
   
@@ -40,21 +40,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateToggleState(newState);
     };
     
-    // Add click event to container only (it will handle both)
-    toggleContainer.addEventListener('click', toggleFunction);
-    
-    // Simple text change with fade effect
-    toggleContainer.addEventListener('click', () => {
+    // Add click event to container with fade effect
+    toggleContainer.addEventListener('click', async () => {
         // Fade out
         toggleLabel.style.opacity = '0';
         
-        // Change text and fade in after short delay
-        setTimeout(() => {
-            if (toggleSwitch.classList.contains('active')) {
-                toggleLabel.textContent = 'Suno UI Boosted';
-            } else {
-                toggleLabel.textContent = 'Boost Suno UI';
-            }
+        // Wait for fade out, then update state and text
+        setTimeout(async () => {
+            await toggleFunction();
             toggleLabel.style.opacity = '1';
         }, 100);
     });

@@ -41,10 +41,14 @@ async function updateStyles(tabId, isEnabled) {
   chrome.storage.onChanged.addListener(async (changes, namespace) => {
     if (namespace === 'local' && changes.stylesEnabled) {
       const isEnabled = changes.stylesEnabled.newValue;
-      // Find active Suno tab and update styles on it
-      const [tab] = await chrome.tabs.query({ active: true, url: ["*://*.suno.ai/*", "*://*.suno.com/*"] });
-      if (tab) {
-        updateStyles(tab.id, isEnabled);
+      try {
+        // Find active Suno tab and update styles on it
+        const [tab] = await chrome.tabs.query({ active: true, url: ["*://*.suno.ai/*", "*://*.suno.com/*"] });
+        if (tab) {
+          updateStyles(tab.id, isEnabled);
+        }
+      } catch (error) {
+        console.error('Error updating styles on storage change:', error);
       }
     }
   }); 

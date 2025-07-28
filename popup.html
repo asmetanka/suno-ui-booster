@@ -8,8 +8,8 @@
             width: 300px;
             padding: 20px 20px 0 20px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: white;
-            color: black;
+            background: #010214;
+            color: white;
             margin: 0;
         }
         
@@ -38,22 +38,14 @@
             margin-bottom: 12px;
         }
         
-        /* Extension icon styling */
-        .header .icon {
-            width: 36px;
-            height: 36px;
-            margin: 0 auto 4px;
+        /* Logo styling */
+        .header .logo {
+            width: 100%;
+            max-width: 280px;
+            height: 80px;
+            margin: 0 auto 12px;
             display: block;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px;
-        }
-        
-        /* Main title styling */
-        .header h1 {
-            margin: 0 0 12px 0;
-            font-size: 18px;
-            font-weight: 600;
+            object-fit: contain;
         }
         
         /* Toggle switch container with background */
@@ -172,13 +164,13 @@
             margin: 0 0 6px 0;
             font-size: 14px;
             font-weight: 600;
-            color: #000000;
+            color: white;
         }
         
         .author-info p {
             margin: 0 0 3px 0;
             font-size: 12px;
-            color: #f43f5e;
+            color: white;
         }
         
         .author-info a {
@@ -202,7 +194,7 @@
         }
         
         .social-links a {
-            color: #f43f5e;
+            color: white;
             text-decoration: none;
             font-size: 11px;
             opacity: 0.8;
@@ -213,7 +205,7 @@
         }
         
         .social-separator {
-            color: #9ca3af;
+            color: white;
             font-size: 10px;
             opacity: 0.6;
         }
@@ -224,11 +216,13 @@
             text-align: center;
             font-size: 10px;
             opacity: 0.7;
+            color: white;
         }
         
         /* Design credit section */
         .design-credit {
-            background: #000000;
+            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 200% 100%;
             color: #ffffff;
             text-align: center;
             margin: 0;
@@ -245,13 +239,11 @@
         }
         
         .design-credit:hover {
-            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-            background-size: 200% 100%;
             animation: rainbow 2s linear infinite;
         }
         
         .design-credit a {
-            color: #ffffff;
+            color: #000000;
             text-decoration: none;
             display: block;
             width: 100%;
@@ -273,15 +265,14 @@
     </style>
 </head>
 <body>
-    <!-- Header section with extension icon and title -->
+    <!-- Header section with logo -->
     <div class="header">
-        <img src="icon.png" alt="Suno UI Booster" class="icon">
-        <h1>Suno UI Booster<sup>1</sup></h1>
+        <img src="logo.png" alt="Suno UI Booster" class="logo">
     </div>
     
     <!-- Main toggle switch for enabling/disabling the extension -->
     <div class="toggle-container active" id="toggleContainer">
-        <span class="toggle-label" id="toggleLabel">Suno UI Boosted</span>
+        <span class="toggle-label" id="toggleLabel">UI BOOSTED</span>
         <div class="toggle-switch active" id="toggleSwitch"></div>
     </div>
     
@@ -300,7 +291,7 @@
     <!-- Support button section -->
     <div class="support-section">
         <a href="https://www.buymeacoffee.com/asmetanka" target="_blank" style="text-decoration: none;">
-            <img src="https://img.buymeacoffee.com/button-api/?text=Support me&emoji=🌈&slug=asmetanka&button_colour=000000&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" 
+            <img src="https://img.buymeacoffee.com/button-api/?text=support me&emoji=🖤&slug=asmetanka&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" 
                  alt="Support me" 
                  style="width: 100%; max-width: 200px; height: auto; border-radius: 8px;">
         </a>
@@ -319,7 +310,7 @@
         <span class="social-separator">•</span>
         <a href="https://www.linkedin.com/in/asmetanka/" target="_blank">Connect on LinkedIn</a>
         <span class="social-separator">•</span>
-        <a href="https://github.com/asmetanka/" target="_blank">GitHub</a>
+        <a href="https://github.com/asmetanka/suno-ui-booster" target="_blank">GitHub</a>
     </div>
     
     <!-- Footer with author information -->

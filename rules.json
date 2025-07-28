@@ -8,12 +8,16 @@
         {
           "header": "Content-Security-Policy",
           "operation": "remove"
+        },
+        {
+          "header": "X-Content-Type-Options",
+          "operation": "remove"
         }
       ]
     },
     "condition": {
       "urlFilter": "*://*.suno.ai/*",
-      "resourceTypes": ["main_frame", "sub_frame", "stylesheet", "script"]
+      "resourceTypes": ["main_frame", "sub_frame"]
     }
   },
   {
@@ -25,12 +29,16 @@
         {
           "header": "Content-Security-Policy",
           "operation": "remove"
+        },
+        {
+          "header": "X-Content-Type-Options",
+          "operation": "remove"
         }
       ]
     },
     "condition": {
       "urlFilter": "*://*.suno.com/*",
-      "resourceTypes": ["main_frame", "sub_frame", "stylesheet", "script"]
+      "resourceTypes": ["main_frame", "sub_frame"]
     }
   }
 ] 

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Suno UI Booster",
   "version": "1",
-  "description": "Square song previews, better spacing, bigger controls, and a massive progress bar. Because the default UI was driving me nuts. Removed sidebar clutter too.",
+  "description": "Enhance your Suno experience with a cleaner interface. Enjoy squared album art, redesigned player, and streamlined layout.",
   "permissions": [
     "scripting",
     "activeTab",
@@ -13,6 +13,9 @@
     "*://*.suno.ai/*",
     "*://*.suno.com/*"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "background": {
     "service_worker": "background.js"
   },
