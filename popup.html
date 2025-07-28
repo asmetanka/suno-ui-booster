@@ -6,7 +6,7 @@
         /* Main popup container styling */
         body {
             width: 300px;
-            padding: 20px 20px 4px 20px;
+            padding: 20px 20px 0 20px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: white;
             color: black;
@@ -233,10 +233,15 @@
             color: #ffffff;
             text-align: center;
             padding: 8px 0;
-            margin-top: 8px;
+            margin: 0;
             font-size: 10px;
             opacity: 0.9;
             width: 100%;
+            position: relative;
+            left: -20px;
+            right: -20px;
+            margin-left: -20px;
+            margin-right: -20px;
         }
         
         .design-credit a {
@@ -244,11 +249,19 @@
             text-decoration: none;
             display: block;
             width: 100%;
+            transition: background 0.3s ease;
         }
         
         .design-credit a:hover {
             text-decoration: none;
-            opacity: 0.8;
+            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 200% 100%;
+            animation: rainbow 2s linear infinite;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
     </style>
 </head>
