@@ -10,8 +10,7 @@ Suno UI Booster transforms the Suno AI web application with custom styles and im
 
 ### 🎨 **Visual Enhancements**
 - **Square Cover Images**: Fixes weird cropping by making covers properly square
-- **Better Spacing**: Eliminates massive gaps for a more compact layout
-- **Cleaner UI**: Removes clutter, improves typography, full-width workspace button, better dropdown positioning and enhanced navigation
+- **Cleaner UI**: Fixed massive gaps, removes clutter, improves typography, full-width workspace button, better dropdown positioning and enhanced navigation
 
 ### 🎵 **Player Improvements**
 - **Larger Control Buttons**: Rectangular play, next, and previous buttons with rounded corners
