@@ -56,6 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLabel.textContent = 'Boost Suno UI';
             }
             toggleLabel.style.opacity = '1';
-        }, 150);
+        }, 100);
     });
   });
