@@ -196,21 +196,27 @@
             text-align: center;
             margin-top: 8px;
             margin-bottom: 12px;
-        }
-        
-        .social-links p {
-            margin: 0 0 4px 0;
-            font-size: 11px;
-            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
         }
         
         .social-links a {
             color: #f43f5e;
             text-decoration: none;
+            font-size: 11px;
+            opacity: 0.8;
         }
         
         .social-links a:hover {
             text-decoration: underline;
+        }
+        
+        .social-separator {
+            color: #9ca3af;
+            font-size: 10px;
+            opacity: 0.6;
         }
         
         /* Footer section styling */
@@ -265,8 +271,9 @@
     
     <!-- Social media links -->
     <div class="social-links">
-        <p><a href="https://x.com/asmetanka" target="_blank">Follow on Twitter</a></p>
-        <p><a href="https://www.linkedin.com/in/asmetanka/" target="_blank">Connect on LinkedIn</a></p>
+        <a href="https://x.com/asmetanka" target="_blank">Follow on Twitter</a>
+        <span class="social-separator">•</span>
+        <a href="https://www.linkedin.com/in/asmetanka/" target="_blank">Connect on LinkedIn</a>
     </div>
     
     <!-- Footer with author information -->
