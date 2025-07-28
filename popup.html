@@ -247,38 +247,11 @@
     <!-- Footer with author information -->
     <div class="footer">
         <small style="margin-top: 5px; display: block; font-size: 13px; color: #000000;">
-            
+            <!-- Footer content removed -->
         </small>
     </div>
     
     <!-- JavaScript file for popup functionality -->
     <script src="popup.js"></script>
-    <script>
-        // Toggle state management
-        const toggleContainer = document.getElementById('toggleContainer');
-        const toggleSwitch = document.getElementById('toggleSwitch');
-        const toggleLabel = document.getElementById('toggleLabel');
-        
-        function updateToggleState(isActive) {
-            if (isActive) {
-                toggleContainer.classList.add('active');
-                toggleSwitch.classList.add('active');
-                toggleLabel.textContent = 'Suno UI Boosted';
-            } else {
-                toggleContainer.classList.remove('active');
-                toggleSwitch.classList.remove('active');
-                toggleLabel.textContent = 'Boost Suno UI';
-            }
-        }
-        
-        // Toggle click handler
-        toggleContainer.addEventListener('click', function() {
-            const isCurrentlyActive = toggleContainer.classList.contains('active');
-            updateToggleState(!isCurrentlyActive);
-        });
-        
-        // Initialize with active state
-        updateToggleState(true);
-    </script>
 </body>
 </html>
