@@ -60,7 +60,6 @@
         .toggle-container {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 12px;
             padding: 0 16px;
             background: #9399A4;
@@ -70,6 +69,7 @@
             height: 56px;
             width: 300px;
             position: relative;
+            overflow: hidden;
         }
         
         .toggle-container:hover {
@@ -89,7 +89,7 @@
         
         /* Custom toggle switch styling */
         .toggle-switch {
-            position: relative;
+            position: absolute;
             width: 48px;
             height: 48px;
             background: white;
@@ -97,11 +97,13 @@
             cursor: pointer;
             transition: transform 0.3s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            left: 4px;
+            top: 4px;
         }
         
         /* Active state styling for toggle switch */
         .toggle-switch.active {
-            transform: translateX(252px);
+            transform: translateX(248px);
         }
         
         /* Features list container */
