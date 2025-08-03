@@ -1,81 +1,67 @@
 # Suno UI Booster
 
-Chrome extension that significantly improves the Suno AI user interface with enhanced styling and functionality.
+Transform your Suno music creation workflow with a professional and user-friendly interface! This extension provides visual improvements without altering any core functionality.
 
-## Description
+## Key Features
 
-Suno UI Booster transforms the Suno AI web application with custom styles and improvements for a more polished and user-friendly experience. The extension focuses on visual enhancements, better spacing, and improved player controls.
+### Professional Player Controls
+Larger buttons and a thick, visible progress bar for precise track control and easy scrubbing.
 
-## Features
+### Consistent Square Album Art
+All track previews are now perfectly square for a clean, grid-like appearance throughout the interface.
 
-### 🎵 **Professional Player Experience**
-- **Professional-Grade Player**: Bigger buttons for precise control, massive progress bar for accurate seeking
-- **Native Feel**: Consistent styling that feels like it belongs in the interface
-- **Pink Play Indicators**: Elegant visual feedback for active states
-- **Hidden Shuffle/Repeat**: Cleaner interface by removing unnecessary controls
+### Streamlined Interface
+Hidden distracting elements and promotional buttons, with easy to access trash button and enhanced navigation for focused music creation.
 
-### 🎨 **Perfect Visual Presentation**
-- **Perfect Cover Display**: Fixes weird cropping by making covers properly square
-- **Streamlined Interface**: Fixed massive gaps, removes clutter, improves typography, full-width workspace button, better dropdown positioning and enhanced navigation
+### Improved Readability
+Removed unnecessary text formatting and made key information like credits more prominent and clearly styled.
 
-### 📱 **Enhanced User Experience**
-- **Smart Toggle States**: Dynamic button text ("Suno UI Boosted" / "Boost Suno UI")
-- **Color-Coded Interface**: Orange for disabled, green for enabled states
-- **Responsive Design**: Better adaptation to different screen sizes
-- **Consistent Styling**: Unified color scheme and spacing throughout
+### Enhanced Controls
+Better defined buttons with visible backgrounds and consistent styling across the platform.
+
+## Why Suno UI Booster?
+
+Built for daily Suno users who want a cleaner, more professional interface. Every change is crafted to improve focus and efficiency in your music creation workflow.
+
+## Privacy-Focused
+
+100% client-side extension using only CSS to restyle the website.
+- No data collection
+- No tracking or analytics
+- No external server communication
 
 ## Installation
 
-1. Download the `suno-ui-booster.crx` file
+1. Download the extension files
 2. Open Chrome and go to `chrome://extensions/`
 3. Enable "Developer mode"
-4. Drag and drop the `.crx` file into the browser window
-5. Confirm installation
+4. Click "Load unpacked" and select the extension folder
+5. Visit [Suno](https://suno.ai) and enjoy the improved interface!
 
-## Usage
+## Features in Detail
 
-1. Install the extension
-2. Navigate to [Suno AI](https://suno.ai)
-3. Click the extension icon to access the popup
-4. Toggle the extension on/off as needed
-5. Enjoy the enhanced interface!
+- **Professional Player**: Larger controls and thick progress bar for better usability
+- **Square Album Art**: Consistent square format for all track previews
+- **Working Trash Button**: Finally! A functional delete button that actually removes songs
+- **Streamlined Layout**: Hidden promotional elements and improved navigation
+- **Enhanced Typography**: Better readability and prominent credit display
+- **Consistent Styling**: Professional button design across the platform
 
 ## Development
 
-### Project Structure
+This extension is built with:
+- Vanilla JavaScript for functionality
+- CSS for styling improvements
+- Chrome Extension Manifest V3
 
-```
-suno-ui-booster/
-├── manifest.json      # Extension manifest
-├── popup.html         # HTML for popup window
-├── popup.js           # JavaScript for popup functionality
-├── content.js         # Script for page injection
-├── background.js      # Background script
-├── styles.css         # Main styles and enhancements
-├── icon.png           # Extension icon
-└── README.md          # This file
-```
+## Contributing
 
-### Building
+Feel free to submit issues and enhancement requests!
 
-To create a `.crx` file:
+## Disclaimer
 
-1. Package all files into a ZIP archive
-2. Rename the extension to `.crx`
-3. Or use Chrome Web Store for distribution
+This is a third-party extension and is not officially affiliated with Suno, Inc.
 
-## Support
+---
 
-If you find this extension helpful, consider supporting the development:
-
-- **Buy Me a Coffee**: [Support the project](https://www.buymeacoffee.com/asmetanka)
-- **Contact**: hello@smetanka.me
-- **Website**: [smetanka.me](https://smetanka.me)
-
-## License
-
-MIT License
-
-## Author
-
-Made with ❤️ by Aleksandr Smetanka 
+Made with ❤️ by [Smetanka](https://smetanka.me)
