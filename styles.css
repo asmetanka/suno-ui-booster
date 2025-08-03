@@ -664,6 +664,74 @@ div:has(input[class*="max-w-"]) {
 }
 
 /* ========================================
+   PUBLISH & EDIT BUTTONS
+   ======================================== */
+
+/* Remove background from Publish button - make it text only */
+button[aria-label*="Publish"],
+button[data-testid*="publish"],
+button[class*="publish"],
+button:contains("Publish"),
+button[aria-label*="publish"],
+button[data-testid*="Publish"],
+button[class*="Publish"] {
+    background: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
+    font-weight: 500 !important;
+    padding: 8px 12px !important;
+}
+
+/* Style Edit button to match other buttons */
+button[aria-label*="Edit"],
+button[data-testid*="edit"],
+button[class*="edit"],
+button:contains("Edit"),
+button[aria-label*="edit"],
+button[data-testid*="Edit"],
+button[class*="Edit"] {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 8px 16px !important;
+    height: 32px !important;
+    min-width: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
+    font-weight: 500 !important;
+}
+
+/* Hover effect for Edit button */
+button[aria-label*="Edit"]:hover,
+button[data-testid*="edit"]:hover,
+button[class*="edit"]:hover,
+button:contains("Edit"):hover,
+button[aria-label*="edit"]:hover,
+button[data-testid*="Edit"]:hover,
+button[class*="Edit"]:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Active state for Edit button */
+button[aria-label*="Edit"]:active,
+button[data-testid*="edit"]:active,
+button[class*="edit"]:active,
+button:contains("Edit"):active,
+button[aria-label*="edit"]:active,
+button[data-testid*="Edit"]:active,
+button[class*="Edit"]:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ========================================
    SUNO UI BOOSTER TRASH BUTTON STYLES
    ======================================== */
 
