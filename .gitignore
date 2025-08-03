@@ -61,4 +61,7 @@ build/
 *.backup
 
 # Generated metadata files
-_metadata/generated_indexed_rulesets/ 
+_metadata/generated_indexed_rulesets/
+
+# Pages directory (should not be in repository)
+pages/ 
