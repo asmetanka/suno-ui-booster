@@ -664,60 +664,6 @@ div:has(input[class*="max-w-"]) {
 }
 
 /* ========================================
-   EDIT BUTTON STYLES
-   ======================================== */
-
-/* Make Edit button same height as other buttons with rounded corners */
-button[aria-label*="Edit"],
-button[aria-label*="edit"],
-button[data-testid*="edit"],
-button[class*="edit"],
-button[aria-label*="Publish"],
-button[aria-label*="publish"],
-button[data-testid*="publish"],
-button[class*="publish"] {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding: 8px 16px !important;
-    border-radius: 16px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border: none !important;
-    outline: none !important;
-    cursor: pointer !important;
-    transition: background-color 0.2s ease !important;
-    color: rgb(var(--rgb-foreground-primary)) !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-}
-
-/* Hover effect for Edit button */
-button[aria-label*="Edit"]:hover,
-button[aria-label*="edit"]:hover,
-button[data-testid*="edit"]:hover,
-button[class*="edit"]:hover,
-button[aria-label*="Publish"]:hover,
-button[aria-label*="publish"]:hover,
-button[data-testid*="publish"]:hover,
-button[class*="publish"]:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Active state for Edit button */
-button[aria-label*="Edit"]:active,
-button[aria-label*="edit"]:active,
-button[data-testid*="edit"]:active,
-button[class*="edit"]:active,
-button[aria-label*="Publish"]:active,
-button[aria-label*="publish"]:active,
-button[data-testid*="publish"]:active,
-button[class*="publish"]:active {
-    background-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* ========================================
    SUNO UI BOOSTER TRASH BUTTON STYLES
    ======================================== */
 
