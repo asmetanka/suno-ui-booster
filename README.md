@@ -64,4 +64,4 @@ This is a third-party extension and is not officially affiliated with Suno, Inc.
 
 ---
 
-Made with ❤️ by [Smetanka](https://smetanka.me)
+Made with ❤️ by [smetanka](https://smetanka.me)
