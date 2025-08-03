@@ -1,7 +1,7 @@
 // Initialize popup functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Get reference to the toggle switch element
+        // Get reference to the toggle switch elements
         const toggleSwitch = document.getElementById('toggleSwitch');
         const toggleContainer = document.getElementById('toggleContainer');
         const toggleLabel = document.getElementById('toggleLabel');
@@ -16,7 +16,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await chrome.storage.local.get('stylesEnabled');
         const isEnabled = data.stylesEnabled !== false; // Default to true
       
-        // Function to update toggle state and text
+        /**
+         * Updates the toggle switch visual state and text based on enabled status
+         * @param {boolean} isActive - Whether the extension is enabled
+         */
         const updateToggleState = (isActive) => {
             toggleSwitch.classList.toggle('active', isActive);
             toggleContainer.classList.toggle('active', isActive);
@@ -32,9 +35,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Set initial state
         updateToggleState(isEnabled);
       
-        // Handle toggle switch click events
-        // Save new state to Chrome storage and update UI
-        
+        /**
+         * Handles toggle switch functionality
+         * Saves new state to Chrome storage and updates UI accordingly
+         */
         const toggleFunction = async () => {
           const currentState = toggleSwitch.classList.contains('active');
           const newState = !currentState;

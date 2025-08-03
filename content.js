@@ -1,14 +1,15 @@
 // content.js
 /**
  * @file content.js
- * @description Внедряет кнопку удаления и общается с injected.js для обработки
- * API-запросов, решая проблему с CORS. Это финальная, правильная архитектура.
+ * @description Injects trash button functionality and communicates with injected.js for API requests,
+ * solving CORS issues. This is the final, correct architecture.
  */
 
 console.log('Suno UI Booster (CORS Fixed Version) Loaded!');
 
 /**
- * Внедряет скрипт 'injected.js' в контекст страницы.
+ * Injects the 'injected.js' script into the page context.
+ * This allows the script to access the page's authentication tokens and make API calls.
  */
 function injectScript() {
     try {
@@ -28,7 +29,9 @@ function injectScript() {
 }
 
 /**
- * Извлекает уникальный ID песни из элемента.
+ * Extracts the unique song ID from a song row element.
+ * @param {Element} songRow - The song row DOM element
+ * @returns {string|null} The song ID or null if not found
  */
 function getSongId(songRow) {
     try {
@@ -44,11 +47,13 @@ function getSongId(songRow) {
 }
 
 /**
- * Скрывает кнопку "Поделиться" из интерфейса.
+ * Hides share buttons from the interface.
+ * Searches for various possible share button selectors and hides them.
+ * @param {Element} songRow - The song row DOM element
  */
 function hideShareButton(songRow) {
     try {
-        // Ищем кнопку "Поделиться" по различным возможным названиям
+        // Search for share button using various possible selectors
         const shareSelectors = [
             'button[aria-label*="Share"]',
             'button[aria-label*="Поделиться"]',
@@ -76,7 +81,9 @@ function hideShareButton(songRow) {
 }
 
 /**
- * Создает и внедряет кнопку удаления.
+ * Creates and injects the trash button into song rows.
+ * The button is styled to match the existing UI and positioned after "More Options".
+ * @param {Element} songRow - The song row DOM element
  */
 function addTrashButton(songRow) {
     try {
@@ -84,7 +91,7 @@ function addTrashButton(songRow) {
         const moreOptionsButton = songRow.querySelector('button[aria-label="More Options"]');
         if (!moreOptionsButton) return;
 
-        // Скрываем кнопку "Поделиться"
+        // Hide share button
         hideShareButton(songRow);
 
         const wrapper = document.createElement('div');
@@ -101,7 +108,7 @@ function addTrashButton(songRow) {
 
             const songId = getSongId(songRow);
             if (!songId) {
-                alert('Suno UI Booster: Не удалось найти ID песни.');
+                alert('Suno UI Booster: Could not find song ID.');
                 return;
             }
 
@@ -112,7 +119,7 @@ function addTrashButton(songRow) {
 
         wrapper.appendChild(trashButton);
         
-        // Вставляем кнопку ПОСЛЕ кнопки "More Options" (меняем порядок)
+        // Insert button AFTER "More Options" button (changed order)
         const parentContainer = moreOptionsButton.parentElement;
         if (parentContainer) {
             parentContainer.insertBefore(wrapper, moreOptionsButton.nextSibling);
@@ -125,14 +132,15 @@ function addTrashButton(songRow) {
 }
 
 /**
- * Обрабатывает все строки с песнями.
+ * Processes all song rows in a container and adds trash buttons to them.
+ * @param {Element} containerNode - The container element to process
  */
 function processSongRows(containerNode) {
     try {
         const songRows = containerNode.querySelectorAll('[data-testid="song-row"], .css-1b0cg3t, .css-1jkulof, .css-c1kosu');
         songRows.forEach(songRow => {
             addTrashButton(songRow);
-            // Также скрываем кнопки "Поделиться" в существующих элементах
+            // Also hide share buttons in existing elements
             hideShareButton(songRow);
         });
     } catch (error) {
@@ -141,12 +149,14 @@ function processSongRows(containerNode) {
 }
 
 /**
- * Инициализирует расширение.
+ * Initializes the extension functionality.
+ * Sets up event listeners and starts observing DOM changes.
  */
 function initialize() {
     try {
         injectScript();
 
+        // Listen for delete response events from injected script
         window.addEventListener('SunoDeleteResponse', (event) => {
             try {
                 const { songId, success, status } = event.detail;
@@ -154,11 +164,12 @@ function initialize() {
 
                 if (songRow) {
                     if (success) {
+                        // Animate song row removal
                         songRow.style.transition = 'opacity 0.5s ease';
                         songRow.style.opacity = '0';
                         setTimeout(() => songRow.remove(), 500);
                     } else {
-                        alert(`Не удалось удалить песню ${songId}. Статус ошибки: ${status || 'Network Error'}. Подробности в консоли.`);
+                        alert(`Failed to delete song ${songId}. Error status: ${status || 'Network Error'}. Check console for details.`);
                         const trashButton = songRow.querySelector('.trash-button-custom');
                         if (trashButton) {
                             trashButton.disabled = false;
@@ -171,6 +182,7 @@ function initialize() {
             }
         });
 
+        // Observe DOM changes to handle dynamically added song rows
         const observer = new MutationObserver((mutationsList) => {
             try {
                 for (const mutation of mutationsList) {
@@ -200,6 +212,7 @@ function initialize() {
     }
 }
 
+// Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize);
 } else {

@@ -1,7 +1,11 @@
 // Background script for Suno UI Booster extension
 // Handles CSS injection and removal based on user preferences
 
-// Function to apply or remove custom styles to Suno pages
+/**
+ * Applies or removes custom styles to Suno pages based on user settings
+ * @param {number} tabId - The ID of the tab to modify
+ * @param {boolean} isEnabled - Whether styles should be applied or removed
+ */
 async function updateStyles(tabId, isEnabled) {
     const details = {
       target: { tabId: tabId },
@@ -28,8 +32,10 @@ async function updateStyles(tabId, isEnabled) {
     }
   }
   
-  // 1. Apply styles when page loads or refreshes
-  // Listens for tab updates and applies styles to Suno pages
+  /**
+   * Listens for tab updates and applies styles to Suno pages when they load
+   * Automatically applies or removes styles based on user preferences
+   */
   chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     try {
       if (changeInfo.status === 'complete' && tab.url && (tab.url.includes('suno.ai') || tab.url.includes('suno.com'))) {
@@ -44,8 +50,10 @@ async function updateStyles(tabId, isEnabled) {
     }
   });
   
-  // 2. Respond to toggle switch changes in popup
-  // Listens for storage changes and updates styles accordingly
+  /**
+   * Responds to toggle switch changes in popup
+   * Updates styles on active Suno tabs when user toggles the extension
+   */
   chrome.storage.onChanged.addListener(async (changes, namespace) => {
     try {
       if (namespace === 'local' && changes.stylesEnabled) {

@@ -98,7 +98,6 @@ a[href="/account"] span {
 .flex.h-\[12px\] {
     display: flex !important;
     height: auto !important;
-    padding: 8px 0 !important;
 }
 
 /* ========================================
@@ -304,7 +303,11 @@ img.object-fit.h-77px.w-56px.rounded-xl,
     width: 30px !important;
 }
 
-/* --- Play/Pause/etc. Controls --- */
+/* ========================================
+   PLAYER CONTROLS
+   ======================================== */
+
+/* Make play/pause/previous/next buttons rectangular with rounded corners and 3x wider */
 button[aria-label="Playbar: Previous Song button"],
 button[aria-label="Playbar: Play button"],
 button[aria-label="Playbar: Pause button"],
@@ -445,8 +448,11 @@ div.flex.flex-row.gap-8 {
     gap: 8px !important;
 }
 
-/* --- Action Button Reordering & Spacing --- */
+/* ========================================
+   ACTION BUTTON REORDERING & SPACING
+   ======================================== */
 
+/* Reorder and adjust spacing for action buttons */
 .flex.w-full.flex-row.items-center.gap-0.ml-4 {
     display: flex !important;
     flex-direction: row !important;
@@ -479,28 +485,29 @@ a[aria-label="Playbar: Comment"] {
 
 /* Make button group buttons separate instead of connected tabs */
 .flex.w-full.max-w-full.flex-row.justify-start button {
-    border-radius: 50px !important;
-    margin: 0 4px !important;
+    border-radius: 8px !important;
+    margin-right: 4px !important;
     border: none !important;
     outline: none !important;
-    height: 40px !important;
-    padding: 0 16px !important;
 }
 
 /* ========================================
-   MISCELLANEOUS
+   SONG ROW PLAY BUTTONS
    ======================================== */
 
-/* Playing indicator (in song rows) */
+/* Style play buttons in song rows */
 [data-testid="song-row"] [data-testid="song-row-play-button"] svg {
-    width: 40px !important;
-    height: 40px !important;
-    color: rgb(var(--rgb-accent-pink)) !important;
+    width: 20px !important;
+    height: 20px !important;
 }
 
 [data-testid="song-row"] [data-testid="song-row-play-button"]:hover svg {
     color: rgb(var(--rgb-accent-pink)) !important;
 }
+
+/* ========================================
+   MISCELLANEOUS
+   ======================================== */
 
 /* Control settings panel styling */
 .m-4.rounded-md.bg-background-tertiary.p-4.font-sans {
@@ -535,6 +542,10 @@ a[aria-label="Playbar: Comment"] {
     margin-right: 8px !important;
     gap: 16px !important;
 }
+
+/* ========================================
+   WORKSPACE BUTTON
+   ======================================== */
 
 /* Workspace button - make it full width and style like model dropdown */
 .flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button {
@@ -577,6 +588,10 @@ a[aria-label="Playbar: Comment"] {
     padding-left: 8px !important;
     padding-right: 8px !important;
 }
+
+/* ========================================
+   SONG ITEMS
+   ======================================== */
 
 /* Reduce gap between text and buttons in small song items */
 .css-1jkulof .flex-1.flex.flex-row {

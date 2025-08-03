@@ -1,8 +1,13 @@
 // injected.js
 
 /**
- * Этот скрипт работает в контексте самой страницы. Он слушает запросы на удаление
- * от content.js и выполняет API-вызов, обходя проблемы с CORS.
+ * This script runs in the page context. It listens for delete requests from content.js
+ * and executes API calls, bypassing CORS issues.
+ */
+
+/**
+ * Retrieves authentication token from Clerk session or cookies.
+ * @returns {string|null} The authentication token or null if not found
  */
 async function getAuthToken() {
     try {
@@ -11,17 +16,22 @@ async function getAuthToken() {
             if (token) return token;
         }
     } catch (e) {
-        console.error('Injected Script: Не удалось получить токен от Clerk, пробую cookies.', e);
+        console.error('Injected Script: Failed to get token from Clerk, trying cookies.', e);
     }
     const sessionCookie = document.cookie.split(';').find(c => c.trim().startsWith('__session='));
     if (sessionCookie) return sessionCookie.split('=')[1].trim();
     return null;
 }
 
+/**
+ * Sends a request to trash a song by its ID.
+ * @param {string} songId - The ID of the song to trash
+ * @returns {Object} Result object with success status and response details
+ */
 async function trashSongById(songId) {
     const token = await getAuthToken();
     if (!token) {
-        console.error('Injected Script: Нет токена авторизации.');
+        console.error('Injected Script: No authentication token found.');
         return { success: false };
     }
 
@@ -34,7 +44,7 @@ async function trashSongById(songId) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            // ИСПРАВЛЕНО: Добавлен недостающий параметр "trash: true", чтобы избежать ошибки 422.
+            // FIXED: Added missing "trash: true" parameter to avoid 422 error
             body: JSON.stringify({
                 trash: true,
                 clip_ids: [songId]
@@ -43,17 +53,17 @@ async function trashSongById(songId) {
 
         return { success: response.ok, status: response.status };
     } catch (error) {
-        console.error('Injected Script: Ошибка сети.', error);
+        console.error('Injected Script: Network error.', error);
         return { success: false };
     }
 }
 
-// Слушаем кастомное событие от content.js с запросом на удаление.
+// Listen for custom delete request events from content.js
 window.addEventListener('SunoDeleteRequest', async (event) => {
     const { songId } = event.detail;
     if (songId) {
         const result = await trashSongById(songId);
-        // Отправляем ответное событие обратно в content.js с результатом.
+        // Send response event back to content.js with the result
         window.dispatchEvent(new CustomEvent('SunoDeleteResponse', { detail: { songId, ...result } }));
     }
 });
