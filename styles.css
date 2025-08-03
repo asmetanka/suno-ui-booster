@@ -349,7 +349,8 @@ button[aria-label="Back"] {
 button[aria-label="Playbar: Like"],
 button[aria-label="Playbar: Dislike"],
 button[aria-label="Pin to Project"],
-button[aria-label="More Options"] {
+button[aria-label="More Options"],
+.trash-button-custom {
     background-color: rgba(255, 255, 255, 0.1) !important;
     border-radius: 50% !important;
     padding: 8px !important;
@@ -358,29 +359,62 @@ button[aria-label="More Options"] {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
+}
+
+/* Hover effects for player action buttons */
+button[aria-label="Playbar: Like"]:hover,
+button[aria-label="Playbar: Dislike"]:hover,
+button[aria-label="Pin to Project"]:hover,
+button[aria-label="More Options"]:hover,
+.trash-button-custom:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Active state for player action buttons */
+button[aria-label="Playbar: Like"]:active,
+button[aria-label="Playbar: Dislike"]:active,
+button[aria-label="Pin to Project"]:active,
+button[aria-label="More Options"]:active,
+.trash-button-custom:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 button[aria-label="Playbar: Like"] svg,
 button[aria-label="Playbar: Dislike"] svg,
 button[aria-label="Pin to Project"] svg,
-button[aria-label="More Options"] svg {
+button[aria-label="More Options"] svg,
+.trash-button-custom svg {
     width: 16px !important;
     height: 16px !important;
+    color: inherit !important;
 }
 
 /* Active state for player action buttons */
 button[aria-label="Playbar: Like"].text-foreground-primary,
 button[aria-label="Playbar: Dislike"].text-foreground-primary,
 button[aria-label="Pin to Project"].text-foreground-primary,
-button[aria-label="More Options"].text-foreground-primary {
+button[aria-label="More Options"].text-foreground-primary,
+.trash-button-custom.text-foreground-primary {
     background-color: rgba(255, 255, 255, 1) !important;
 }
 
 button[aria-label="Playbar: Like"].text-foreground-primary svg,
 button[aria-label="Playbar: Dislike"].text-foreground-primary svg,
 button[aria-label="Pin to Project"].text-foreground-primary svg,
-button[aria-label="More Options"].text-foreground-primary svg {
+button[aria-label="More Options"].text-foreground-primary svg,
+.trash-button-custom.text-foreground-primary svg {
     color: rgb(var(--rgb-background-primary)) !important;
+}
+
+/* Disabled state for trash button */
+.trash-button-custom:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 /* Pagination buttons */
@@ -561,6 +595,50 @@ a[aria-label="Playbar: Comment"] {
 .css-1jkulof .css-1kcq9v9 {
     margin-left: 4px !important;
     flex-shrink: 0 !important;
+}
+
+/* ========================================
+   SUNO UI BOOSTER TRASH BUTTON STYLES
+   ======================================== */
+
+/* Hide share buttons */
+button[aria-label*="Share"],
+button[aria-label*="Поделиться"],
+button[aria-label*="Send"],
+button[aria-label*="Export"],
+button[aria-label*="Link"],
+button[aria-label*="Copy"],
+button[data-testid*="share"],
+button[data-testid*="send"],
+button[data-testid*="export"],
+button[data-testid*="link"],
+button[data-testid*="copy"] {
+    display: none !important;
+}
+
+/* Trash button wrapper positioning - now after More Options */
+.suno-booster-trash-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure proper spacing in button groups */
+.suno-booster-trash-wrapper + button[aria-label="More Options"] {
+    margin-left: 0 !important;
+}
+
+/* Spacing when trash button comes after More Options */
+button[aria-label="More Options"] + .suno-booster-trash-wrapper {
+    margin-left: 4px !important;
+}
+
+/* Make sure trash button doesn't interfere with other buttons */
+.suno-booster-trash-wrapper .trash-button-custom {
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
 }
 
 /* ========================================
