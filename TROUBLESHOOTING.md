@@ -1,120 +1,120 @@
 # Suno UI Booster - Troubleshooting Guide
 
-## Основные проблемы и решения
+## Common Issues and Solutions
 
-### 1. Расширение не загружается
+### 1. Extension Not Loading
 
-**Симптомы:**
-- Расширение не появляется в списке
-- Ошибки в chrome://extensions/
+**Symptoms:**
+- Extension doesn't appear in the list
+- Errors in chrome://extensions/
 
-**Решение:**
-1. Откройте `chrome://extensions/`
-2. Включите "Developer mode"
-3. Нажмите "Load unpacked" и выберите папку с расширением
-4. Проверьте консоль на ошибки
+**Solution:**
+1. Open `chrome://extensions/`
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select the extension folder
+4. Check console for errors
 
-### 2. CSS стили не применяются
+### 2. CSS Styles Not Applying
 
-**Симптомы:**
-- Интерфейс Suno не изменяется
-- Нет улучшений UI
+**Symptoms:**
+- Suno interface doesn't change
+- No UI improvements visible
 
-**Проверьте:**
-- `manifest.json` содержит `"scripting"` permission
-- `background.js` правильно зарегистрирован в manifest
-- `styles.css` существует в корне папки
+**Check:**
+- `manifest.json` contains `"scripting"` permission
+- `background.js` is properly registered in manifest
+- `styles.css` exists in the root folder
 
-### 3. Popup не работает
+### 3. Popup Not Working
 
-**Симптомы:**
-- Клик по иконке расширения ничего не делает
-- Ошибки в консоли popup
+**Symptoms:**
+- Clicking extension icon does nothing
+- Errors in popup console
 
-**Проверьте:**
-- `popup.html` и `popup.js` существуют
-- В `manifest.json` правильно указан `"default_popup"`
-- Нет JavaScript ошибок в popup
+**Check:**
+- `popup.html` and `popup.js` exist
+- `manifest.json` has correct `"default_popup"` path
+- No JavaScript errors in popup
 
-### 4. Кнопка удаления не появляется
+### 4. Trash Button Not Appearing
 
-**Симптомы:**
-- Нет кнопки корзины рядом с песнями
-- Ошибки в консоли браузера
+**Symptoms:**
+- No trash button next to songs
+- Errors in browser console
 
-**Проверьте:**
-- `content.js` загружается (проверьте консоль)
-- `injected.js` правильно внедряется
-- Нет ошибок CORS
+**Check:**
+- `content.js` is loading (check console)
+- `injected.js` is properly injected
+- No CORS errors
 
-### 5. Ошибки в консоли
+### 5. Console Errors
 
-**Частые ошибки:**
+**Common errors:**
 
 ```
 Error: Cannot access a chrome:// URL
 ```
-**Решение:** Это нормально для chrome:// страниц
+**Solution:** This is normal for chrome:// pages
 
 ```
 Error: No tab with id
 ```
-**Решение:** Это нормально при закрытии вкладок
+**Solution:** This is normal when closing tabs
 
 ```
 Error: Cannot access a chrome-extension:// URL
 ```
-**Решение:** Это нормально для страниц расширений
+**Solution:** This is normal for extension pages
 
-## Проверка файлов
+## File Verification
 
-Убедитесь, что все эти файлы присутствуют:
+Ensure all these files are present:
 
-- ✅ `manifest.json` - конфигурация расширения
-- ✅ `background.js` - фоновый скрипт
-- ✅ `content.js` - скрипт контента
-- ✅ `injected.js` - внедряемый скрипт
-- ✅ `popup.html` - интерфейс popup
-- ✅ `popup.js` - логика popup
-- ✅ `styles.css` - CSS стили
-- ✅ `icon.png` - иконка расширения
-- ✅ `logo.png` - логотип в popup
+- ✅ `manifest.json` - extension configuration
+- ✅ `background.js` - background script
+- ✅ `content.js` - content script
+- ✅ `injected.js` - injected script
+- ✅ `popup.html` - popup interface
+- ✅ `popup.js` - popup logic
+- ✅ `styles.css` - CSS styles
+- ✅ `icon.png` - extension icon
+- ✅ `logo.png` - popup logo
 
-## Тестирование
+## Testing
 
-1. Откройте `test-extension.html` в браузере
-2. Проверьте статус всех компонентов
-3. Загрузите расширение в Chrome
-4. Посетите suno.ai
-5. Проверьте работу функций
+1. Load the extension in Chrome
+2. Visit suno.ai
+3. Check if UI improvements are applied
+4. Test trash button functionality
+5. Verify popup toggle works
 
-## Логи и отладка
+## Logging and Debugging
 
-### Включение подробных логов:
+### Enable detailed logs:
 
-1. Откройте DevTools (F12)
-2. Перейдите на вкладку Console
-3. Ищите сообщения с префиксом "Suno UI Booster"
+1. Open DevTools (F12)
+2. Go to Console tab
+3. Look for messages with "Suno UI Booster" prefix
 
-### Проверка работы:
+### Check functionality:
 
-1. **Background script:** Проверьте в chrome://extensions/ → Details → Service Worker
-2. **Content script:** Проверьте консоль на странице suno.ai
-3. **Popup:** Проверьте консоль в popup (правый клик → Inspect)
+1. **Background script:** Check in chrome://extensions/ → Details → Service Worker
+2. **Content script:** Check console on suno.ai page
+3. **Popup:** Check popup console (right-click → Inspect)
 
-## Обновления
+## Updates
 
-После внесения изменений:
+After making changes:
 
-1. Перейдите в `chrome://extensions/`
-2. Нажмите кнопку обновления (🔄) рядом с расширением
-3. Или перезагрузите расширение полностью
+1. Go to `chrome://extensions/`
+2. Click the refresh button (🔄) next to the extension
+3. Or reload the extension completely
 
-## Поддержка
+## Support
 
-Если проблемы остаются:
+If issues persist:
 
-1. Проверьте консоль браузера на ошибки
-2. Убедитесь, что все файлы на месте
-3. Проверьте синтаксис JSON в manifest.json
-4. Попробуйте переустановить расширение 
+1. Check browser console for errors
+2. Ensure all files are in place
+3. Verify JSON syntax in manifest.json
+4. Try reinstalling the extension 
