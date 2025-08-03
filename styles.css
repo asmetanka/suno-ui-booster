@@ -598,6 +598,57 @@ a[aria-label="Playbar: Comment"] {
 }
 
 /* ========================================
+   SPLIT BAR STYLES
+   ======================================== */
+
+/* Make split bar same width as other dividers */
+div[class*="w-split-bar"],
+div[class*="w-split-large-bar"],
+div.group.relative.text-\(--split-panel-bar\,transparent\).hover\:text-\(--split-panel-bar-hover\,var\(--color-overlay-on-primary\)\).w-split-bar.w-split-large-bar,
+div[class*="split-bar"],
+div[class*="split-panel"] {
+    width: 1px !important;
+    min-width: 1px !important;
+}
+
+/* Ensure split bar background is consistent */
+div[class*="w-split-bar"] div,
+div[class*="w-split-large-bar"] div,
+div.group.relative.text-\(--split-panel-bar\,transparent\).hover\:text-\(--split-panel-bar-hover\,var\(--color-overlay-on-primary\)\).w-split-bar.w-split-large-bar div,
+div[class*="split-bar"] div,
+div[class*="split-panel"] div {
+    width: 1px !important;
+    min-width: 1px !important;
+}
+
+/* ========================================
+   SEARCH FIELD STYLES
+   ======================================== */
+
+/* Make search input full width instead of max-w-[400px] */
+input[placeholder="Search"],
+input[placeholder*="Search"],
+input.bg-background-secondary.placeholder-foreground-primary\/50.hidden.h-10.w-full.max-w-\[400px\].rounded-full.pl-12.font-sans.outline-none.md\:block,
+input[class*="max-w-\[400px\]"],
+input[class*="max-w-"],
+input[type="text"][class*="max-w-"] {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* Remove max-width from all input fields */
+input[class*="max-w-"] {
+    max-width: none !important;
+}
+
+/* Make search containers full width */
+div:has(input[placeholder*="Search"]),
+div:has(input[class*="max-w-"]) {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* ========================================
    SUNO UI BOOSTER TRASH BUTTON STYLES
    ======================================== */
 
