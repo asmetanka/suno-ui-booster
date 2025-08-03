@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suno UI Booster Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #010214;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #00C94E; color: white; }
+        .error { background: #ff4444; color: white; }
+        .warning { background: #ffaa00; color: black; }
+        .info { background: #0066cc; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Suno UI Booster - Extension Test</h1>
+    
+    <div class="test-section">
+        <h2>Extension Status Check</h2>
+        <div id="extensionStatus" class="status info">Checking extension status...</div>
+        <div id="manifestStatus" class="status info">Checking manifest...</div>
+        <div id="filesStatus" class="status info">Checking files...</div>
+        <div id="permissionsStatus" class="status info">Checking permissions...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Manual Tests</h2>
+        <p>1. Open Chrome Extensions page (chrome://extensions/)</p>
+        <p>2. Enable Developer mode</p>
+        <p>3. Load unpacked extension from this folder</p>
+        <p>4. Check for any error messages</p>
+        <p>5. Visit suno.ai and test the extension</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Common Issues & Solutions</h2>
+        <ul>
+            <li><strong>Extension not loading:</strong> Check manifest.json syntax</li>
+            <li><strong>CSS not applying:</strong> Check permissions and background script</li>
+            <li><strong>Popup not working:</strong> Check popup.html and popup.js</li>
+            <li><strong>Content script errors:</strong> Check console for JavaScript errors</li>
+        </ul>
+    </div>
+
+    <script>
+        // Simple test to check if extension files exist
+        async function checkExtension() {
+            const statusDiv = document.getElementById('extensionStatus');
+            const manifestDiv = document.getElementById('manifestStatus');
+            const filesDiv = document.getElementById('filesStatus');
+            const permissionsDiv = document.getElementById('permissionsStatus');
+
+            try {
+                // Check if we can access extension files
+                const files = ['manifest.json', 'background.js', 'content.js', 'popup.html', 'styles.css'];
+                const missingFiles = [];
+
+                for (const file of files) {
+                    try {
+                        const response = await fetch(file);
+                        if (!response.ok) {
+                            missingFiles.push(file);
+                        }
+                    } catch (error) {
+                        missingFiles.push(file);
+                    }
+                }
+
+                if (missingFiles.length === 0) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ All extension files found';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `❌ Missing files: ${missingFiles.join(', ')}`;
+                }
+
+                // Check manifest.json
+                try {
+                    const manifestResponse = await fetch('manifest.json');
+                    const manifestText = await manifestResponse.text();
+                    const manifest = JSON.parse(manifestText);
+                    
+                    if (manifest.manifest_version === 3) {
+                        manifestDiv.className = 'status success';
+                        manifestDiv.textContent = '✅ Manifest v3 format correct';
+                    } else {
+                        manifestDiv.className = 'status error';
+                        manifestDiv.textContent = '❌ Manifest should be v3';
+                    }
+
+                    // Check permissions
+                    if (manifest.permissions && manifest.permissions.includes('scripting')) {
+                        permissionsDiv.className = 'status success';
+                        permissionsDiv.textContent = '✅ Scripting permission present';
+                    } else {
+                        permissionsDiv.className = 'status error';
+                        permissionsDiv.textContent = '❌ Scripting permission missing';
+                    }
+
+                } catch (error) {
+                    manifestDiv.className = 'status error';
+                    manifestDiv.textContent = '❌ Error parsing manifest.json';
+                }
+
+                // Check files
+                filesDiv.className = 'status success';
+                filesDiv.textContent = '✅ Core files present';
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Error checking extension';
+            }
+        }
+
+        // Run the check when page loads
+        checkExtension();
+    </script>
+</body>
+</html> 
