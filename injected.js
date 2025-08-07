@@ -1,8 +1,8 @@
 // injected.js
 
 /**
- * This script runs in the page context. It listens for delete requests from content.js
- * and executes API calls, bypassing CORS issues.
+ * Runs in the page context. Listens for delete requests from content.js
+ * and executes API calls with page auth, bypassing CORS.
  */
 
 /**
@@ -44,7 +44,7 @@ async function trashSongById(songId) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            // FIXED: Added missing "trash: true" parameter to avoid 422 error
+            // Required parameter to avoid 422 error - indicates this is a trash operation
             body: JSON.stringify({
                 trash: true,
                 clip_ids: [songId]
@@ -67,5 +67,3 @@ window.addEventListener('SunoDeleteRequest', async (event) => {
         window.dispatchEvent(new CustomEvent('SunoDeleteResponse', { detail: { songId, ...result } }));
     }
 });
-
-console.log('Suno UI Booster Injected Script Loaded!'); 

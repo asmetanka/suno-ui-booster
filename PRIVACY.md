@@ -1,23 +1,71 @@
-# Privacy Policy for Suno UI Booster
+# Privacy Policy
 
-**Last Updated:** July 29, 2025
+**Suno UI Booster** - Chrome browser extension that improves the Suno.ai website interface.
 
-This Privacy Policy describes how Suno UI Booster ("the extension") handles information.
+## 📊 Data Collection
 
-**1. No Data Collection**
+**We do NOT collect any user data.**
 
-Suno UI Booster is a purely cosmetic browser extension that enhances the user interface of the Suno.ai website. It operates entirely on the client-side by applying a custom stylesheet (CSS).
+The extension works entirely on the client side and does not send any information to external servers.
 
-The extension **does not** collect, store, transmit, or handle any personal or sensitive user data. It does not use cookies, tracking scripts, analytics, or any form of data collection technology.
+## 🔧 Used Permissions
 
-**2. Permissions**
+### `scripting`
+- **Purpose**: CSS injection for interface improvement
+- **Usage**: Applying visual improvements to Suno.ai pages
+- **Justification**: Required for programmatic CSS injection. We use the `chrome.scripting.insertCSS()` function, which is a modern and secure method recommended by Google for applying visual styles to pages.
 
-The extension requires host permission for the `suno.ai` domain and the `scripting` permission. These permissions are used exclusively to inject the custom CSS styles and for no other purpose.
+### `activeTab`
+- **Purpose**: Access to active tab
+- **Usage**: Working with open Suno.ai pages
+- **Justification**: Used in conjunction with `chrome.tabs` API to monitor tab updates on suno.ai and suno.com domains. This allows the extension to apply or remove its custom styles consistently when navigating between pages.
 
-**3. No External Communication**
+### `declarativeNetRequest`
+- **Purpose**: CSP (Content Security Policy) modification
+- **Usage**: Allowing injection of own CSS files
+- **Justification**: Critically important for extension functionality on suno.ai. The website has a strict Content Security Policy (CSP). We use `declarativeNetRequest` with rules defined in `rules.json` to modify these CSP headers.
 
-Suno UI Booster does not communicate with any external servers. All its functionality is contained within the extension package and runs locally in your browser.
+### `storage`
+- **Purpose**: Saving user settings
+- **Usage**: Remembering enabled/disabled state of extension
+- **Justification**: Used to save a single boolean value indicating whether the extension is currently enabled or disabled by the user via the popup menu.
 
-**4. Contact Us**
+### `host_permissions`
+- **Purpose**: Access to Suno domains
+- **Usage**: Working only with suno.ai and suno.com sites
+- **Justification**: Required to access Suno website pages, allowing the extension to inject its custom CSS file (`styles.css`) to modify the site's appearance.
 
-If you have any questions about this Privacy Policy, please open an issue on our GitHub repository page.
+## 🛡️ Security
+
+All permissions are used exclusively for improving Suno.ai interface:
+
+- ✅ **No external requests** - extension does not contact external servers
+- ✅ **Local storage** - all settings saved only in browser
+- ✅ **Open source** - all source code available on GitHub
+- ✅ **No tracking** - no analytics or monitoring
+
+## 🔧 Technical Necessity
+
+Each permission has a specific technical necessity:
+
+1. **`scripting`** - for CSS injection
+2. **`activeTab`** - for working with active tab
+3. **`declarativeNetRequest`** - for CSP modification
+4. **`storage`** - for saving settings
+5. **`host_permissions`** - for access to suno.ai
+
+## 📞 Contacts
+
+If you have questions about privacy:
+
+- **Email**: hello@smetanka.me
+- **GitHub**: https://github.com/asmetanka/suno-ui-booster
+- **Website**: https://smetanka.me
+
+## 📅 Updates
+
+This privacy policy may be updated. Last update: **July 29, 2025**.
+
+---
+
+**Suno UI Booster** is created with respect for your privacy.

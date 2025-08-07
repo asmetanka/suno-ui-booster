@@ -15,11 +15,11 @@ async function updateStyles(tabId, isEnabled) {
       if (isEnabled) {
         // Inject custom CSS styles to enhance Suno UI
         await chrome.scripting.insertCSS(details);
-        console.log('Suno UI Booster: Styles injected successfully');
+        // Styles injected
       } else {
         // Remove injected CSS styles to restore original appearance
         await chrome.scripting.removeCSS(details);
-        console.log('Suno UI Booster: Styles removed successfully');
+        // Styles removed
       }
     } catch (error) {
       // Ignore errors that occur when trying to inject styles on restricted pages
@@ -39,10 +39,10 @@ async function updateStyles(tabId, isEnabled) {
   chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     try {
       if (changeInfo.status === 'complete' && tab.url && (tab.url.includes('suno.ai') || tab.url.includes('suno.com'))) {
-        // Check if styles are enabled in storage
-        const data = await chrome.storage.local.get('stylesEnabled');
+        // Check if extension is enabled in storage
+        const data = await chrome.storage.sync.get(['enabled']);
         // Default to enabled if not explicitly set to false
-        const isEnabled = data.stylesEnabled !== false;
+        const isEnabled = data.enabled !== false;
         await updateStyles(tabId, isEnabled);
       }
     } catch (error) {
@@ -56,16 +56,16 @@ async function updateStyles(tabId, isEnabled) {
    */
   chrome.storage.onChanged.addListener(async (changes, namespace) => {
     try {
-      if (namespace === 'local' && changes.stylesEnabled) {
-        const isEnabled = changes.stylesEnabled.newValue;
-        // Find active Suno tab and update styles on it
+      if (namespace === 'sync' && changes.enabled) {
+        const isEnabled = changes.enabled.newValue;
+        // Find all Suno tabs and update styles on them
         const tabs = await chrome.tabs.query({ 
-          active: true, 
           url: ["*://*.suno.ai/*", "*://*.suno.com/*"] 
         });
-        if (tabs.length > 0) {
-          await updateStyles(tabs[0].id, isEnabled);
+        for (const tab of tabs) {
+          await updateStyles(tab.id, isEnabled);
         }
+        // Updated styles on all Suno tabs
       }
     } catch (error) {
       console.error('Suno UI Booster: Error updating styles on storage change:', error);

@@ -126,12 +126,16 @@ a[href="/account"] span {
 
 /* Shared styles for song list containers */
 .css-c1kosu,
-.css-1jkulof {
+.css-1jkulof,
+.css-1btelbu,
+.css-1b51or {
     margin-left: 8px !important;
 }
 
 .css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
-.css-1jkulof .flex.flex-1.flex-row.items-center.gap-3 {
+.css-1jkulof .flex.flex-1.flex-row.items-center.gap-3,
+.css-1btelbu .flex.flex-1.flex-row.items-center.gap-3,
+.css-1b51or .flex.flex-1.flex-row.items-center.gap-3 {
     gap: 0px !important;
 }
 
@@ -146,12 +150,32 @@ img[alt="Song Image"]:not(.css-gkadxh) {
     object-fit: cover !important;
 }
 
+/* Additional song row classes for consistent spacing */
+.css-1btelbu,
+.css-1b51or {
+    margin-left: 8px !important;
+}
+
+.css-1btelbu .flex.flex-1.flex-row.items-center.gap-3,
+.css-1b51or .flex.flex-1.flex-row.items-center.gap-3 {
+    gap: 0px !important;
+}
+
 .css-1twx8fn {
     width: 80px !important;
     height: 80px !important;
     min-width: 80px !important;
     min-height: 80px !important;
     margin-left: -4px !important;
+}
+
+/* Ensure consistent image sizing for new song row classes */
+.css-1btelbu img[alt="Song Image"],
+.css-1b51or img[alt="Song Image"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
 }
 
 /* 42px preview images (small list) */
@@ -214,7 +238,9 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 /* --- Text Layout & Centering --- */
 
 /* Large song items (list view) */
-.css-c1kosu .line-clamp-1 {
+.css-c1kosu .line-clamp-1,
+.css-1btelbu .line-clamp-1,
+.css-1b51or .line-clamp-1 {
     -webkit-line-clamp: 2 !important;
     line-clamp: 2 !important;
     display: -webkit-box !important;
@@ -224,7 +250,9 @@ img.object-fit.h-77px.w-56px.rounded-xl,
     white-space: normal !important;
 }
 
-.css-c1kosu .chakra-stack.css-1u7775a {
+.css-c1kosu .chakra-stack.css-1u7775a,
+.css-1btelbu .chakra-stack.css-1u7775a,
+.css-1b51or .chakra-stack.css-1u7775a {
     justify-content: center !important;
     display: flex !important;
     flex-direction: column !important;
@@ -485,7 +513,7 @@ a[aria-label="Playbar: Comment"] {
 
 /* Make button group buttons separate instead of connected tabs */
 .flex.w-full.max-w-full.flex-row.justify-start button {
-    border-radius: 8px !important;
+    border-radius: 20px !important;
     margin-right: 4px !important;
     border: none !important;
     outline: none !important;
@@ -669,7 +697,7 @@ div:has(input[class*="max-w-"]) {
 
 /* Hide share buttons */
 button[aria-label*="Share"],
-button[aria-label*="Поделиться"],
+
 button[aria-label*="Send"],
 button[aria-label*="Export"],
 button[aria-label*="Link"],
@@ -706,6 +734,20 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
     min-width: 32px !important;
     min-height: 32px !important;
 }
+
+/* Red hover effect for trash button */
+.suno-booster-trash-wrapper .trash-button-custom:hover {
+    background-color: rgba(239, 68, 68, 0.35) !important; /* Red background with transparency */
+}
+
+.suno-booster-trash-wrapper .trash-button-custom:hover svg {
+    color: #ef4444 !important; /* Red icon on hover */
+}
+
+
+/* (Removed dual-icon toggling per user request) */
+
+
 
 /* ========================================
    END OF SUNO UI BOOSTER STYLES

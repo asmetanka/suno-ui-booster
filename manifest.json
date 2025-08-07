@@ -1,28 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Suno UI Booster",
-  "version": "1.1",
-  "description": "Enhance your Suno experience with a cleaner interface and a working trash button.",
+  "version": "1.12",
+  "description": "Enhanced interface for Suno.ai with smart trash button, square album previews and optimized design. Adapts to different pages and waits for complete resource loading.",
   "permissions": [
-    "storage",
     "scripting",
-    "activeTab"
+    "activeTab",
+    "declarativeNetRequest",
+    "storage"
   ],
   "host_permissions": [
     "*://*.suno.ai/*",
     "*://*.suno.com/*"
   ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
-    }
-  },
   "content_scripts": [
     {
       "matches": [
@@ -39,8 +29,24 @@
       "matches": ["*://*.suno.ai/*", "*://*.suno.com/*"]
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Suno UI Booster - Enhanced Interface"
+  },
   "icons": {
-    "16": "icon.png",
     "48": "icon.png",
     "128": "icon.png"
   }
