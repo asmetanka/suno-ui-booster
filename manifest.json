@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Suno UI Booster",
-  "version": "1.12",
+  "version": "1.2",
   "description": "Enhanced interface for Suno.ai with smart trash button, square album previews and optimized design. Adapts to different pages and waits for complete resource loading.",
   "permissions": [
     "scripting",
