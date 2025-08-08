@@ -2,11 +2,10 @@
   "manifest_version": 3,
   "name": "Suno UI Booster",
   "version": "1.2",
-  "description": "Enhanced interface for Suno.ai with smart trash button, square album previews and optimized design. Adapts to different pages and waits for complete resource loading.",
+  "description": "Cleaner Suno UI: on‑track Trash button, bigger player controls, square covers, quick toggle. Works only on Suno.",
   "permissions": [
     "scripting",
     "activeTab",
-    "declarativeNetRequest",
     "storage"
   ],
   "host_permissions": [
@@ -34,13 +33,6 @@
   },
   "background": {
     "service_worker": "background.js"
-  },
-  "declarative_net_request": {
-    "rule_resources": [{
-      "id": "ruleset_1",
-      "enabled": true,
-      "path": "rules.json"
-    }]
   },
   "action": {
     "default_popup": "popup.html",

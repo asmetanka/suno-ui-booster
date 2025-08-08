@@ -1,15 +1,17 @@
-Enhance your Suno experience with a cleaner interface and a smarter trash button.
+Make Suno feel cleaner and easier.
 
 Highlights:
+⭐️ Trash button right on the track — no more menu diving to delete a song.
+⭐️ Bigger player controls for quick and easy access.
+⭐️ Neat square covers everywhere for a consistent look.
+⭐️ Polished UI — easier to click, easier on the eyes, less clutter, more focus.
+⭐️ Quick and easy to turn on/off.
 
-- Square album art everywhere for visual consistency
-- Larger, clearer controls and improved spacing
-- Native Undo for deletions: uses Suno’s own menu flow to show their toast; falls back to API if needed
-- Minimal impact: runs client-side, no data collection
+How It Works & Your Privacy:
+✅ To delete songs, the extension securely uses your existing Suno functionality.
+✅ Your session information is never stored, saved, or sent anywhere else.
+✅ The extension has no tracking, no analytics, and no servers of its own.
+✅ It works only on the Suno website.
 
-Privacy:
-
-- 100% client-side
-- No tracking, analytics, or external servers
-
-Disclaimer: This is a third‑party extension and is not affiliated with Suno, Inc.
+Disclaimer:
+This is a third‑party extension and is not officially affiliated with Suno, Inc.
