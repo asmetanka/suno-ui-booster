@@ -34,9 +34,8 @@ Enhanced interface for Suno.ai with additional features and optimized design.
 5. Select the extension folder
 
 ### For users:
-1. Download `.crx` file from [Releases](https://github.com/asmetanka/suno-ui-booster/releases)
-2. Drag and drop file into `chrome://extensions/`
-3. Confirm installation
+Install from the Chrome Web Store
+https://chromewebstore.google.com/detail/hcocfjdjhiiolcmplgfkgkifnjeeodcl?utm_source=item-share-cb
 
 ## 🔧 Configuration
 
@@ -142,25 +141,15 @@ button[aria-label*="More Options"] {
 
 ## 🔍 Debugging
 
-### **Enable debug mode:**
-1. Open browser console (F12)
-2. Go to suno.ai page
-3. Look for logs with prefix `"Suno UI Booster:"`
-
-### **Main debug messages:**
-- `"Processing song row:"` - processing song row
-- `"All buttons in song row: X"` - number of found buttons
-- `"Placed trash button after dislike button"` - chosen strategy
-- `"Document not fully loaded, waiting..."` - waiting for loading
+<!-- Debug message examples removed to keep console clean policy -->
 
 ## 📋 Permissions
 
 ### **Required permissions:**
-- `scripting` - for CSS injection
-- `activeTab` - for working with active tab
-- `declarativeNetRequest` - for CSP modification
-- `storage` - for saving settings
-- `host_permissions` - for access to suno.ai
+- `scripting` - apply/remove styles
+- `activeTab` - detect and reload the current tab after toggle
+- `storage` - save enabled/disabled state
+- `host_permissions` - access only to suno.ai / suno.com
 
 ### **Permission justification:**
 All permissions are used strictly for improving Suno.ai interface and do not collect any user data.
