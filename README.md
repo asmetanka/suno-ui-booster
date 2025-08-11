@@ -67,7 +67,7 @@ Key principles:
 4. Click “Load unpacked” and select the project folder
 
 ### Chrome Web Store
-Install from the Chrome Web Store: `https://chromewebstore.google.com/detail/hcocfjdjhiiolcmplgfkgkifnjeeodcl`
+Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/hcocfjdjhiiolcmplgfkgkifnjeeodcl)
 
 ## Project structure
 ```
@@ -102,9 +102,10 @@ suno-ui-booster/
   - Moved “Exclude styles” input below the textarea with proper paddings and radius; aligned search icon
   - Tabs Auto/Write Lyrics: added backdrop and fixed widths (192px total)
   - Removed pointer cursor from More Options; tightened several paddings to 40px controls where applicable
-  - Update notifications: red dot on toolbar icon when an update is available; popup banner with UPDATE action; no banner/dot when on latest
+- Update notifications: red dot on toolbar icon when an update is available; popup banner with UPDATE action; no banner/dot when on latest
+  - Advanced Options: panel is always expanded by removing collapse constraints; only the header/toggle row is hidden to keep content accessible without an extra click
 
 ## Support
-- Email: `hello@smetanka.me`
-- GitHub: `https://github.com/asmetanka/suno-ui-booster`
+- Email: [hello@smetanka.me](mailto:hello@smetanka.me)
+- GitHub: [asmetanka/suno-ui-booster](https://github.com/asmetanka/suno-ui-booster)
 
