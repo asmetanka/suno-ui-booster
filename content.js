@@ -20,6 +20,10 @@
 
 // Global variable to track extension state
 let isExtensionEnabled = true;
+// Keep references to observers and listeners so we can fully disable
+let domObserverRef = null;
+let advancedObserverRef = null;
+let viewportListenerRef = null;
 
 /**
  * Checks if the extension is enabled by reading from storage
@@ -264,6 +268,7 @@ function replaceBookmarkIcons(songRow) {
  * @param {ParentNode} root
  */
 function hideHeaderLabels(root = document) {
+  if (!isExtensionEnabled) return;
   try {
     const candidates = root.querySelectorAll('span.mr-8.flex.flex-row.items-center');
     candidates.forEach((el) => {
@@ -272,6 +277,22 @@ function hideHeaderLabels(root = document) {
       const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
       if (text === 'Song Title' || text === 'Workspace') {
         el.style.setProperty('display', 'none', 'important');
+      }
+    });
+  } catch (_) {
+    // no-op
+  }
+}
+
+/** Show labels previously hidden by hideHeaderLabels. */
+function unhideHeaderLabels(root = document) {
+  try {
+    const candidates = root.querySelectorAll('span.mr-8.flex.flex-row.items-center');
+    candidates.forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text === 'Song Title' || text === 'Workspace') {
+        el.style.removeProperty('display');
       }
     });
   } catch (_) {
@@ -475,9 +496,21 @@ async function handleExtensionStateChange(enabled) {
         processSongRows(document.body);
       } else {
         console.log('Suno UI Booster: Extension disabled - removing features');
-        // Remove all extension features
+        // Remove all extension features and inline adjustments
         removeAllTrashButtons();
         showAllShareButtons();
+        unhideHeaderLabels(document.body);
+        resetWorkspaceDropdowns(document.body);
+        resetCreateRowBottomMargin(document.body);
+        // Disconnect observers
+        try { domObserverRef && domObserverRef.disconnect(); } catch (_) {}
+        try { advancedObserverRef && advancedObserverRef.disconnect(); } catch (_) {}
+        // Remove viewport listeners
+        if (viewportListenerRef) {
+          window.removeEventListener('resize', viewportListenerRef);
+          window.removeEventListener('scroll', viewportListenerRef, true);
+          viewportListenerRef = null;
+        }
     }
 }
 
@@ -579,6 +612,7 @@ async function initialize() {
             }
         });
 
+        domObserverRef = observer;
         observer.observe(document.body, { childList: true, subtree: true });
         processSongRows(document.body);
         hideHeaderLabels(document.body);
@@ -596,6 +630,7 @@ async function initialize() {
           adjustWorkspaceDropdowns(document);
           adjustCreateRowBottomMargin(document);
         };
+        viewportListenerRef = onViewportChange;
         window.addEventListener('resize', onViewportChange);
         window.addEventListener('scroll', onViewportChange, true);
 
@@ -603,6 +638,7 @@ async function initialize() {
         const advancedObserver = new MutationObserver(() => {
           ensureAdvancedOptions(document.body);
         });
+        advancedObserverRef = advancedObserver;
         advancedObserver.observe(document.body, { childList: true, subtree: true });
 
         console.log('Suno UI Booster Initialized.');
@@ -695,6 +731,7 @@ function findWorkspaceButton(root = document) {
  * Aligns "Search..." dropdown menus to the Workspace button: same width and left, below the button.
  */
 function adjustWorkspaceDropdowns(root = document) {
+  if (!isExtensionEnabled) return;
   try {
     const workspaceButton = findWorkspaceButton(document);
     if (!workspaceButton) return;
@@ -718,6 +755,23 @@ function adjustWorkspaceDropdowns(root = document) {
       menu.style.setProperty('left', `${desiredLeft}px`, 'important');
       menu.style.setProperty('top', `${desiredTop}px`, 'important');
       menu.style.setProperty('right', 'auto', 'important');
+    }
+  } catch (_) {
+    // no-op
+  }
+}
+
+/** Remove inline positioning injected into Workspace dropdowns. */
+function resetWorkspaceDropdowns(root = document) {
+  try {
+    const menus = Array.from(document.querySelectorAll('div.absolute'))
+      .filter((el) => el instanceof HTMLElement && el.querySelector('input[placeholder="Search..."]'));
+    for (const menu of menus) {
+      menu.style.removeProperty('position');
+      menu.style.removeProperty('width');
+      menu.style.removeProperty('left');
+      menu.style.removeProperty('top');
+      menu.style.removeProperty('right');
     }
   } catch (_) {
     // no-op
@@ -822,12 +876,23 @@ function computeProgressBarDelta(root = document) {
  * Ensure the Create row lifts exactly by the increased progress bar height (above default).
  */
 function adjustCreateRowBottomMargin(root = document) {
+  if (!isExtensionEnabled) return;
   try {
     const row = findCreateRow(root);
     if (!row) return;
     const hasPlaybar = !!findFixedPlaybarContainer(root) || document.querySelector('[aria-label^="Playbar"], [aria-label*="Playbar:"]');
     const delta = hasPlaybar ? computeProgressBarDelta(root) : 0;
     row.style.setProperty('margin-bottom', `${delta}px`, 'important');
+  } catch (_) {
+    // no-op
+  }
+}
+
+/** Remove Create row bottom margin adjustment. */
+function resetCreateRowBottomMargin(root = document) {
+  try {
+    const row = findCreateRow(root);
+    if (row) row.style.removeProperty('margin-bottom');
   } catch (_) {
     // no-op
   }
