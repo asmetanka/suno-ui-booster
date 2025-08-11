@@ -1,3 +1,11 @@
+/*
+  Suno UI Booster styles
+  - Deterministic overrides for covers, buttons, and compact tiles
+  - Keep anchors pointer; controls default cursor
+  - Normalize cover aspect ratios; prevent overflow
+  - Avoid hover growth; prefer stable overlays
+*/
+
 /* ========================================
    GLOBAL & ROOT VARIABLES
    ======================================== */
@@ -37,7 +45,7 @@ div[class*="w-full"][class*="md:pb-5"],
 
 /* Spacing adjustments */
 .relative.flex.h-auto.w-full.flex-row.items-center.gap-2 {
-    margin-bottom: 80px !important;
+  margin-bottom: 0 !important;
 }
 
 .pb-\[120px\] {
@@ -100,6 +108,14 @@ a[href="/account"] span {
     height: auto !important;
 }
 
+/* Hide the 'Credits' label but keep the numeric amount */
+.flex.h-\[12px\].flex-col.justify-center.gap-2 > .flex.items-center.justify-center.gap-1 > a[href="/account"] {
+  font-size: 0 !important;
+}
+.flex.h-\[12px\].flex-col.justify-center.gap-2 > .flex.items-center.justify-center.gap-1 > a[href="/account"] > .text-foreground-secondary {
+  font-size: 14px !important;
+}
+
 /* ========================================
    HEADER & SIDEBAR
    ======================================== */
@@ -130,6 +146,11 @@ a[href="/account"] span {
 .css-1btelbu,
 .css-1b51or {
     margin-left: 8px !important;
+    margin-right: 8px !important;
+    border-radius: 12px !important;
+    padding-left: 20px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
 }
 
 .css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
@@ -224,6 +245,7 @@ img.chakra-image.css-vvtra8 {
     min-width: 40px !important;
     min-height: 40px !important;
     overflow: hidden !important;
+    margin-right: 16px !important;
 }
 
 img.object-fit.h-77px.w-56px.rounded-xl,
@@ -568,7 +590,7 @@ a[aria-label="Playbar: Comment"] {
 .custom-scrollbar-transparent.mx-6.flex.overflow-y-hidden.overflow-x-scroll {
     margin-left: 8px !important;
     margin-right: 8px !important;
-    gap: 16px !important;
+    gap: 0px !important;
 }
 
 /* ========================================
@@ -752,3 +774,523 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
 /* ========================================
    END OF SUNO UI BOOSTER STYLES
    ======================================== */
+
+/* Square cover for the small 41x30 preview block */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden img[alt="Song Image"] {
+  aspect-ratio: 1 / 1 !important;
+  width: 41px !important;
+  height: 41px !important;
+  min-width: 41px !important;
+  min-height: 41px !important;
+  object-fit: cover !important;
+}
+
+/* Enlarge and center Play button on the small 41x41 cover */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: saturate(120%) blur(0.5px) !important;
+    padding: 0 !important;
+  margin: 0 !important;
+  z-index: 3 !important;
+}
+
+/* Remove side offset from inner wrapper */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] .ml-1 {
+  margin-left: 0 !important;
+}
+
+/* Enlarge play glyph */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] img[alt="Play"] {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Hover feedback */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  background: rgba(0, 0, 0, 0.45) !important;
+  transform: translate(-50%, -50%) scale(1.05) !important;
+}
+
+/* Nudge the small 41x41 play glyph slightly right for optical balance */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] img[alt="Play"] {
+  transform: translateX(1.2px) !important;
+}
+
+/* Add circular backdrop and nudge icon for row play overlay */
+[data-testid="song-row-play-button"] [aria-label="Play"] {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  z-index: 1 !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+[data-testid="song-row-play-button"] [aria-label="Play"] svg {
+    position: relative !important;
+  z-index: 2 !important;
+  width: 20px !important;
+  height: 20px !important;
+  transform: translateX(1.2px) !important; /* slight right shift for optical centering */
+}
+
+/* Hover feedback */
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before {
+  background: rgba(0, 0, 0, 0.45) !important;
+  transform: translate(-50%, -50%) scale(1.05) !important;
+}
+
+/* Action bar under the cover: stronger pill buttons */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button {
+  border-radius: 9999px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: 0 14px !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button span {
+  display: inline-flex !important;
+    align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+    position: relative !important;
+}
+
+/* Replace 2nd button icon with Heart + circular backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span svg {
+  display: none !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 22px !important;
+  height: 22px !important;
+    border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  margin-right: 2px !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 11px !important; /* center of the 22px circle */
+  top: 50% !important;
+  transform: translate(calc(-50% + 1px), -50%) !important; /* slight right shift */
+  width: 12px !important;
+  height: 12px !important;
+  background: currentColor !important;
+  color: #ffffff !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+/* Replace Downvote button icon with Cross + circular backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span svg {
+  display: none !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  margin-right: 2px !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 11px !important; /* center of the 22px circle */
+  top: 50% !important;
+  transform: translate(calc(-50% + 1px), -50%) !important; /* slight right shift */
+  width: 12px !important;
+  height: 12px !important;
+  background: currentColor !important;
+  color: #ffffff !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+/* Action bar buttons: static translucent background (no hover change) */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Keep same background on hover/focus/active */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:focus,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Disable default ::before overlay from site classes */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button::before,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover::before {
+  background: transparent !important;
+}
+
+/* Remove dark backdrops (rgba(0, 0, 0, 0.35)) while preserving layout */
+/* Small 41x41 cover play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"],
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  background: transparent !important;
+}
+
+/* Row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+  background: transparent !important;
+}
+
+/* Restore dark backdrop ONLY for the Play buttons we modified earlier */
+/* Small 41x41 cover Play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Keep action-bar custom icons (heart/cross) without dark backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::before,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::before {
+  background: transparent !important;
+}
+
+/* Keep same dark backdrop when hovering the small 41x41 play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden:hover button[aria-label="Play"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Remove hover growth animation for small 41x41 play circle */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  transform: translate(-50%, -50%) !important; /* no scale */
+}
+
+/* Remove hover growth animation for row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before {
+  transform: translate(-50%, -50%) !important; /* no scale */
+}
+
+/* Cursor policy: pointer only for text links; background buttons use default */
+a[href] {
+    cursor: pointer !important;
+}
+
+/* Small 41x41 Play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"],
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:focus {
+  cursor: default !important;
+}
+
+/* Row play overlay */
+[data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover,
+[data-testid="song-row-play-button"] [aria-label="Play"]:focus {
+  cursor: default !important;
+}
+
+/* Action bar buttons under the cover */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:focus {
+  cursor: default !important;
+}
+
+/* Broader default cursor for non-link controls */
+button,
+[type="button"],
+[role="button"],
+[data-react-aria-pressable] {
+  cursor: default !important;
+}
+
+/* Utility override: keep pointer only for real text links */
+.cursor-pointer:not(a[href]) {
+  cursor: default !important;
+}
+
+/* Optional safety: button-like SVG/img shouldn't show pointer */
+svg[role="button"],
+img[role="button"] {
+  cursor: default !important;
+}
+
+/* Fix spacing/overlap in small horizontal rows (css-1jkulof) */
+.css-1jkulof .relative.flex.w-full.items-center {
+  flex-wrap: nowrap !important;
+}
+
+.css-1jkulof .flex-1.flex.flex-row {
+  min-width: 0 !important;
+  gap: 6px !important;
+    align-items: center !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h,
+.css-1jkulof .chakra-stack.css-1f0wxn3 {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: hidden !important;
+}
+
+.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2,
+.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1 {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.css-1jkulof .css-1fuckjf,
+.css-1jkulof .css-1kcq9v9 {
+  flex: 0 0 auto !important;
+  margin-left: 6px !important;
+}
+
+/* Increase gap from 4px to 6px for icon row inside song-row */
+[data-testid="song-row"].css-c1kosu .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Small-card variant support */
+[data-testid="song-row"].css-1jkulof .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 6px !important;
+}
+
+/* Set 16px margin for the custom trash button wrapper */
+[data-testid="song-row"] .suno-booster-trash-wrapper {
+  margin-inline-start: 16px !important; /* RTL-safe */
+}
+
+/* Do not add extra margin for trash wrapper on small horizontal cards */
+[data-testid="song-row"].css-1jkulof .suno-booster-trash-wrapper {
+  margin-inline-start: 4px !important;
+}
+
+/* Make small horizontal card thumbnails square and contained */
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] {
+  min-width: 42px !important;
+  min-height: 42px !important;
+}
+
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative {
+  width: 42px !important;
+  height: 42px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative > img[alt="Song Image"] {
+  width: 42px !important;
+  height: 42px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Ensure horizontal small song-row occupies full 230px tile width */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+  width: 300px !important;
+  max-width: 300px !important;
+  display: block !important;
+}
+
+/* Make inner wrapper stretch to full width for consistent hover area */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof > .relative {
+  width: 100% !important;
+}
+
+/* Horizontal 230px tile: full interactive/hover area */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+  width: 300px !important;
+  max-width: 300px !important;
+  box-sizing: border-box !important;
+  padding-right: 16px !important; /* space for trash button */
+    position: relative !important;
+}
+
+/* Make tile wrapper positioned so absolute children align correctly */
+.w-\[230px\] {
+  position: relative !important;
+}
+
+/* Trash button: pin to the right within the 230px tile without shrinking hover area */
+.w-\[230px\] > .suno-booster-trash-wrapper {
+  position: absolute !important;
+  right: 4px !important; /* keep your 4px spacing */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 3 !important;
+}
+
+/* When hovering the whole row, show the play overlay too */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof:hover [data-testid="song-row-play-button"] [aria-label="Play"] {
+    opacity: 1 !important;
+}
+
+/* Horizontal scroller tiles: enforce 300px item width and basis */
+.custom-scrollbar-transparent > .w-\[230px\] {
+  width: 300px !important;
+  max-width: 300px !important;
+  flex: 0 0 300px !important;
+    position: relative !important;
+}
+
+/* Inner row should fit its tile wrapper to avoid overflow */
+.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Reduce left padding to 10px for the Song Title row only */
+.flex.w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.py-2.pr-\[10px\].pl-6:has(> .flex-1 > input[placeholder="Enter song title"]) {
+  padding-left: 10px !important;
+}
+
+/* Reduce left padding to 10px for the Workspace row only */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  padding-left: 10px !important;
+}
+
+/* Workspace row: set total row height to 64px so 8px top/bottom around 48px button */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  height: 64px !important;
+}
+
+/* Workspace row button: make visual height exactly 48px and center content */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) .flex.flex-1.flex-row-reverse > button {
+  box-sizing: border-box !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* Center Playbar action icons visually by neutralizing site margins */
+button[aria-label="Playbar: Like"] > span,
+button[aria-label="Playbar: Dislike"] > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+button[aria-label="Playbar: Like"] > span > svg,
+button[aria-label="Playbar: Dislike"] > span > svg {
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Enforce full-span centering for all Playbar buttons */
+button[aria-label^="Playbar"] > span {
+  width: 100% !important;
+  height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+button[aria-label^="Playbar"] > span > svg {
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Optical centering for asymmetrical heart/cross glyphs */
+button[aria-label="Playbar: Like"] > span > svg,
+button[aria-label="Playbar: Dislike"] > span > svg {
+  transform: translateX(1.2px) !important;
+}
+
+/* Hide icons in the two action buttons (Full Song / By Line) in the controls row */
+.flex.flex-row.items-center.gap-2.px-2.pt-0 .flex.flex-1.flex-row-reverse > button span > svg {
+  display: none !important;
+}
+
+/* Make left padding equal to right (12px) for the action buttons row */
+.flex.flex-row.items-center.gap-2.px-2.pt-0 .flex.flex-1.flex-row-reverse > button {
+  padding-left: 12px !important;
+}
+
+/* Robust targeting: convert aura background button (active/disabled) to text label */
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] {
+  aspect-ratio: auto !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 6px 12px !important;
+  line-height: 24px !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span {
+  gap: 0 !important;
+  white-space: nowrap !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span > svg {
+  display: none !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span::before {
+  content: 'Boost Creativity' !important;
+}
+
+/* Active Boost Creativity button: background tint */
+.flex.flex-row.gap-2 > button:not([disabled])[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] {
+  background: color-mix(in oklab, rgb(var(--rgb-white) / 1) 10%, transparent) !important;
+}
+
+/* Force perfect circle and equal side padding for small round icon buttons */
+button.before\:border-border-primary.rounded-full.aspect-square {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+button.before\:border-border-primary.rounded-full.aspect-square > span {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+button.before\:border-border-primary.rounded-full.aspect-square > span > svg {
+  margin: 0 !important;
+}
+
+/* Advanced Options panel: force label texts to white */
+.h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-secondary,
+.h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-tertiary {
+  color: rgb(255, 255, 255) !important;
+}

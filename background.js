@@ -1,73 +1,58 @@
-// Background script for Suno UI Booster extension
-// Handles CSS injection and removal based on user preferences
+// Background script: injects/removes stylesheet on Suno tabs based on user preference.
+// No network interception or page code modification is performed here.
 
 /**
- * Applies or removes custom styles to Suno pages based on user settings
- * @param {number} tabId - The ID of the tab to modify
- * @param {boolean} isEnabled - Whether styles should be applied or removed
+ * Insert or remove CSS on a specific tab according to the enabled state.
  */
 async function updateStyles(tabId, isEnabled) {
-    const details = {
-      target: { tabId: tabId },
-      files: ['styles.css'],
-    };
-    try {
-      if (isEnabled) {
-        // Inject custom CSS styles to enhance Suno UI
-        await chrome.scripting.insertCSS(details);
-        // Styles injected
-      } else {
-        // Remove injected CSS styles to restore original appearance
-        await chrome.scripting.removeCSS(details);
-        // Styles removed
-      }
-    } catch (error) {
-      // Ignore errors that occur when trying to inject styles on restricted pages
-      // (like chrome:// pages or non-existent tabs)
-      if (!error.message.includes("Cannot access a chrome://") && 
-          !error.message.includes("No tab with id") &&
-          !error.message.includes("Cannot access a chrome-extension://")) {
-        console.error('Suno UI Booster: Error updating styles:', error);
-      }
+  const details = { target: { tabId }, files: ['styles.css'] };
+  try {
+    if (isEnabled) {
+      await chrome.scripting.insertCSS(details);
+    } else {
+      await chrome.scripting.removeCSS(details);
+    }
+  } catch (error) {
+    // Ignore non-actionable errors (chrome://, missing tab, etc.)
+    const msg = String(error?.message || '');
+    if (
+      !msg.includes('Cannot access a chrome://') &&
+      !msg.includes('No tab with id') &&
+      !msg.includes('Cannot access a chrome-extension://')
+    ) {
+      console.error('Suno UI Booster: Error updating styles:', error);
     }
   }
-  
-  /**
-   * Listens for tab updates and applies styles to Suno pages when they load
-   * Automatically applies or removes styles based on user preferences
-   */
-  chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-    try {
-      if (changeInfo.status === 'complete' && tab.url && (tab.url.includes('suno.ai') || tab.url.includes('suno.com'))) {
-        // Check if extension is enabled in storage
-        const data = await chrome.storage.sync.get(['enabled']);
-        // Default to enabled if not explicitly set to false
-        const isEnabled = data.enabled !== false;
-        await updateStyles(tabId, isEnabled);
-      }
-    } catch (error) {
-      console.error('Suno UI Booster: Error in tab update listener:', error);
+}
+
+/**
+ * On tab load completion for Suno domains, apply CSS if enabled in storage.
+ */
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  try {
+    if (changeInfo.status === 'complete' && tab.url && (tab.url.includes('suno.ai') || tab.url.includes('suno.com'))) {
+      const data = await chrome.storage.sync.get(['enabled']);
+      const isEnabled = data.enabled !== false; // default: enabled
+      await updateStyles(tabId, isEnabled);
     }
-  });
-  
-  /**
-   * Responds to toggle switch changes in popup
-   * Updates styles on active Suno tabs when user toggles the extension
-   */
-  chrome.storage.onChanged.addListener(async (changes, namespace) => {
-    try {
-      if (namespace === 'sync' && changes.enabled) {
-        const isEnabled = changes.enabled.newValue;
-        // Find all Suno tabs and update styles on them
-        const tabs = await chrome.tabs.query({ 
-          url: ["*://*.suno.ai/*", "*://*.suno.com/*"] 
-        });
-        for (const tab of tabs) {
-          await updateStyles(tab.id, isEnabled);
-        }
-        // Updated styles on all Suno tabs
+  } catch (error) {
+    console.error('Suno UI Booster: Error in tab update listener:', error);
+  }
+});
+
+/**
+ * When the user toggles the enabled state, update all open Suno tabs.
+ */
+chrome.storage.onChanged.addListener(async (changes, namespace) => {
+  try {
+    if (namespace === 'sync' && changes.enabled) {
+      const isEnabled = changes.enabled.newValue;
+      const tabs = await chrome.tabs.query({ url: ['*://*.suno.ai/*', '*://*.suno.com/*'] });
+      for (const tab of tabs) {
+        await updateStyles(tab.id, isEnabled);
       }
-    } catch (error) {
-      console.error('Suno UI Booster: Error updating styles on storage change:', error);
     }
-  }); 
+  } catch (error) {
+    console.error('Suno UI Booster: Error updating styles on storage change:', error);
+  }
+}); 

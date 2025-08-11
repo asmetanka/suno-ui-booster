@@ -1,8 +1,18 @@
 // content.js
 /**
- * @file content.js
- * @description Main content script that injects trash button functionality and communicates with injected.js for API requests.
- * Handles DOM manipulation, button placement strategies, and user interaction.
+ * Entry point for in-page behavior.
+ *
+ * Responsibilities:
+ * - Observe DOM changes and initialize UI customizations deterministically
+ * - Inject a Trash button into song rows; prefer native menu action, fallback to API channel
+ * - Align Workspace dropdown under its button and match width/position
+ * - Keep Advanced Options expanded by hiding only the header row
+ * - Adjust bottom spacing of the Create row based on Playbar progress height (above default), capped to 80px
+ *
+ * Principles:
+ * - Non-invasive (no network/CSP tampering, no constructor overrides)
+ * - Small, focused helpers; avoid global state beyond enabled flag
+ * - Prefer resilient structural selectors; avoid brittle class chains
  */
 
 // Suno UI Booster content entry point. All UI customizations and in-page
@@ -248,6 +258,28 @@ function replaceBookmarkIcons(songRow) {
 }
 
 /**
+ * Hides specific header labels with exact texts to avoid hiding unrelated UI.
+ * Only hides spans having all of: mr-8, flex, flex-row, items-center, gap-[5px]
+ * and text content strictly equal to "Song Title" or "Workspace".
+ * @param {ParentNode} root
+ */
+function hideHeaderLabels(root = document) {
+  try {
+    const candidates = root.querySelectorAll('span.mr-8.flex.flex-row.items-center');
+    candidates.forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+      if (!el.classList.contains('gap-[5px]')) return;
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text === 'Song Title' || text === 'Workspace') {
+        el.style.setProperty('display', 'none', 'important');
+      }
+    });
+  } catch (_) {
+    // no-op
+  }
+}
+
+/**
  * Creates and injects the trash button into song rows.
  * The button is styled to match the existing UI and positioned after "More Options".
  * @param {Element} songRow - The song row DOM element
@@ -266,9 +298,9 @@ function addTrashButton(songRow) {
 
         const wrapper = document.createElement('div');
         wrapper.className = 'suno-booster-trash-wrapper';
-        const trashButton = document.createElement('button');
-        trashButton.className = 'trash-button-custom';
-        trashButton.setAttribute('aria-label', 'Move to Trash');
+    const trashButton = document.createElement('button');
+    trashButton.className = 'trash-button-custom';
+    trashButton.setAttribute('aria-label', 'Move to Trash');
         trashButton.setAttribute('type', 'button');
         trashButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.308 20.5a1.74 1.74 0 0 1-1.277-.531 1.74 1.74 0 0 1-.531-1.277V6h-.25a.73.73 0 0 1-.534-.216.73.73 0 0 1-.216-.534q0-.32.216-.535A.73.73 0 0 1 5.25 4.5H9q0-.368.259-.626a.85.85 0 0 1 .625-.259h4.232q.367 0 .625.259A.85.85 0 0 1 15 4.5h3.75q.318 0 .534-.216a.73.73 0 0 1 .216.534q0 .32-.216-.534A.73.73 0 0 1 18.75 6h-.25v12.692q0 .746-.531 1.277a1.74 1.74 0 0 1-1.277.531zm2.846-3.5q.319 0 .534-.215a.73.73 0 0 0 .216-.535v-7.5a.73.73 0 0 0-.216-.535.73.73 0 0 0-.535-.215.73.73 0 0 0-.534.215.73.73 0 0 0-.215.535v7.5q0 .318.216.535a.73.73 0 0 0 .534.215m3.693 0q.318 0 .534-.215a.73.73 0 0 0 .215-.535v-7.5a.73.73 0 0 0-.216-.535.73.73 0 0 0-.534-.215.73.73 0 0 0-.534-.215.73.73 0 0 0-.216.535v7.5q0 .318.216.535a.73.73 0 0 0 .535.215"></path></svg>`;
 
@@ -282,16 +314,16 @@ function addTrashButton(songRow) {
             trashButton.addEventListener(type, stop, { capture: true });
         });
 
-        trashButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+    trashButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
             const songId = getSongId(songRow);
             if (!songId) {
                 console.error('Suno UI Booster: Could not find song ID.');
                 alert('Suno UI Booster: Could not find song ID.');
-                return;
-            }
+          return;
+        }
 
             // Prefer native menu flow to get Suno's built-in toast/undo
             const usedNative = await triggerNativeTrash(songRow);
@@ -322,14 +354,14 @@ function addTrashButton(songRow) {
         const dislikeButton = songRow.querySelector('button[aria-label*="Dislike"], button[aria-label*="dislike"]');
         if (dislikeButton && dislikeButton.parentElement === parentContainer) {
             parentContainer.insertBefore(wrapper, dislikeButton.nextSibling);
-            return;
+          return;
         }
 
         // Strategy 2: Try to find like button and place after it
         const likeButton = songRow.querySelector('button[aria-label*="Like"], button[aria-label*="like"]');
         if (likeButton && likeButton.parentElement === parentContainer) {
             parentContainer.insertBefore(wrapper, likeButton.nextSibling);
-            return;
+          return;
         }
 
         // Strategy 3: Look for specific container classes that indicate button groups
@@ -358,8 +390,8 @@ function addTrashButton(songRow) {
         // Strategy 4: Fallback - place after More Options button
         parentContainer.insertBefore(wrapper, moreOptionsButton.nextSibling);
         // Fallback placement after More Options
-        
-    } catch (error) {
+
+      } catch (error) {
         console.error('Suno UI Booster: Error adding trash button:', error);
     }
 }
@@ -441,7 +473,7 @@ async function handleExtensionStateChange(enabled) {
         console.log('Suno UI Booster: Extension enabled - initializing features');
         // Re-initialize features
         processSongRows(document.body);
-    } else {
+      } else {
         console.log('Suno UI Booster: Extension disabled - removing features');
         // Remove all extension features
         removeAllTrashButtons();
@@ -475,7 +507,7 @@ async function initialize() {
                         songRow.style.transition = 'opacity 0.5s ease';
                         songRow.style.opacity = '0';
                         setTimeout(() => songRow.remove(), 500);
-                    } else {
+    } else {
                         alert(`Failed to delete song ${songId}. Error status: ${status || 'Network Error'}. Check console for details.`);
                         const trashButton = songRow.querySelector('.trash-button-custom');
                         if (trashButton) {
@@ -500,6 +532,8 @@ async function initialize() {
         // Observe DOM changes to handle dynamically added song rows
         const observer = new MutationObserver((mutationsList) => {
             try {
+                let needsDropdownAdjust = false;
+                let needsCreateAdjust = false;
                 for (const mutation of mutationsList) {
                     if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                         mutation.addedNodes.forEach(node => {
@@ -509,12 +543,36 @@ async function initialize() {
                                     hideShareButton(node);
                                     replaceLikeDislikeIcons(node);
                                     replaceBookmarkIcons(node);
+                                    hideHeaderLabels(node);
                                 } else if (node.querySelector) {
                                     processSongRows(node);
+                                    hideHeaderLabels(node);
                                 }
-                            }
+                                // Dropdown adjustment triggers
+                                if (node.querySelector?.('input[placeholder="Search..."]') || node.matches?.('input[placeholder="Search..."]')) {
+                                  needsDropdownAdjust = true;
+                                }
+                                if (node.querySelector?.('span.mr-8.flex.flex-row.items-center') || node.matches?.('span.mr-8.flex.flex-row.items-center')) {
+                                  needsDropdownAdjust = true;
+                                }
+                                // Create-row spacing triggers when playbar or progress bar appears/changes
+                                if (
+                                  node.matches?.('[aria-label^="Playbar"], [aria-label*="Playbar:"]') ||
+                                  node.querySelector?.('[aria-label^="Playbar"], [aria-label*="Playbar:"]') ||
+                                  node.matches?.('.group.flex.h-2') ||
+                                  node.querySelector?.('.group.flex.h-2')
+                                ) {
+                                  needsCreateAdjust = true;
+                                }
+                              }
                         });
                     }
+                }
+                if (needsDropdownAdjust) {
+                  requestAnimationFrame(() => adjustWorkspaceDropdowns(document));
+                }
+                if (needsCreateAdjust) {
+                  requestAnimationFrame(() => adjustCreateRowBottomMargin(document));
                 }
             } catch (error) {
                 console.error('Suno UI Booster: Error in mutation observer:', error);
@@ -523,6 +581,30 @@ async function initialize() {
 
         observer.observe(document.body, { childList: true, subtree: true });
         processSongRows(document.body);
+        hideHeaderLabels(document.body);
+        // Ensure Advanced Options is expanded and header hidden
+        ensureAdvancedOptions(document.body);
+        // Align Workspace dropdown width/position under the button
+        adjustWorkspaceDropdowns(document);
+        // Set Create row bottom margin depending on bottom-fixed player presence
+        adjustCreateRowBottomMargin(document);
+        // Schedule a second pass after layout settles
+        setTimeout(() => adjustCreateRowBottomMargin(document), 200);
+
+        // Reposition dropdown and adjust bottom spacing when viewport changes
+        const onViewportChange = () => {
+          adjustWorkspaceDropdowns(document);
+          adjustCreateRowBottomMargin(document);
+        };
+        window.addEventListener('resize', onViewportChange);
+        window.addEventListener('scroll', onViewportChange, true);
+
+        // Observe future DOM changes to re-apply expansion
+        const advancedObserver = new MutationObserver(() => {
+          ensureAdvancedOptions(document.body);
+        });
+        advancedObserver.observe(document.body, { childList: true, subtree: true });
+
         console.log('Suno UI Booster Initialized.');
     } catch (error) {
         console.error('Suno UI Booster: Error initializing:', error);
@@ -534,4 +616,219 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize);
 } else {
     initialize();
+} 
+
+// Ensure the Advanced Options section is always expanded and its header (toggle row) hidden
+function ensureAdvancedOptions(root = document) {
+  try {
+    const headingSpans = Array.from(root.querySelectorAll('span.font-medium')).filter((el) =>
+      (el.textContent || '').trim().toLowerCase().startsWith('advanced options')
+    );
+
+    headingSpans.forEach((heading) => {
+      // Find wrapper panel (rounded + bg-secondary)
+      let wrapper = heading;
+      while (wrapper && wrapper !== document.body) {
+        if (
+          wrapper instanceof HTMLElement &&
+          wrapper.classList.contains('bg-background-secondary') &&
+          wrapper.classList.contains('p-2') &&
+          wrapper.classList.contains('h-auto')
+        ) {
+          break;
+        }
+        wrapper = wrapper.parentElement;
+      }
+      if (!wrapper || !(wrapper instanceof HTMLElement)) return;
+      if (wrapper.getAttribute('data-suno-adv-processed') === '1') return;
+
+      // Header row is the row that contains the heading itself
+      const headerRow = heading.closest('div');
+      // Content is the next sibling container after the header row
+      const contentRow = headerRow && headerRow.nextElementSibling instanceof HTMLElement ? headerRow.nextElementSibling : null;
+
+      if (contentRow) {
+        // Remove collapsing constraints and make it visible
+        contentRow.classList.remove('max-h-0');
+        contentRow.classList.add('py-2');
+        contentRow.style.setProperty('max-height', 'none', 'important');
+        contentRow.style.setProperty('height', 'auto', 'important');
+        contentRow.style.setProperty('overflow', 'visible', 'important');
+        contentRow.style.setProperty('opacity', '1', 'important');
+      }
+
+      // Hide only the header row (title + chevron) so the panel looks always expanded
+      if (headerRow && headerRow instanceof HTMLElement) {
+        headerRow.style.setProperty('display', 'none', 'important');
+      }
+
+      wrapper.setAttribute('data-suno-adv-processed', '1');
+    });
+  } catch (_) {
+    // no-op
+  }
+}
+
+/**
+ * Finds the Workspace button within the Workspace row.
+ * The row contains a span label "Workspace" (may be hidden) and a reversed flex button container.
+ * @returns {HTMLElement|null}
+ */
+function findWorkspaceButton(root = document) {
+  try {
+    const rows = root.querySelectorAll('div.flex.w-full.flex-row.items-center');
+    for (const row of rows) {
+      const label = row.querySelector('span.mr-8.flex.flex-row.items-center');
+      if (!label) continue;
+      const text = (label.textContent || '').trim();
+      if (text !== 'Workspace') continue;
+      const button = row.querySelector('.flex.flex-1.flex-row-reverse > button');
+      if (button instanceof HTMLElement) return button;
+    }
+  } catch (_) {
+    // no-op
+  }
+  return null;
+}
+
+/**
+ * Aligns "Search..." dropdown menus to the Workspace button: same width and left, below the button.
+ */
+function adjustWorkspaceDropdowns(root = document) {
+  try {
+    const workspaceButton = findWorkspaceButton(document);
+    if (!workspaceButton) return;
+
+    const buttonRect = workspaceButton.getBoundingClientRect();
+    const desiredWidth = Math.round(buttonRect.width);
+    const desiredLeft = Math.round(buttonRect.left + window.scrollX);
+    const desiredTop = Math.round(buttonRect.bottom + window.scrollY + 8); // 8px gap
+
+    const menus = Array.from(document.querySelectorAll('div.absolute'))
+      .filter((el) => el instanceof HTMLElement && el.querySelector('input[placeholder="Search..."]'));
+
+    for (const menu of menus) {
+      const menuRect = menu.getBoundingClientRect();
+      const verticalDistance = Math.abs((menuRect.top + window.scrollY) - desiredTop);
+      // Only adjust menus that are close to the Workspace button vertically (likely the Workspace dropdown)
+      if (verticalDistance > 300) continue;
+
+      menu.style.setProperty('position', 'absolute', 'important');
+      menu.style.setProperty('width', `${desiredWidth}px`, 'important');
+      menu.style.setProperty('left', `${desiredLeft}px`, 'important');
+      menu.style.setProperty('top', `${desiredTop}px`, 'important');
+      menu.style.setProperty('right', 'auto', 'important');
+    }
+  } catch (_) {
+    // no-op
+  }
+}
+
+/**
+ * Find the Create row that holds the big Create button.
+ * @returns {HTMLElement|null}
+ */
+function findCreateRow(root = document) {
+  try {
+    const btn = root.querySelector('button[data-testid="create-button"]');
+    if (!btn) return null;
+    return btn.closest('div.flex.w-full.flex-row.items-center');
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Find the fixed Playbar container by locating a Playbar button and walking up to its fixed ancestor.
+ * @returns {HTMLElement|null}
+ */
+function findFixedPlaybarContainer(root = document) {
+  try {
+    const playbarButton = root.querySelector('button[aria-label^="Playbar"], button[aria-label*="Playbar:"]');
+    if (!playbarButton) return null;
+    let el = playbarButton.parentElement;
+    for (let i = 0; i < 12 && el; i += 1) {
+      if (!(el instanceof HTMLElement)) break;
+      const cs = window.getComputedStyle(el);
+      const isAnchored = (cs.position === 'fixed' || cs.position === 'absolute');
+      const bottomVal = parseFloat(cs.bottom || '');
+      const bottomIsZeroish = Number.isFinite(bottomVal) ? Math.abs(bottomVal) <= 2 : (cs.bottom === '0px' || cs.bottom === '0');
+      if (isAnchored && bottomIsZeroish) {
+        if (el.offsetHeight > 0 && cs.visibility !== 'hidden' && cs.display !== 'none') {
+          return el;
+        }
+      }
+      el = el.parentElement;
+    }
+  } catch (_) {
+    // no-op
+  }
+  return null;
+}
+
+/**
+ * Compute bottom overlay height using only the real Playbar, otherwise 0.
+ */
+function computePlaybarHeight(root = document) {
+  // Try precise fixed container first
+  const fixed = findFixedPlaybarContainer(root);
+  if (fixed) {
+    const h = fixed.offsetHeight || 0;
+    return Number.isFinite(h) && h > 0 && h < 300 ? h : 0;
+  }
+  // Fallback: union of all visible Playbar-labeled elements
+  try {
+    const nodes = Array.from(root.querySelectorAll('[aria-label^="Playbar"], [aria-label*="Playbar:"]'))
+      .filter((el) => el instanceof HTMLElement);
+    let minTop = Number.POSITIVE_INFINITY;
+    let maxBottom = 0;
+    for (const el of nodes) {
+      const rect = el.getBoundingClientRect();
+      if (!rect || rect.height === 0 || rect.width === 0) continue;
+      minTop = Math.min(minTop, rect.top);
+      maxBottom = Math.max(maxBottom, rect.bottom);
+    }
+    if (minTop !== Number.POSITIVE_INFINITY && maxBottom > minTop) {
+      const h = Math.round(maxBottom - minTop);
+      return h > 0 && h < 400 ? h : 0;
+    }
+  } catch (_) {
+    // no-op
+  }
+  return 0;
+}
+
+/**
+ * Compute how much taller the Playbar progress bar became compared to default (8px for h-2).
+ * Returns a non-negative delta in pixels.
+ */
+function computeProgressBarDelta(root = document) {
+  try {
+    const container = findFixedPlaybarContainer(root) || document;
+    // Prefer progress bar inside the playbar container
+    const bar = container.querySelector?.('.group.flex.h-2.w-full') || container.querySelector?.('.group.flex.h-2');
+    if (!bar || !(bar instanceof HTMLElement)) return 0;
+    const rect = bar.getBoundingClientRect();
+    const actual = Math.round(rect.height || 0);
+    const defaultPx = 8; // Tailwind h-2 default
+    const delta = Math.max(0, actual - defaultPx);
+    return Math.min(delta, 80); // cap lift to 80px
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * Ensure the Create row lifts exactly by the increased progress bar height (above default).
+ */
+function adjustCreateRowBottomMargin(root = document) {
+  try {
+    const row = findCreateRow(root);
+    if (!row) return;
+    const hasPlaybar = !!findFixedPlaybarContainer(root) || document.querySelector('[aria-label^="Playbar"], [aria-label*="Playbar:"]');
+    const delta = hasPlaybar ? computeProgressBarDelta(root) : 0;
+    row.style.setProperty('margin-bottom', `${delta}px`, 'important');
+  } catch (_) {
+    // no-op
+  }
 } 

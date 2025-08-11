@@ -1,176 +1,88 @@
 # Suno UI Booster
 
-Enhanced interface for Suno.ai with additional features and optimized design.
+Enhances Suno’s UI with reliable tooling, clean styling, and small workflow conveniences. The extension works only on Suno domains and does not intercept network calls or modify server responses.
 
-## ✨ Features
+## What it does
 
-### 🎨 **Visual Improvements**
-- **Square album previews** - cleaner appearance
-- **Larger control buttons** - easier to click
-- **Optimized spacing** - less visual clutter
-- **Improved typography** - better readability
+- Square cover previews across views, including compact 41×41 thumbnails
+- Play overlays sized and optically centered for small covers and row overlays
+- Action bar buttons with pill shape and static translucent background
+- Contextual Trash button injected into song rows with native-menu integration
+- Workspace dropdown aligned to the button width and position
+- Advanced Options panel always expanded with the header row hidden
+- Consistent spacing and layout fixes for compact horizontal tiles
+- Cursor policy: pointer is reserved for text links; UI controls use the default cursor
 
-### 🗑️ **Smart "Move to Trash" Button**
-- **Automatic placement** - appears in the expected actions group
-- **Native Undo support** - tries Suno's menu action to show their toast with Undo; falls back to API if unavailable
-- **Adaptive logic** - works across page variants
-- **Visual feedback** - subtle fade-out on successful removal
+## How it works
 
-### 🎯 **Performance & Robustness**
-- **Adaptive initialization** - works on all types of Suno pages
-- **Minimal logging** - console logs only on errors or critical actions
+### Content script behavior (`content.js`)
 
-## 🚀 Installation
+- DOM observation: A single MutationObserver watches the document to initialize new UI fragments as Suno renders them dynamically.
+- Song rows: Each row is processed once to inject a small, isolated wrapper containing a Trash button. The button first attempts the native “Move to Trash” menu item (to preserve Suno’s Undo toast); if not available, it falls back to a direct API request via an injected script channel.
+- Label control: Specific header labels with exact text “Song Title” and “Workspace” are hidden to simplify the panel.
+- Workspace dropdown alignment: Whenever the dropdown appears, its width is set to match the Workspace button and its left/top are aligned with the button. This avoids guesswork in CSS and follows the component rather than screen breakpoints.
+- Create button spacing vs. Playbar: The Create row’s bottom margin is computed from the Playbar progress bar height increase over Tailwind’s `h-2` default (8px). Only the extra height is used, and the lift is capped at 80px to avoid excessive motion. The spacing recalculates on init, DOM mutations, resize, and scroll.
+- Advanced Options: The panel is forced open by removing collapse constraints; only the header/toggle row is hidden so the content remains accessible without an extra click.
 
-### For developers:
+Key principles:
+- Non-invasive: do not override platform logic; leverage native UI where possible
+- Deterministic selectors: prefer test IDs and structural selectors over brittle class chains
+- Defensive fallbacks: try native actions first, then degrade gracefully
+- Minimal global state: small, readable functions with local scope and explicit responsibilities
+
+### Styling (`styles.css`)
+
+- Cover sizing: All cover variants are normalized with `aspect-ratio` and `object-fit: cover` to avoid letterboxing and overflow.
+- Player overlays and controls: Play overlays are centered and sized for compact tiles; player control buttons have predictable dimensions. Visual centering nudges are applied where glyphs are optically off-center.
+- Horizontal tiles: Compact items have clamped text width, fixed image sizes, and button containers that don’t shrink; tile wrappers define item basis to prevent overlap.
+- Cursor policy: Only anchor tags display the pointer cursor; background-button UIs keep a non-pointer cursor for visual calm.
+- Workspace button: Styled consistently with surrounding controls; popup positioning is handled in JS for accuracy. The “Boost Creativity” aura button renders as a text button in both active and disabled states.
+
+### Background and popup
+
+- `background.js`: Injects or removes the stylesheet based on the stored “enabled” flag and tab URL. There is no network interception or header manipulation.
+- `popup.js`: Toggles the “enabled” state and reloads the active Suno tab to apply CSS/logic.
+
+## Installation
+
+### Developer install
 1. Clone the repository
    ```bash
    git clone https://github.com/asmetanka/suno-ui-booster.git
    cd suno-ui-booster
    ```
 2. Open Chrome → `chrome://extensions/`
-3. Enable "Developer mode"
-4. Click "Load unpacked extension"
-5. Select the extension folder
+3. Enable Developer mode
+4. Click “Load unpacked” and select the project folder
 
-### For users:
-Install from the Chrome Web Store
-https://chromewebstore.google.com/detail/hcocfjdjhiiolcmplgfkgkifnjeeodcl?utm_source=item-share-cb
+### Chrome Web Store
+Install from the Chrome Web Store: `https://chromewebstore.google.com/detail/hcocfjdjhiiolcmplgfkgkifnjeeodcl`
 
-## 🔧 Configuration
-
-### Enable/disable:
-- **Via popup**: Click the extension icon
-- **Via Chrome settings**: `chrome://extensions/` → "Suno UI Booster"
-
-### Debugging:
-Only errors are logged by default. If you need more diagnostics, please open an issue.
-
-## 🔍 Troubleshooting
-
-### Extension not working:
-1. **Check installation** - make sure extension is enabled
-2. **Check page** - make sure you're on suno.ai
-3. **Refresh page** (F5) - sometimes reload is needed
-
-### Trash button not appearing:
-1. Ensure extension is enabled in popup
-2. Refresh the page to re-initialize
-
-### Visual improvements not applied:
-1. Check that styles are enabled in popup
-2. Reload the Suno tab
-
-## 📞 Support
-
-If something doesn't work:
-1. **Check GitHub Issues** - problem might be already known
-2. **Contact developer**:
-   - Email: hello@smetanka.me
-   - GitHub: https://github.com/asmetanka/suno-ui-booster
-3. **Provide information**:
-   - Browser version
-   - Extension version
-   - Console logs
-   - Screenshot of the problem
-
-## 📁 Project Structure
-
+## Project structure
 ```
 suno-ui-booster/
-├── manifest.json          # Extension configuration
-├── content.js            # Main logic
-├── background.js         # Background processes
-├── popup.html           # Popup window
-├── popup.js             # Popup logic
-├── styles.css           # CSS styles
-├── rules.json           # Network request rules
-├── icon.png             # Extension icon
-├── logo.png             # Logo
-├── PRIVACY.md           # Privacy policy
-└── LICENSE              # MIT license
+├── manifest.json          # Extension config and permissions
+├── content.js             # In-page logic and DOM integration
+├── background.js          # CSS injection based on storage state and tabs
+├── popup.html / popup.js  # Toggle UI and state handler
+├── styles.css             # Deterministic UI overrides and components
+├── PRIVACY.md             # Privacy policy
+├── LICENSE                # MIT license
+└── assets (icons)
 ```
 
-## 🔧 Technical Details
+## Permissions
+- `scripting`: insert/remove styles on Suno pages
+- `activeTab`: operate on the current tab
+- `storage`: persist extension enabled state
+- `host_permissions`: limited to Suno domains
 
-### **Smart button placement system:**
-- **Strategy 1**: After "Dislike" button
-- **Strategy 2**: After "Like" button  
-- **Strategy 3**: At the end of button container
-- **Strategy 3.5**: In flex containers with multiple buttons
-- **Strategy 4**: Fallback - after "More Options" button
+## Notes on reliability
+- No CSP rewriting or declarativeNetRequest rules are used
+- No overriding of native constructors (e.g., `document.createElement`)
+- Mutation observers are scoped and compact; JS and CSS compete minimally
 
-### **Loading wait system:**
-- Check `document.readyState === 'complete'`
-- Wait 3-8 seconds for complete resource loading
-- Search for loading elements (`loading`, `spinner`, `skeleton`)
-- Multiple initialization strategies
+## Support
+- Email: `hello@smetanka.me`
+- GitHub: `https://github.com/asmetanka/suno-ui-booster`
 
-### **Debug information:**
-- DOM structure logging
-- Track all buttons on page
-- Information about chosen placement strategy
-- Detailed error diagnostics
-
-## 🎨 CSS Improvements
-
-### **Main styles:**
-```css
-/* Square album previews */
-img[alt*="Song Image"] {
-    border-radius: 8px !important;
-    aspect-ratio: 1 !important;
-}
-
-/* Larger buttons */
-button[aria-label*="More Options"] {
-    min-width: 40px !important;
-    min-height: 40px !important;
-}
-
-/* Trash button */
-.trash-button-custom {
-    position: relative !important;
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50% !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    transition: all 0.2s ease !important;
-}
-```
-
-## 🔍 Debugging
-
-<!-- Debug message examples removed to keep console clean policy -->
-
-## 📋 Permissions
-
-### **Required permissions:**
-- `scripting` - apply/remove styles
-- `activeTab` - detect and reload the current tab after toggle
-- `storage` - save enabled/disabled state
-- `host_permissions` - access only to suno.ai / suno.com
-
-### **Permission justification:**
-All permissions are used strictly for improving Suno.ai interface and do not collect any user data.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a branch for new feature
-3. Make changes
-4. Create Pull Request
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🔗 Links
-
-- [Suno.ai](https://suno.ai) - main service
-- [Chrome Web Store](https://chrome.google.com/webstore) - for publishing
-- [GitHub Issues](https://github.com/asmetanka/suno-ui-booster/issues) - for bugs and suggestions
-
----
-
-**Created with ❤️ to improve Suno.ai experience**
