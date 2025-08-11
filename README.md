@@ -17,6 +17,7 @@ Enhances Suno’s UI with reliable tooling, clean styling, and small workflow co
 - Styles panel: “Exclude styles” input relocated below the textarea, with rounded-2xl and matching paddings
 - Tabs Auto/Write Lyrics: soft backdrop, fixed widths (2×96px)
 - Field spacing: controlled gap between “Song Title” and “Workspace”
+- Update notifications: red dot on the extension icon when an update is available; popup shows a short banner with an UPDATE action. No indicators are shown once the latest version is installed.
 
 ## How it works
 
@@ -50,8 +51,8 @@ Key principles:
 
 ### Background and popup
 
-- `background.js`: Injects or removes the stylesheet based on the stored “enabled” flag and tab URL. There is no network interception or header manipulation.
-- `popup.js`: Toggles the “enabled” state and reloads the active Suno tab to apply CSS/logic.
+- `background.js`: Injects or removes the stylesheet based on the stored “enabled” flag and tab URL. Also listens for `onUpdateAvailable` to display a red dot on the action icon (or badge fallback) until acknowledged/applied. There is no network interception or header manipulation.
+- `popup.js`: Toggles the “enabled” state and reloads the active Suno tab to apply CSS/logic. When an update is available, shows a small banner with an UPDATE button; after installing (or on latest), no banners are shown.
 
 ## Installation
 
@@ -101,6 +102,7 @@ suno-ui-booster/
   - Moved “Exclude styles” input below the textarea with proper paddings and radius; aligned search icon
   - Tabs Auto/Write Lyrics: added backdrop and fixed widths (192px total)
   - Removed pointer cursor from More Options; tightened several paddings to 40px controls where applicable
+  - Update notifications: red dot on toolbar icon when an update is available; popup banner with UPDATE action; no banner/dot when on latest
 
 ## Support
 - Email: `hello@smetanka.me`
