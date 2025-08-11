@@ -500,8 +500,10 @@ async function handleExtensionStateChange(enabled) {
         removeAllTrashButtons();
         showAllShareButtons();
         unhideHeaderLabels(document.body);
+        resetAdvancedOptions(document.body);
         resetWorkspaceDropdowns(document.body);
         resetCreateRowBottomMargin(document.body);
+    resetVocalGenderRowStyles(document.body);
         // Disconnect observers
         try { domObserverRef && domObserverRef.disconnect(); } catch (_) {}
         try { advancedObserverRef && advancedObserverRef.disconnect(); } catch (_) {}
@@ -622,6 +624,10 @@ async function initialize() {
         adjustWorkspaceDropdowns(document);
         // Set Create row bottom margin depending on bottom-fixed player presence
         adjustCreateRowBottomMargin(document);
+        // Ensure Vocal Gender row has transparent background only for that block
+        ensureVocalGenderRowStyles(document.body);
+        // Move "Exclude styles" field into Styles panel bottom with matching paddings
+        ensureExcludeStylesPlacement(document.body);
         // Schedule a second pass after layout settles
         setTimeout(() => adjustCreateRowBottomMargin(document), 200);
 
@@ -637,6 +643,8 @@ async function initialize() {
         // Observe future DOM changes to re-apply expansion
         const advancedObserver = new MutationObserver(() => {
           ensureAdvancedOptions(document.body);
+          ensureVocalGenderRowStyles(document.body);
+          ensureExcludeStylesPlacement(document.body);
         });
         advancedObserverRef = advancedObserver;
         advancedObserver.observe(document.body, { childList: true, subtree: true });
@@ -684,13 +692,15 @@ function ensureAdvancedOptions(root = document) {
       const contentRow = headerRow && headerRow.nextElementSibling instanceof HTMLElement ? headerRow.nextElementSibling : null;
 
       if (contentRow) {
-        // Remove collapsing constraints and make it visible
+        // Remove collapsing constraints, make it visible, and remove vertical padding for this block only
         contentRow.classList.remove('max-h-0');
-        contentRow.classList.add('py-2');
+        contentRow.classList.remove('py-2');
         contentRow.style.setProperty('max-height', 'none', 'important');
         contentRow.style.setProperty('height', 'auto', 'important');
         contentRow.style.setProperty('overflow', 'visible', 'important');
         contentRow.style.setProperty('opacity', '1', 'important');
+        contentRow.style.setProperty('padding-top', '0px', 'important');
+        contentRow.style.setProperty('padding-bottom', '0px', 'important');
       }
 
       // Hide only the header row (title + chevron) so the panel looks always expanded
@@ -699,6 +709,36 @@ function ensureAdvancedOptions(root = document) {
       }
 
       wrapper.setAttribute('data-suno-adv-processed', '1');
+    });
+  } catch (_) {
+    // no-op
+  }
+}
+
+/** Restore Advanced Options default header/content when disabling the extension. */
+function resetAdvancedOptions(root = document) {
+  try {
+    const wrappers = Array.from(root.querySelectorAll('.h-auto.rounded-[20px].bg-background-secondary.p-2[data-suno-adv-processed="1"]'));
+    wrappers.forEach((wrapper) => {
+      if (!(wrapper instanceof HTMLElement)) return;
+      // Find heading again
+      const heading = wrapper.querySelector('span.font-medium');
+      const headerRow = heading ? heading.closest('div') : null;
+      const contentRow = headerRow && headerRow.nextElementSibling instanceof HTMLElement ? headerRow.nextElementSibling : null;
+      if (headerRow instanceof HTMLElement) {
+        headerRow.style.removeProperty('display');
+      }
+      if (contentRow) {
+        // Restore default paddings by removing our inline overrides and re-adding typical py-2
+        contentRow.classList.add('py-2');
+        contentRow.style.removeProperty('padding-top');
+        contentRow.style.removeProperty('padding-bottom');
+        contentRow.style.removeProperty('max-height');
+        contentRow.style.removeProperty('height');
+        contentRow.style.removeProperty('overflow');
+        contentRow.style.removeProperty('opacity');
+      }
+      wrapper.removeAttribute('data-suno-adv-processed');
     });
   } catch (_) {
     // no-op
@@ -893,6 +933,101 @@ function resetCreateRowBottomMargin(root = document) {
   try {
     const row = findCreateRow(root);
     if (row) row.style.removeProperty('margin-bottom');
+  } catch (_) {
+    // no-op
+  }
+} 
+
+/**
+ * Ensure the Vocal Gender row (by label match) has transparent background only for that block.
+ */
+function ensureVocalGenderRowStyles(root = document) {
+  try {
+    const rows = root.querySelectorAll('div.flex.flex-1.items-center.justify-between');
+    for (const row of rows) {
+      if (!(row instanceof HTMLElement)) continue;
+      const label = row.querySelector('span.text-sm');
+      const text = (label?.textContent || '').trim();
+      if (text === 'Vocal Gender') {
+        row.style.setProperty('background-color', 'transparent', 'important');
+        row.style.setProperty('padding-right', '8px', 'important');
+      }
+    }
+  } catch (_) {
+    // no-op
+  }
+}
+
+/** Remove inline background override for the Vocal Gender row. */
+function resetVocalGenderRowStyles(root = document) {
+  try {
+    const rows = root.querySelectorAll('div.flex.flex-1.items-center.justify-between');
+    for (const row of rows) {
+      if (!(row instanceof HTMLElement)) continue;
+      const label = row.querySelector('span.text-sm');
+      const text = (label?.textContent || '').trim();
+      if (text === 'Vocal Gender') {
+        row.style.removeProperty('background-color');
+        row.style.removeProperty('padding-right');
+      }
+    }
+  } catch (_) {
+    // no-op
+  }
+}
+
+/**
+ * Ensure the "Exclude styles" input block resides at the bottom of Styles panel with matching paddings.
+ */
+function ensureExcludeStylesPlacement(root = document) {
+  try {
+    // Find the input by its placeholder
+    const input = root.querySelector('input[placeholder="Exclude styles"]');
+    if (!input || !(input instanceof HTMLElement)) return;
+
+    // Find the Styles header to anchor reliably, then the panel root
+    const stylesHeader = Array.from(root.querySelectorAll('div.flex.h-\\[60px\\].flex-row.items-center.px-4')).find((el) =>
+      /\bStyles\b/i.test((el.textContent || '').trim())
+    );
+    if (!(stylesHeader instanceof HTMLElement)) return;
+    const stylesPanel = stylesHeader.closest('div.relative.w-full.overflow-hidden');
+    if (!(stylesPanel instanceof HTMLElement)) return;
+
+    const inputWrapper = input.closest('div.relative.h-auto.w-auto') || input.parentElement;
+    if (!(inputWrapper instanceof HTMLElement)) return;
+
+    // Content column of the panel where we want the input as the very last block (below all controls)
+    const contentColumn = stylesPanel.querySelector('div.flex.h-auto.max-h-\\[8000px\\].flex-col');
+    if (!(contentColumn instanceof HTMLElement)) return;
+
+    // Place the input as the LAST child of content column, so it sits visually under the textarea card and its internal buttons
+    if (contentColumn.lastElementChild !== inputWrapper) {
+      contentColumn.appendChild(inputWrapper);
+    }
+
+    // Match side paddings with other controls
+    inputWrapper.style.setProperty('margin-left', '8px', 'important');
+    inputWrapper.style.setProperty('margin-right', '8px', 'important');
+    inputWrapper.style.setProperty('margin-top', '8px', 'important');
+    inputWrapper.style.setProperty('width', 'calc(100% - 16px)', 'important');
+    inputWrapper.style.setProperty('position', 'relative', 'important');
+    inputWrapper.style.setProperty('box-sizing', 'border-box', 'important');
+
+    // Input visual parity with rounded-2xl and full width; transparent background to match above block
+    input.classList.remove('rounded-[10px]');
+    input.classList.add('rounded-2xl');
+    input.classList.remove('bg-background-primary');
+    input.style.setProperty('background-color', 'transparent', 'important');
+    input.style.setProperty('width', '100%', 'important');
+    input.style.setProperty('box-sizing', 'border-box', 'important');
+
+    // Ensure the search icon stays positioned correctly inside the wrapper
+    const icon = inputWrapper.querySelector('svg');
+    if (icon instanceof HTMLElement) {
+      icon.style.setProperty('left', '16px', 'important');
+      icon.style.setProperty('top', '50%', 'important');
+      icon.style.setProperty('transform', 'translateY(-50%)', 'important');
+    }
   } catch (_) {
     // no-op
   }

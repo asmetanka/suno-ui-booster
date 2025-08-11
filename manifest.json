@@ -2,19 +2,21 @@
   "manifest_version": 3,
   "name": "Suno UI Booster",
   "version": "1.3",
-  "description": "Cleaner Suno UI on create page: on‑track Trash button, bigger player controls, square covers, quick toggle.",
+  "description": "Cleaner Suno UI: on‑track Trash button, bigger player controls, square covers, quick toggle. Works only on Suno.",
   "permissions": [
     "scripting",
     "activeTab",
     "storage"
   ],
   "host_permissions": [
-    "https://*.suno.com/create*"
+    "*://*.suno.ai/*",
+    "*://*.suno.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://*.suno.com/create*"
+        "*://*.suno.ai/*",
+        "*://*.suno.com/*"
       ],
       "js": ["content.js"],
       "run_at": "document_end"
@@ -23,7 +25,7 @@
   "web_accessible_resources": [
     {
       "resources": ["injected.js"],
-      "matches": ["https://*.suno.com/*"]
+      "matches": ["*://*.suno.ai/*", "*://*.suno.com/*"]
     }
   ],
   "content_security_policy": {

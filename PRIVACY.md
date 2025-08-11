@@ -27,6 +27,7 @@ We do not collect, transmit, or store any personal data. The extension performs 
 Notes:
 - There is no use of `declarativeNetRequest`.
 - The extension does not alter network requests or server responses.
+ - Content scripts adjust only the DOM/CSS. No keystrokes or text entered in fields are read or transmitted.
 
 ## Security
 

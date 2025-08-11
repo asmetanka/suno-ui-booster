@@ -143,6 +143,7 @@ a[href="/account"] span {
 /* Shared styles for song list containers */
 .css-c1kosu,
 .css-1jkulof,
+.css-1fls2yz,
 .css-1btelbu,
 .css-1b51or {
     margin-left: 8px !important;
@@ -155,6 +156,7 @@ a[href="/account"] span {
 
 .css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
 .css-1jkulof .flex.flex-1.flex-row.items-center.gap-3,
+.css-1fls2yz .flex.flex-1.flex-row.items-center.gap-3,
 .css-1btelbu .flex.flex-1.flex-row.items-center.gap-3,
 .css-1b51or .flex.flex-1.flex-row.items-center.gap-3 {
     gap: 0px !important;
@@ -282,7 +284,8 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 }
 
 /* Small song items (e.g., in a horizontally scrollable list) */
-.css-1jkulof .line-clamp-1 {
+.css-1jkulof .line-clamp-1,
+.css-1fls2yz .line-clamp-1 {
     -webkit-line-clamp: 1 !important;
     line-clamp: 1 !important;
     white-space: nowrap !important;
@@ -292,13 +295,17 @@ img.object-fit.h-77px.w-56px.rounded-xl,
 }
 
 .css-1jkulof .chakra-stack.css-1bccw6h,
-.css-1jkulof .chakra-stack.css-1f0wxn3 {
+.css-1jkulof .chakra-stack.css-1f0wxn3,
+.css-1fls2yz .chakra-stack.css-1bccw6h,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 {
     max-width: 100px !important;
     overflow: hidden !important;
 }
 
 .css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1,
-.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
+.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
     max-width: 100px !important;
     width: 100% !important;
     overflow: hidden !important;
@@ -414,7 +421,7 @@ button[aria-label="More Options"],
     justify-content: center !important;
     border: none !important;
     outline: none !important;
-    cursor: pointer !important;
+    cursor: default !important;
     transition: background-color 0.2s ease !important;
     color: rgb(var(--rgb-foreground-primary)) !important;
 }
@@ -464,6 +471,12 @@ button[aria-label="More Options"].text-foreground-primary svg,
     color: rgb(var(--rgb-background-primary)) !important;
 }
 
+/* Ensure mask-based icons also adopt contrast color on active */
+button[aria-label="Playbar: Like"].text-foreground-primary,
+button[aria-label="Playbar: Dislike"].text-foreground-primary {
+  color: rgb(var(--rgb-background-primary)) !important;
+}
+
 /* Disabled state for trash button */
 .trash-button-custom:disabled {
     opacity: 0.5 !important;
@@ -478,11 +491,11 @@ button.rounded-full.border.border-border-primary {
     border: none !important;
 }
 
-/* Male/Female toggle buttons */
+/* Male/Female toggle buttons — generic fallback styles */
 button.bg-transparent.text-foreground-primary\/30 {
-    background-color: rgb(var(--rgb-background-tertiary)) !important;
+  background-color: transparent !important;
     border: none !important;
-    border-radius: 8px !important;
+  border-radius: 9999px !important;
     min-width: 80px !important;
     justify-content: center !important;
 }
@@ -492,6 +505,90 @@ button.bg-background-fog-thick {
     color: white !important;
     min-width: 80px !important;
     justify-content: center !important;
+  border-radius: 9999px !important;
+}
+
+/* Male/Female toggle buttons — mimic 'Write Lyrics' pill only inside the Vocal Gender row */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  border-radius: 9999px !important; /* rounded-full */
+  height: 36px !important;
+  min-height: 36px !important;
+  box-sizing: border-box !important;
+  padding: 0 12px !important; /* enforce constant inner spacing */
+  min-width: 96px !important; /* keep width stable even when site tweaks */
+  color: rgb(var(--rgb-white)) !important; /* default: white text */
+}
+/* Freeze geometry on pressed/active/selected; keep our overlay-driven look */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"],
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:active,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary {
+  background: transparent !important;
+  padding: 0 12px !important; /* keep same width on active */
+  height: 36px !important;
+  min-height: 36px !important;
+  min-width: 96px !important;
+  border-radius: 9999px !important;
+}
+
+/* Ensure inner padding stays constant even on pressed/active */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"] > span,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:active > span,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary > span {
+  padding: 0 12px !important;
+}
+
+/* When site toggles rounded-lg on active, keep pills */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.rounded-lg {
+  border-radius: 9999px !important;
+}
+
+/* Neutralize site-provided active background to keep constant pill width */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.bg-background-tertiary {
+  background: transparent !important;
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:hover {
+  color: rgb(var(--rgb-white)) !important; /* keep white on hover */
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button > span {
+  position: relative !important;
+  z-index: 20 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 0 12px !important;
+  width: 100% !important;
+  height: 100% !important;
+  white-space: nowrap !important;
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  border-radius: 9999px !important;
+  background: rgb(255 255 255 / 0.1) !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+/* Selected state variants */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"]::after,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary::after {
+  background: rgb(var(--rgb-accent-pink)) !important; /* active: pink background */
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"],
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary {
+  color: rgb(var(--rgb-white)) !important; /* active: keep white text */
 }
 
 div.flex.flex-row.gap-8 {
@@ -539,6 +636,28 @@ a[aria-label="Playbar: Comment"] {
     margin-right: 4px !important;
     border: none !important;
     outline: none !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+/* Tabs container backdrop: Auto / Write Lyrics block */
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm {
+  background-color: color-mix(in oklab, rgb(var(--rgb-white) / 1) 5%, transparent) !important;
+}
+
+/* Tabs container and buttons fixed widths */
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm {
+  width: 192px !important;
+  min-width: 192px !important;
+  max-width: 192px !important;
+}
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm > button {
+  flex: 0 0 96px !important;
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
 }
 
 /* ========================================
@@ -606,6 +725,11 @@ a[aria-label="Playbar: Comment"] {
     box-shadow: none !important;
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: rgb(var(--rgb-accent-pink-onPrimary)) !important;
+}
+
+/* Workspace row: remove top border/contour */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  border-top: 0 !important;
 }
 
 .flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button:hover {
@@ -837,8 +961,16 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
   align-items: center !important;
   justify-content: center !important;
 }
+[data-testid="song-row-play-button"] [aria-label="Pause"] {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 
-[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+[data-testid="song-row-play-button"] [aria-label="Play"]::before,
+[data-testid="song-row-play-button"] [aria-label="Pause"]::before {
   content: '' !important;
   position: absolute !important;
   left: 50% !important;
@@ -848,20 +980,22 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
   height: 36px !important;
   border-radius: 50% !important;
   background: rgba(0, 0, 0, 0.35) !important;
-  z-index: 1 !important;
+  z-index: 5 !important;
   transition: all 0.15s ease-in-out !important;
 }
 
-[data-testid="song-row-play-button"] [aria-label="Play"] svg {
+[data-testid="song-row-play-button"] [aria-label="Play"] svg,
+[data-testid="song-row-play-button"] [aria-label="Pause"] svg {
     position: relative !important;
-  z-index: 2 !important;
+  z-index: 6 !important;
   width: 20px !important;
   height: 20px !important;
   transform: translateX(1.2px) !important; /* slight right shift for optical centering */
 }
 
 /* Hover feedback */
-[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before {
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before,
+[data-testid="song-row-play-button"] [aria-label="Pause"]:hover::before {
   background: rgba(0, 0, 0, 0.45) !important;
   transform: translate(-50%, -50%) scale(1.05) !important;
 }
@@ -872,6 +1006,7 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
   min-height: 40px !important;
   height: 40px !important;
   padding: 0 14px !important;
+  color: rgb(var(--rgb-white)) !important; /* ensure numbers/text are white */
 }
 
 .mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button span {
@@ -981,6 +1116,17 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
   background: rgba(0, 0, 0, 0.35) !important;
 }
 
+/* Ensure dark circular backdrop always appears on hover across all song rows */
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Pause"] {
+  opacity: 1 !important;
+}
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Play"]::before,
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Pause"]::before {
+  background: rgba(0, 0, 0, 0.45) !important;
+  opacity: 1 !important;
+}
+
 /* Keep action-bar custom icons (heart/cross) without dark backdrop */
 .mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::before,
 .mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::before {
@@ -1049,18 +1195,22 @@ img[role="button"] {
 }
 
 /* Fix spacing/overlap in small horizontal rows (css-1jkulof) */
-.css-1jkulof .relative.flex.w-full.items-center {
+.css-1jkulof .relative.flex.w-full.items-center,
+.css-1fls2yz .relative.flex.w-full.items-center {
   flex-wrap: nowrap !important;
 }
 
-.css-1jkulof .flex-1.flex.flex-row {
+.css-1jkulof .flex-1.flex.flex-row,
+.css-1fls2yz .flex-1.flex.flex-row {
   min-width: 0 !important;
   gap: 6px !important;
     align-items: center !important;
 }
 
 .css-1jkulof .chakra-stack.css-1bccw6h,
-.css-1jkulof .chakra-stack.css-1f0wxn3 {
+.css-1jkulof .chakra-stack.css-1f0wxn3,
+.css-1fls2yz .chakra-stack.css-1bccw6h,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 {
   flex: 1 1 auto !important;
   min-width: 0 !important;
   max-width: none !important;
@@ -1068,14 +1218,18 @@ img[role="button"] {
 }
 
 .css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2,
-.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1 {
+.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 .gap-2,
+.css-1fls2yz .chakra-stack.css-1bccw6h .line-clamp-1 {
   min-width: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 .css-1jkulof .css-1fuckjf,
-.css-1jkulof .css-1kcq9v9 {
+.css-1jkulof .css-1kcq9v9,
+.css-1fls2yz .css-1fuckjf,
+.css-1fls2yz .css-1kcq9v9 {
   flex: 0 0 auto !important;
   margin-left: 6px !important;
 }
@@ -1085,7 +1239,8 @@ img[role="button"] {
   gap: 8px !important;
 }
 /* Small-card variant support */
-[data-testid="song-row"].css-1jkulof .css-1kcq9v9 .flex.flex-row.gap-1 {
+[data-testid="song-row"].css-1jkulof .css-1kcq9v9 .flex.flex-row.gap-1,
+[data-testid="song-row"].css-1fls2yz .css-1kcq9v9 .flex.flex-row.gap-1 {
   gap: 6px !important;
 }
 
@@ -1095,45 +1250,53 @@ img[role="button"] {
 }
 
 /* Do not add extra margin for trash wrapper on small horizontal cards */
-[data-testid="song-row"].css-1jkulof .suno-booster-trash-wrapper {
+[data-testid="song-row"].css-1jkulof .suno-booster-trash-wrapper,
+[data-testid="song-row"].css-1fls2yz .suno-booster-trash-wrapper {
   margin-inline-start: 4px !important;
 }
 
 /* Make small horizontal card thumbnails square and contained */
-[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] {
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] {
   min-width: 42px !important;
   min-height: 42px !important;
 }
 
-[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative {
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative,
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] .relative {
   width: 42px !important;
   height: 42px !important;
   aspect-ratio: 1 / 1 !important;
   overflow: hidden !important;
 }
 
-[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative > img[alt="Song Image"] {
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative > img[alt="Song Image"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] .relative > img[alt="Song Image"] {
   width: 42px !important;
   height: 42px !important;
   aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
   display: block !important;
+  border: none !important;
 }
 
 /* Ensure horizontal small song-row occupies full 230px tile width */
-.w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
   width: 300px !important;
   max-width: 300px !important;
   display: block !important;
 }
 
 /* Make inner wrapper stretch to full width for consistent hover area */
-.w-\[230px\] > [data-testid="song-row"].css-1jkulof > .relative {
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof > .relative,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz > .relative {
   width: 100% !important;
 }
 
 /* Horizontal 230px tile: full interactive/hover area */
-.w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
   width: 300px !important;
   max-width: 300px !important;
   box-sizing: border-box !important;
@@ -1155,8 +1318,14 @@ img[role="button"] {
   z-index: 3 !important;
 }
 
+/* Hide play overlay by default for small horizontal rows; reveal on hover */
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] [aria-label="Play"] {
+  opacity: 0 !important;
+}
 /* When hovering the whole row, show the play overlay too */
-.w-\[230px\] > [data-testid="song-row"].css-1jkulof:hover [data-testid="song-row-play-button"] [aria-label="Play"] {
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof:hover [data-testid="song-row-play-button"] [aria-label="Play"],
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz:hover [data-testid="song-row-play-button"] [aria-label="Play"] {
     opacity: 1 !important;
 }
 
@@ -1169,7 +1338,8 @@ img[role="button"] {
 }
 
 /* Inner row should fit its tile wrapper to avoid overflow */
-.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1jkulof {
+.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
   width: 100% !important;
   max-width: 100% !important;
 }
@@ -1177,6 +1347,8 @@ img[role="button"] {
 /* Reduce left padding to 10px for the Song Title row only */
 .flex.w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.py-2.pr-\[10px\].pl-6:has(> .flex-1 > input[placeholder="Enter song title"]) {
   padding-left: 10px !important;
+  padding-bottom: 0 !important;
+  margin-bottom: -6px !important;
 }
 
 /* Reduce left padding to 10px for the Workspace row only */
@@ -1187,6 +1359,7 @@ img[role="button"] {
 /* Workspace row: set total row height to 64px so 8px top/bottom around 48px button */
 .flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
   height: 64px !important;
+  margin-top: calc(var(--spacing) * 2) !important;
 }
 
 /* Workspace row button: make visual height exactly 48px and center content */
@@ -1230,6 +1403,32 @@ button[aria-label^="Playbar"] > span > svg {
 button[aria-label="Playbar: Like"] > span > svg,
 button[aria-label="Playbar: Dislike"] > span > svg {
   transform: translateX(1.2px) !important;
+}
+
+/* Replace Like icon with Heart and Dislike with Cross via masks */
+button[aria-label="Playbar: Like"] > span > svg { display: none !important; }
+button[aria-label="Playbar: Like"] > span::after {
+  content: '' !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: currentColor !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  display: block !important;
+  margin: 0 !important;
+  transform: translateX(1.2px) !important; /* optical centering */
+}
+button[aria-label="Playbar: Dislike"] > span > svg { display: none !important; }
+button[aria-label="Playbar: Dislike"] > span::after {
+  content: '' !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: currentColor !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  display: block !important;
+  margin: 0 !important;
+  transform: translateX(1.2px) !important; /* optical centering */
 }
 
 /* Hide icons in the two action buttons (Full Song / By Line) in the controls row */
@@ -1281,8 +1480,8 @@ button.before\:border-border-primary.rounded-full.aspect-square {
 button.before\:border-border-primary.rounded-full.aspect-square > span {
   width: 100% !important;
   height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
+    display: flex !important;
+    align-items: center !important;
   justify-content: center !important;
 }
 button.before\:border-border-primary.rounded-full.aspect-square > span > svg {
@@ -1293,4 +1492,13 @@ button.before\:border-border-primary.rounded-full.aspect-square > span > svg {
 .h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-secondary,
 .h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-tertiary {
   color: rgb(255, 255, 255) !important;
+}
+
+/* ========================================
+   RADIUS OVERRIDES
+   ======================================== */
+
+/* Upgrade any 10px rounded blocks to design token 2xl radius */
+.rounded-\[10px\] {
+  border-radius: var(--radius-2xl) !important;
 }
