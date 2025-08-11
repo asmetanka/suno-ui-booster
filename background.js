@@ -25,6 +25,86 @@ async function updateStyles(tabId, isEnabled) {
   }
 }
 
+/** Compose an action icon with a red dot in the top-right corner (48/128px). */
+async function setActionIconRedDot() {
+  try {
+    const baseUrl = chrome.runtime.getURL('icon.png');
+    const blob = await (await fetch(baseUrl)).blob();
+    const bitmap = await createImageBitmap(blob);
+    const sizes = [48, 128];
+    const imageDataMap = {};
+    for (const size of sizes) {
+      const canvas = new OffscreenCanvas(size, size);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0, size, size);
+      // Red dot
+      const r = Math.max(4, Math.round(size * 0.14));
+      const cx = size - r - 2;
+      const cy = r + 2;
+      ctx.fillStyle = '#ff4d4f';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      imageDataMap[size] = ctx.getImageData(0, 0, size, size);
+    }
+    await chrome.action.setIcon({ imageData: imageDataMap });
+  } catch (error) {
+    console.warn('Suno UI Booster: setActionIconRedDot failed, falling back to badge.', error);
+    // Fallback: small badge dot (single period)
+    try {
+      await chrome.action.setBadgeText({ text: '•' });
+      await chrome.action.setBadgeBackgroundColor({ color: '#ff4d4f' });
+    } catch (_) {}
+  }
+}
+
+/** Restore default action icon from packaged icons. */
+async function resetActionIconDefault() {
+  try {
+    await chrome.action.setIcon({ path: { '48': 'icon.png', '128': 'icon.png' } });
+  } catch (_) {}
+}
+
+/**
+ * When the extension finishes installing/updating to the latest version,
+ * ensure no badges/dots are shown (user is already on latest).
+ */
+chrome.runtime.onInstalled.addListener(async (details) => {
+  try {
+    const currentVersion = chrome.runtime.getManifest().version;
+    // Clear any pending update indicators since we're on latest now
+    await chrome.action.setBadgeText({ text: '' });
+    await resetActionIconDefault();
+    await chrome.storage.sync.set({ updateAvailable: false, availableVersion: '', lastSeenVersion: currentVersion });
+  } catch (error) {
+    console.error('Suno UI Booster: onInstalled cleanup error:', error);
+  }
+});
+
+// Detect updates available but not yet applied
+chrome.runtime.onUpdateAvailable.addListener(async (details) => {
+  try {
+    await chrome.storage.sync.set({ updateAvailable: true, availableVersion: details.version });
+    await setActionIconRedDot();
+  } catch (error) {
+    console.error('Suno UI Booster: onUpdateAvailable error:', error);
+  }
+});
+
+// On service worker start, check for updates once (non-throttled if allowed)
+async function checkForUpdateOnce() {
+  try {
+    chrome.runtime.requestUpdateCheck((status, details) => {
+      if (status === 'update_available') {
+        chrome.storage.sync.set({ updateAvailable: true, availableVersion: details.version });
+        setActionIconRedDot();
+      }
+    });
+  } catch (_) {}
+}
+
+checkForUpdateOnce();
+
 /**
  * On tab load completion for Suno domains, apply CSS if enabled in storage.
  */
