@@ -154,6 +154,23 @@ a[href="/account"] span {
     padding-bottom: 12px !important;
 }
 
+/* Playing track row background: dark pink tint */
+[data-testid="song-row"].css-1btelbu {
+  background-color: rgb(var(--rgb-strawberry-100)) !important;
+}
+
+/* Selected track row background (scope to selected row only) */
+[role="row"][aria-selected="true"] [data-testid="song-row"],
+[data-selected] [data-testid="song-row"] {
+  background: rgb(var(--rgb-dumbo-100)) !important;
+}
+
+/* Selected + playing track row: brighter pink */
+[role="row"][aria-selected="true"] [data-testid="song-row"].css-1btelbu,
+[data-selected] [data-testid="song-row"].css-1btelbu {
+  background: rgb(var(--rgb-strawberry-200)) !important;
+}
+
 .css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
 .css-1jkulof .flex.flex-1.flex-row.items-center.gap-3,
 .css-1fls2yz .flex.flex-1.flex-row.items-center.gap-3,
@@ -177,11 +194,6 @@ img[alt="Song Image"]:not(.css-gkadxh) {
 .css-1btelbu,
 .css-1b51or {
     margin-left: 8px !important;
-}
-
-.css-1btelbu .flex.flex-1.flex-row.items-center.gap-3,
-.css-1b51or .flex.flex-1.flex-row.items-center.gap-3 {
-    gap: 0px !important;
 }
 
 .css-1twx8fn {
@@ -625,6 +637,120 @@ a[aria-label="Playbar: Comment"] {
     display: none !important;
 }
 
+/* Song row textual action buttons (Edit/Publish): transparent bg, primary text color */
+/* Bottom action group inside the row */
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button::before,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button > span,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button > span * {
+  color: inherit !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button[disabled] {
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Top action cluster near like/dislike */
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]):hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]):active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Publish button: pink hover like delete (bottom action group) */
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:nth-child(2):not([aria-label]):not([disabled]):hover,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:last-child:not([aria-label]):not([disabled]):hover {
+  background-color: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:nth-child(2):not([aria-label]):not([disabled]):active,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:last-child:not([aria-label]):not([disabled]):active {
+  background-color: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* Publish button: pink hover like delete (top action cluster) */
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 > button:not([aria-label]):first-child:not([disabled]):hover,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 .css-1hohgv6 > button:not([aria-label]):first-of-type:not([disabled]):hover {
+  background-color: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 > button:not([aria-label]):first-child:not([disabled]):active,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 .css-1hohgv6 > button:not([aria-label]):first-of-type:not([disabled]):active {
+  background-color: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* Extra robust: Publish identified by whitespace-nowrap class (top and bottom) */
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label]):not([disabled]):hover {
+  background: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label]):not([disabled]):active {
+  background: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label])::before,
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label])::before,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) > span,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) > span * {
+  color: inherit !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button[disabled]:not([aria-label]) {
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Fallback: target any textual action button inside song row that still has bg-background-tertiary */
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]):hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]):active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label])::before,
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) > span,
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) > span * {
+  color: inherit !important;
+}
+
 
 /* ========================================
    BUTTON GROUPS & TABS
@@ -680,7 +806,7 @@ a[aria-label="Playbar: Comment"] {
 
 /* Control settings panel styling */
 .m-4.rounded-md.bg-background-tertiary.p-4.font-sans {
-    background-color: rgb(var(--rgb-strawberry-400)) !important;
+    background-color: rgb(var(--rgb-strawberry-100)) !important;
 }
 
 .m-4.rounded-md.bg-background-tertiary.p-4.font-sans .text-xs {
@@ -1236,6 +1362,14 @@ img[role="button"] {
 
 /* Increase gap from 4px to 6px for icon row inside song-row */
 [data-testid="song-row"].css-c1kosu .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Keep the same gap for the non-selected large row variant to avoid jump on selection */
+[data-testid="song-row"].css-1b51or .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Keep the same gap for the playing large row variant to avoid jump on play */
+[data-testid="song-row"].css-1btelbu .css-1kcq9v9 .flex.flex-row.gap-1 {
   gap: 8px !important;
 }
 /* Small-card variant support */

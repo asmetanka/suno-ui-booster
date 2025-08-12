@@ -18,6 +18,9 @@ Enhances Suno’s UI with reliable tooling, clean styling, and small workflow co
 - Tabs Auto/Write Lyrics: soft backdrop, fixed widths (2×96px)
 - Field spacing: controlled gap between “Song Title” and “Workspace”
 - Update notifications: red dot on the extension icon when an update is available; popup shows a short banner with an UPDATE action. No indicators are shown once the latest version is installed.
+- Row state colors: selected rows use `--rgb-dumbo-100`, playing rows use `--rgb-strawberry-100`, and selected+playing rows use brighter `--rgb-strawberry-200` for clear emphasis
+- Action buttons (Edit/Publish): pill radius, translucent background `rgba(255,255,255,0.1)`, white text; Publish highlights in pink on hover/active with intensity matched to delete
+- Like/Dislike spacing is stable (8px) across normal, selected and playing variants of the row
 
 ## How it works
 
@@ -48,6 +51,9 @@ Key principles:
 - Playbar icons: Heart (Like) and Cross (Dislike) via masks with proper active-state contrast; optically centered.
 - Tabs Auto/Write Lyrics: subtle glassy backdrop and fixed widths.
 - Vocal Gender buttons: white text by default; active state shows pink backdrop; consistent pill width and no pointer cursor.
+- Row backgrounds: selected `--rgb-dumbo-100`; playing `--rgb-strawberry-100`; selected+playing `--rgb-strawberry-200`.
+- Edit/Publish buttons: pill (`border-radius: 9999px`), `background: rgba(255,255,255,0.1)`, white text, and shared hover/active ramps; for Publish specifically, hover/active are pink-tinted to mirror delete feedback.
+- Button icon cluster: Like/Dislike gap fixed to 8px so layout doesn’t jump between row states.
 
 ### Background and popup
 
@@ -104,6 +110,9 @@ suno-ui-booster/
   - Removed pointer cursor from More Options; tightened several paddings to 40px controls where applicable
   - Update notifications: red dot on toolbar icon when an update is available; popup banner with UPDATE action; no banner/dot when on latest
   - Advanced Options: panel is always expanded by removing collapse constraints; only the header/toggle row is hidden to keep content accessible without an extra click
+  - Row state coloring: selected (`--rgb-dumbo-100`), playing (`--rgb-strawberry-100`), selected+playing (`--rgb-strawberry-200`)
+  - Edit/Publish buttons: pill shape with translucent background and white text; Publish has pink hover/active
+  - Like/Dislike icon spacing unified to 8px across row states
 
 ## Support
 - Email: [hello@smetanka.me](mailto:hello@smetanka.me)
