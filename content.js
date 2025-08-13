@@ -109,6 +109,36 @@ async function triggerNativeTrash(songRow) {
 }
 
 /**
+ * Triggers Suno's native Download → WAV Audio flow via the 3-dots menu.
+ * Returns true if both menu items were found and clicked.
+ * @param {Element} songRow
+ * @returns {Promise<boolean>}
+ */
+async function triggerNativeDownloadWAV(songRow) {
+    try {
+        const moreBtn = songRow.querySelector('button[aria-label*="More"]');
+        if (!moreBtn) return false;
+
+        // Open the native menu
+        moreBtn.click();
+
+        // Find and click "Download"
+        const downloadItem = await waitForMenuItem([/download/i], 1500);
+        if (!downloadItem) return false;
+        downloadItem.click();
+
+        // Find and click "WAV Audio"
+        const wavItem = await waitForMenuItem([/wav\s*audio/i, /\bwav\b/i], 1500);
+        if (!wavItem) return false;
+        wavItem.click();
+        return true;
+    } catch (err) {
+        console.error('Suno UI Booster: triggerNativeDownloadWAV error', err);
+        return false;
+    }
+}
+
+/**
  * Waits for a menu item whose text matches any of the given patterns.
  * @param {RegExp[]} patterns
  * @param {number} timeoutMs
@@ -418,6 +448,77 @@ function addTrashButton(songRow) {
 }
 
 /**
+ * Creates and injects the Download WAV button into song rows.
+ * The button is styled to match the existing UI and positioned after "More Options".
+ * @param {Element} songRow - The song row DOM element
+ */
+function addDownloadButton(songRow) {
+    if (!isExtensionEnabled) return;
+    try {
+        if (songRow.querySelector('.suno-booster-download-wrapper')) return;
+        const moreOptionsButton = songRow.querySelector('button[aria-label="More Options"]');
+        if (!moreOptionsButton) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'suno-booster-download-wrapper';
+        const downloadButton = document.createElement('button');
+        downloadButton.className = 'download-button-custom';
+        downloadButton.setAttribute('aria-label', 'Download WAV');
+        downloadButton.setAttribute('type', 'button');
+        downloadButton.innerHTML = '<span class="download-wav-text">WAV</span>';
+
+        const stop = (ev) => { ev.stopImmediatePropagation?.(); ev.stopPropagation(); };
+        ['pointerdown','mousedown','mouseup','touchstart','touchend'].forEach(type => {
+            downloadButton.addEventListener(type, stop, { capture: true });
+        });
+        ['keydown','keyup'].forEach(type => {
+            downloadButton.addEventListener(type, stop, { capture: true });
+        });
+
+        downloadButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+                const usedNative = await triggerNativeDownloadWAV(songRow);
+                if (usedNative) {
+                    downloadButton.disabled = true;
+                    setTimeout(() => { downloadButton.disabled = false; }, 1500);
+                    return;
+                }
+                alert('Suno UI Booster: Could not open native Download → WAV. The site UI might have changed.');
+            } catch (err) {
+                console.error('Suno UI Booster: Download WAV click error', err);
+            }
+        });
+
+        wrapper.appendChild(downloadButton);
+
+        // Place after More Options by default
+        const parentContainer = moreOptionsButton.parentElement;
+        if (parentContainer) {
+            parentContainer.insertBefore(wrapper, moreOptionsButton.nextSibling);
+            return;
+        }
+
+        // Fallback: try to append near like/dislike group
+        const buttonContainer = songRow.querySelector('.flex.w-full.flex-row.items-center.gap-1.ml-4, .css-1kcq9v9, [class*="flex"][class*="items-center"][class*="gap"]');
+        if (buttonContainer) {
+            const buttons = buttonContainer.querySelectorAll('button');
+            if (buttons.length > 0) {
+                const lastButton = buttons[buttons.length - 1];
+                buttonContainer.insertBefore(wrapper, lastButton.nextSibling);
+                return;
+            }
+        }
+
+        // Final fallback: append to row
+        songRow.appendChild(wrapper);
+    } catch (error) {
+        console.error('Suno UI Booster: Error adding download button:', error);
+    }
+}
+
+/**
  * Processes all song rows in a container and adds trash buttons to them.
  * @param {Element} containerNode - The container element to process
  */
@@ -426,6 +527,7 @@ function processSongRows(containerNode) {
         const songRows = containerNode.querySelectorAll('[data-testid="song-row"], .css-1b0cg3t, .css-1jkulof, .css-c1kosu');
         songRows.forEach(songRow => {
             addTrashButton(songRow);
+            addDownloadButton(songRow);
             // Also hide share buttons in existing elements
             hideShareButton(songRow);
             // Replace like/dislike icons
@@ -450,6 +552,21 @@ function removeAllTrashButtons() {
         console.log('Suno UI Booster: Removed all trash buttons');
     } catch (error) {
         console.error('Suno UI Booster: Error removing trash buttons:', error);
+    }
+}
+
+/**
+ * Removes all Download WAV buttons from the page when extension is disabled
+ */
+function removeAllDownloadButtons() {
+    try {
+        const downloadButtons = document.querySelectorAll('.suno-booster-download-wrapper');
+        downloadButtons.forEach(wrapper => {
+            wrapper.remove();
+        });
+        console.log('Suno UI Booster: Removed all download buttons');
+    } catch (error) {
+        console.error('Suno UI Booster: Error removing download buttons:', error);
     }
 }
 
@@ -498,6 +615,7 @@ async function handleExtensionStateChange(enabled) {
         console.log('Suno UI Booster: Extension disabled - removing features');
         // Remove all extension features and inline adjustments
         removeAllTrashButtons();
+        removeAllDownloadButtons();
         showAllShareButtons();
         unhideHeaderLabels(document.body);
         resetAdvancedOptions(document.body);
@@ -575,6 +693,7 @@ async function initialize() {
                             if (node.nodeType === Node.ELEMENT_NODE) {
                                 if (node.matches('[data-testid="song-row"], .css-1b0cg3t, .css-1jkulof, .css-c1kosu')) {
                                     addTrashButton(node);
+                                    addDownloadButton(node);
                                     hideShareButton(node);
                                     replaceLikeDislikeIcons(node);
                                     replaceBookmarkIcons(node);

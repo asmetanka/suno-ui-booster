@@ -422,7 +422,8 @@ button[aria-label="Playbar: Like"],
 button[aria-label="Playbar: Dislike"],
 button[aria-label="Pin to Project"],
 button[aria-label="More Options"],
-.trash-button-custom {
+.trash-button-custom,
+.download-button-custom {
     background-color: rgba(255, 255, 255, 0.1) !important;
     border-radius: 50% !important;
     padding: 8px !important;
@@ -443,7 +444,8 @@ button[aria-label="Playbar: Like"]:hover,
 button[aria-label="Playbar: Dislike"]:hover,
 button[aria-label="Pin to Project"]:hover,
 button[aria-label="More Options"]:hover,
-.trash-button-custom:hover {
+.trash-button-custom:hover,
+.download-button-custom:hover {
     background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
@@ -452,7 +454,8 @@ button[aria-label="Playbar: Like"]:active,
 button[aria-label="Playbar: Dislike"]:active,
 button[aria-label="Pin to Project"]:active,
 button[aria-label="More Options"]:active,
-.trash-button-custom:active {
+.trash-button-custom:active,
+.download-button-custom:active {
     background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
@@ -460,7 +463,8 @@ button[aria-label="Playbar: Like"] svg,
 button[aria-label="Playbar: Dislike"] svg,
 button[aria-label="Pin to Project"] svg,
 button[aria-label="More Options"] svg,
-.trash-button-custom svg {
+.trash-button-custom svg,
+.download-button-custom svg {
     width: 16px !important;
     height: 16px !important;
     color: inherit !important;
@@ -471,7 +475,8 @@ button[aria-label="Playbar: Like"].text-foreground-primary,
 button[aria-label="Playbar: Dislike"].text-foreground-primary,
 button[aria-label="Pin to Project"].text-foreground-primary,
 button[aria-label="More Options"].text-foreground-primary,
-.trash-button-custom.text-foreground-primary {
+.trash-button-custom.text-foreground-primary,
+.download-button-custom.text-foreground-primary {
     background-color: rgba(255, 255, 255, 1) !important;
 }
 
@@ -479,7 +484,8 @@ button[aria-label="Playbar: Like"].text-foreground-primary svg,
 button[aria-label="Playbar: Dislike"].text-foreground-primary svg,
 button[aria-label="Pin to Project"].text-foreground-primary svg,
 button[aria-label="More Options"].text-foreground-primary svg,
-.trash-button-custom.text-foreground-primary svg {
+.trash-button-custom.text-foreground-primary svg,
+.download-button-custom.text-foreground-primary svg {
     color: rgb(var(--rgb-background-primary)) !important;
 }
 
@@ -489,8 +495,9 @@ button[aria-label="Playbar: Dislike"].text-foreground-primary {
   color: rgb(var(--rgb-background-primary)) !important;
 }
 
-/* Disabled state for trash button */
-.trash-button-custom:disabled {
+/* Disabled state for trash/download button */
+.trash-button-custom:disabled,
+.download-button-custom:disabled {
     opacity: 0.5 !important;
     cursor: not-allowed !important;
 }
@@ -990,6 +997,14 @@ button[data-testid*="copy"] {
     flex-shrink: 0 !important;
 }
 
+/* Download button wrapper positioning - after More Options */
+.suno-booster-download-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
 /* Ensure proper spacing in button groups */
 .suno-booster-trash-wrapper + button[aria-label="More Options"] {
     margin-left: 0 !important;
@@ -1000,8 +1015,20 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
     margin-left: 4px !important;
 }
 
+/* Spacing when download button comes after More Options */
+button[aria-label="More Options"] + .suno-booster-download-wrapper {
+    margin-left: 4px !important;
+}
+
 /* Make sure trash button doesn't interfere with other buttons */
 .suno-booster-trash-wrapper .trash-button-custom {
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+}
+
+/* Make sure download button doesn't interfere with other buttons */
+.suno-booster-download-wrapper .download-button-custom {
     flex-shrink: 0 !important;
     min-width: 32px !important;
     min-height: 32px !important;
@@ -1014,6 +1041,23 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
 
 .suno-booster-trash-wrapper .trash-button-custom:hover svg {
     color: #ef4444 !important; /* Red icon on hover */
+}
+
+/* Accent hover effect for download button */
+.suno-booster-download-wrapper .download-button-custom:hover {
+    background-color: rgba(59, 130, 246, 0.35) !important; /* Blue-ish */
+}
+.suno-booster-download-wrapper .download-button-custom:hover .download-wav-text {
+    color: #60a5fa !important;
+}
+
+/* Inline text mark for WAV */
+.download-button-custom .download-wav-text {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.5px !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
 }
 
 
@@ -1383,9 +1427,20 @@ img[role="button"] {
   margin-inline-start: 16px !important; /* RTL-safe */
 }
 
+/* Set 8px margin for the custom download button wrapper to keep compact */
+[data-testid="song-row"] .suno-booster-download-wrapper {
+  margin-inline-start: 8px !important;
+}
+
 /* Do not add extra margin for trash wrapper on small horizontal cards */
 [data-testid="song-row"].css-1jkulof .suno-booster-trash-wrapper,
 [data-testid="song-row"].css-1fls2yz .suno-booster-trash-wrapper {
+  margin-inline-start: 4px !important;
+}
+
+/* Do not add extra margin for download wrapper on small horizontal cards */
+[data-testid="song-row"].css-1jkulof .suno-booster-download-wrapper,
+[data-testid="song-row"].css-1fls2yz .suno-booster-download-wrapper {
   margin-inline-start: 4px !important;
 }
 
@@ -1447,6 +1502,15 @@ img[role="button"] {
 .w-\[230px\] > .suno-booster-trash-wrapper {
   position: absolute !important;
   right: 4px !important; /* keep your 4px spacing */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 3 !important;
+}
+
+/* Download button: pin to the right within the 230px tile as well (next to trash if both present) */
+.w-\[230px\] > .suno-booster-download-wrapper {
+  position: absolute !important;
+  right: 40px !important; /* leave space for trash at 4px */
   top: 50% !important;
   transform: translateY(-50%) !important;
   z-index: 3 !important;
