@@ -1016,7 +1016,7 @@ button[aria-label="More Options"] + .suno-booster-trash-wrapper {
 }
 
 /* Spacing when download button comes after More Options */
-button[aria-label="More Options"] + .suno-booster-download-wrapper {
+button[aria-label*="More"] + .suno-booster-download-wrapper {
     margin-left: 4px !important;
 }
 

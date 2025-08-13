@@ -463,7 +463,8 @@ function addDownloadButton(songRow) {
     if (!isExtensionEnabled) return;
     try {
         if (songRow.querySelector('.suno-booster-download-wrapper')) return;
-        const moreOptionsButton = songRow.querySelector('button[aria-label="More Options"]');
+        // Be flexible: "More Options" or "More Actions" or any label containing "More"
+        const moreOptionsButton = songRow.querySelector('button[aria-label*="More"]');
         if (!moreOptionsButton) return;
 
         const wrapper = document.createElement('div');
@@ -500,30 +501,44 @@ function addDownloadButton(songRow) {
 
         wrapper.appendChild(downloadButton);
 
-        // Preferred placement: immediately after the Bookmark (Pin to Project) button's container
+        // Preferred placement: immediately BEFORE More Options (right after bookmark cluster)
         const parentContainer = moreOptionsButton.parentElement;
-        if (parentContainer) {
-            const pinButton = songRow.querySelector('button[aria-label*="Pin"]');
-            const pinContainer = pinButton ? pinButton.closest('div.flex.items-center') : null;
-            if (pinContainer && pinContainer.parentElement === parentContainer) {
-                parentContainer.insertBefore(wrapper, pinContainer.nextSibling);
-                return;
-            }
+        if (parentContainer && moreOptionsButton) {
+            parentContainer.insertBefore(wrapper, moreOptionsButton);
+            return;
         }
 
         // Fallback: try to append near like/dislike group
-        const buttonContainer = songRow.querySelector('.flex.w-full.flex-row.items-center.gap-1.ml-4, .css-1kcq9v9, [class*="flex"][class*="items-center"][class*="gap"]');
+        const buttonContainer = songRow.querySelector('.flex.w-full.flex-row.items-center.gap-0.ml-4, .css-1kcq9v9, [class*="flex"][class*="items-center"][class*="gap"]');
         if (buttonContainer) {
             const buttons = buttonContainer.querySelectorAll('button');
             if (buttons.length > 0) {
+                // Try to find a More/ellipsis button to insert before, otherwise after Pin
+                const moreBtnInContainer = Array.from(buttons).find(b => (b.getAttribute('aria-label') || '').toLowerCase().includes('more'));
+                if (moreBtnInContainer) {
+                    buttonContainer.insertBefore(wrapper, moreBtnInContainer);
+                    return;
+                }
+                const pinBtnInContainer = Array.from(buttons).find(b => (b.getAttribute('aria-label') || '').toLowerCase().includes('pin'));
+                if (pinBtnInContainer && pinBtnInContainer.nextSibling) {
+                    buttonContainer.insertBefore(wrapper, pinBtnInContainer.nextSibling);
+                    return;
+                }
+                // Otherwise append at end of this container
                 const lastButton = buttons[buttons.length - 1];
                 buttonContainer.insertBefore(wrapper, lastButton.nextSibling);
                 return;
             }
         }
 
-        // Final fallback: append to row
-        songRow.appendChild(wrapper);
+        // Final fallback: try to place right before any element whose aria-label contains More
+        const anyMore = songRow.querySelector('button[aria-label*="More"]');
+        if (anyMore && anyMore.parentElement) {
+            anyMore.parentElement.insertBefore(wrapper, anyMore);
+        } else {
+            // If nothing matched, append to row (rare)
+            songRow.appendChild(wrapper);
+        }
     } catch (error) {
         console.error('Suno UI Booster: Error adding download button:', error);
     }
