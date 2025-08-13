@@ -1001,7 +1001,7 @@ button[data-testid*="copy"] {
 .suno-booster-download-wrapper {
     display: flex !important;
     align-items: center !important;
-    margin-left: 4px !important;
+    margin-left: 6px !important;
     flex-shrink: 0 !important;
 }
 

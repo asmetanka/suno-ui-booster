@@ -121,14 +121,21 @@ async function triggerNativeDownloadWAV(songRow) {
 
         // Open the native menu
         moreBtn.click();
-
-        // Find and click "Download"
-        const downloadItem = await waitForMenuItem([/download/i], 1500);
+        
+        // Find the "Download" submenu trigger
+        const downloadItem = await waitForMenuItem([/\bdownload\b/i], 1800);
         if (!downloadItem) return false;
-        downloadItem.click();
 
-        // Find and click "WAV Audio"
-        const wavItem = await waitForMenuItem([/wav\s*audio/i, /\bwav\b/i], 1500);
+        // Radix submenus often open on hover; simulate hover to open the submenu
+        const events = ['pointerover', 'mouseover', 'mouseenter', 'pointermove'];
+        for (const type of events) {
+            downloadItem.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+        }
+        // Small delay to allow submenu to render
+        await new Promise(r => setTimeout(r, 120));
+
+        // Now find and click "WAV Audio" in the opened submenu
+        const wavItem = await waitForMenuItem([/wav\s*audio/i, /\bwav\b/i], 2000);
         if (!wavItem) return false;
         wavItem.click();
         return true;
@@ -493,11 +500,15 @@ function addDownloadButton(songRow) {
 
         wrapper.appendChild(downloadButton);
 
-        // Place after More Options by default
+        // Preferred placement: immediately after the Bookmark (Pin to Project) button's container
         const parentContainer = moreOptionsButton.parentElement;
         if (parentContainer) {
-            parentContainer.insertBefore(wrapper, moreOptionsButton.nextSibling);
-            return;
+            const pinButton = songRow.querySelector('button[aria-label*="Pin"]');
+            const pinContainer = pinButton ? pinButton.closest('div.flex.items-center') : null;
+            if (pinContainer && pinContainer.parentElement === parentContainer) {
+                parentContainer.insertBefore(wrapper, pinContainer.nextSibling);
+                return;
+            }
         }
 
         // Fallback: try to append near like/dislike group
