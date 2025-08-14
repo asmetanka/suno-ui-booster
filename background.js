@@ -120,6 +120,25 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 });
 
+// Listen for download requests from content script and perform via downloads API
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message && message.type === 'suno_download' && message.url) {
+    try {
+      chrome.downloads.download({ url: message.url, filename: message.filename || '', saveAs: !!message.saveAs }, (downloadId) => {
+        if (chrome.runtime.lastError) {
+          sendResponse({ success: false, error: chrome.runtime.lastError.message });
+        } else {
+          sendResponse({ success: true, downloadId });
+        }
+      });
+      // Keep the message channel open for async response
+      return true;
+    } catch (e) {
+      sendResponse({ success: false, error: String(e) });
+    }
+  }
+});
+
 /**
  * When the user toggles the enabled state, update all open Suno tabs.
  */

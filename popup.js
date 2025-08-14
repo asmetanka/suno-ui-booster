@@ -2,6 +2,12 @@
 // The switch updates chrome.storage then reloads the active Suno tab.
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Show version at the top
+  try {
+    const v = chrome.runtime.getManifest().version;
+    const el = document.getElementById('extVersion');
+    if (el) el.textContent = `Version ${v}`;
+  } catch(_) {}
   const toggleContainer = document.getElementById('toggleContainer');
   const toggleSwitch = document.getElementById('toggleSwitch');
   const toggleLabel = document.getElementById('toggleLabel');

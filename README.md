@@ -8,6 +8,8 @@ Enhances Suno’s UI with reliable tooling, clean styling, and small workflow co
 - Play overlays sized and optically centered for small covers and row overlays; dark circular backdrop always appears on hover (Play and Pause)
 - Action bar buttons with pill shape and static translucent background
 - Contextual Trash button injected into song rows with native-menu integration
+- Download WAV button injected into song rows: one click starts server-side conversion (if needed) and downloads the WAV automatically. While preparing it shows a blue wave animation; when complete, the button turns solid blue with a white checkmark for 3 seconds and then resets.
+- Playbar: the same Download WAV and Trash buttons are added to the bottom player, in the same order as on rows.
 - Workspace dropdown aligned to the button width and position
 - Advanced Options panel always expanded with the header row hidden
 - Consistent spacing and layout fixes for compact horizontal tiles (including `.css-1fls2yz` parity with `.css-1jkulof`)
@@ -57,7 +59,7 @@ Key principles:
 
 ### Background and popup
 
-- `background.js`: Injects or removes the stylesheet based on the stored “enabled” flag and tab URL. Also listens for `onUpdateAvailable` to display a red dot on the action icon (or badge fallback) until acknowledged/applied. There is no network interception or header manipulation.
+- `background.js`: Injects or removes the stylesheet based on the stored “enabled” flag and tab URL. Performs file downloads via the Chrome downloads API when requested by the content script, with a safe fallback if the service worker is restarting.
 - `popup.js`: Toggles the “enabled” state and reloads the active Suno tab to apply CSS/logic. When an update is available, shows a small banner with an UPDATE button; after installing (or on latest), no banners are shown.
 
 ## Installation
@@ -92,7 +94,8 @@ suno-ui-booster/
 - `scripting`: insert/remove styles on Suno pages
 - `activeTab`: operate on the current tab
 - `storage`: persist extension enabled state
-- `host_permissions`: limited to Suno domains
+- `downloads`: used to save WAV files directly (no opening in a new tab)
+- `host_permissions`: limited to Suno domains and Suno studio API
 
 ## Notes on reliability
 - No CSP rewriting or declarativeNetRequest rules are used
@@ -100,6 +103,12 @@ suno-ui-booster/
 - Mutation observers are scoped and compact; JS and CSS compete minimally
 
 ## Changelog (highlights)
+
+- v2
+  - Added Download WAV button to song rows and playbar. One-click converts (if necessary) and downloads WAV via Chrome downloads API; while preparing, shows blue wave animation; on success, shows a solid blue button with a white check for 3 seconds.
+  - Added Trash button to the playbar with native-menu first and API fallback.
+  - Robust insertion in dynamic DOM; safe messaging with service worker restarts.
+  - Popup shows Version 2.
 
 - v1.3
   - Unified small row layouts; ensured Play/Pause circular backdrop always shows on hover

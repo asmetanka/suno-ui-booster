@@ -1050,14 +1050,68 @@ button[aria-label*="More"] + .suno-booster-download-wrapper {
 .suno-booster-download-wrapper .download-button-custom:hover .download-wav-text {
     color: #60a5fa !important;
 }
+.download-button-custom.suno-loading,
+.download-button-custom.suno-success {
+  cursor: default !important;
+}
+.download-button-custom.suno-loading::before,
+.download-button-custom.suno-loading::after,
+.download-button-custom.suno-success::before,
+.download-button-custom.suno-success::after {
+  background: transparent !important; /* disable site hover overlays */
+}
+.download-button-custom.suno-loading,
+.download-button-custom.suno-loading:hover,
+.download-button-custom.suno-loading:focus,
+.download-button-custom.suno-loading:active {
+  background-color: rgba(59, 130, 246, 0.35) !important; /* same as hover tint */
+  color: #3b82f6 !important; /* wave bars take currentColor, but we tint them via fill below */
+}
+.suno-wav-anim rect { fill: #3b82f6 !important; }
+
 
 /* Inline text mark for WAV */
 .download-button-custom .download-wav-text {
-    font-size: 12px !important;
-    font-weight: 700 !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
     line-height: 1 !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: -0.5px !important;
     color: rgb(var(--rgb-foreground-primary)) !important;
+}
+
+/* Success state: solid blue background and white icon */
+.download-button-custom.suno-success {
+  background-color: #3b82f6 !important; /* solid blue */
+  color: #ffffff !important; /* ensure white icon via currentColor */
+}
+.download-button-custom.suno-success:hover,
+.download-button-custom.suno-success:focus,
+.download-button-custom.suno-success:active,
+.suno-booster-download-wrapper .download-button-custom.suno-success:hover,
+.suno-booster-download-wrapper .download-button-custom.suno-success:focus,
+.suno-booster-download-wrapper .download-button-custom.suno-success:active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+.download-button-custom.suno-success:disabled {
+  opacity: 1 !important; /* keep fully opaque while disabled */
+}
+.download-button-custom.suno-success::before,
+.download-button-custom.suno-success::after,
+.suno-booster-download-wrapper .download-button-custom.suno-success::before,
+.suno-booster-download-wrapper .download-button-custom.suno-success::after {
+  background: transparent !important; /* kill any overlay */
+}
+
+/* Wave animation used while preparing WAV */
+.suno-wav-anim rect { fill: currentColor !important; }
+.animate-wave1 { animation: suno-wave 900ms infinite ease-in-out 0ms; transform-origin: center bottom; }
+.animate-wave2 { animation: suno-wave 900ms infinite ease-in-out 110ms; transform-origin: center bottom; }
+.animate-wave3 { animation: suno-wave 900ms infinite ease-in-out 220ms; transform-origin: center bottom; }
+@keyframes suno-wave {
+  0% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.2); }
+  100% { transform: scaleY(0.5); }
 }
 
 
@@ -1429,7 +1483,7 @@ img[role="button"] {
 
 /* Set 8px margin for the custom download button wrapper to keep compact */
 [data-testid="song-row"] .suno-booster-download-wrapper {
-  margin-inline-start: 8px !important;
+  margin-inline-start: 12px !important;
 }
 
 /* Do not add extra margin for trash wrapper on small horizontal cards */

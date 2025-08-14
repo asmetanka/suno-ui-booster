@@ -58,6 +58,79 @@ async function trashSongById(songId) {
     }
 }
 
+/**
+ * Starts server-side WAV conversion for a clip and polls for the resulting file URL.
+ * @param {string} clipId
+ * @returns {Promise<{success: boolean, url?: string}>}
+ */
+async function convertAndFetchWavUrl(clipId) {
+    const token = await getAuthToken();
+    if (!token) {
+        console.error('Injected Script: No authentication token for WAV.');
+        return { success: false };
+    }
+    const base = 'https://studio-api.prod.suno.com/api/gen/';
+    try {
+        // Kick off conversion (may already be generated; server should be idempotent)
+        await fetch(base + encodeURIComponent(clipId) + '/convert_wav/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': '*/*'
+            },
+            body: null
+        }).catch(() => {});
+
+        // Poll for wav file availability
+        const start = Date.now();
+        const timeoutMs = 60000; // up to 60s
+        let attempt = 0;
+        while (Date.now() - start < timeoutMs) {
+            attempt += 1;
+            const res = await fetch(base + encodeURIComponent(clipId) + '/wav_file/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': '*/*'
+                }
+            });
+
+            // If server returns a signed URL JSON
+            const contentType = res.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+                try {
+                    const data = await res.json();
+                    const url = data?.url || data?.wav_url || data?.audio_url;
+                    if (url) return { success: true, url };
+                } catch (_) {}
+            }
+
+            // If resource is ready at CDN via open GET, try derived URL as a last resort
+            if (res.ok) {
+                // Some deployments expose direct CDN path — try HEAD to validate
+                try {
+                    const head = await fetch(`https://cdn1.suno.ai/${clipId}.wav`, { method: 'HEAD' });
+                    if (head.ok) return { success: true, url: `https://cdn1.suno.ai/${clipId}.wav` };
+                } catch (_) {}
+            }
+
+            // Not ready yet; backoff
+            await new Promise(r => setTimeout(r, Math.min(500 + attempt * 300, 3000)));
+        }
+    } catch (e) {
+        console.error('Injected Script: WAV conversion fetch error', e);
+    }
+    return { success: false };
+}
+
+// Listen for download wav request from content.js
+window.addEventListener('SunoDownloadWavRequest', async (event) => {
+    const { clipId } = event.detail || {};
+    if (!clipId) return;
+    const result = await convertAndFetchWavUrl(clipId);
+    window.dispatchEvent(new CustomEvent('SunoDownloadWavResponse', { detail: { clipId, ...result } }));
+});
+
 // Listen for custom delete request events from content.js
 window.addEventListener('SunoDeleteRequest', async (event) => {
     const { songId } = event.detail;

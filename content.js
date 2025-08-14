@@ -65,6 +65,9 @@ function injectScript() {
  */
 function getSongId(songRow) {
     try {
+        // Prefer explicit data attribute if present on the row
+        const dataId = songRow.getAttribute && songRow.getAttribute('data-clip-id');
+        if (dataId) return dataId;
         const songLink = songRow.querySelector('a[href*="/song/"]');
         if (songLink) {
             const id = songLink.getAttribute('href').split('/song/')[1];
@@ -74,6 +77,148 @@ function getSongId(songRow) {
         console.error('Suno UI Booster: Error getting song ID:', error);
     }
     return null;
+}
+
+/** Extract current playing clip id from playbar area. */
+function getPlaybarSongId(root = document) {
+  try {
+    const link = root.querySelector('a[aria-label^="Playbar: Title"][href*="/song/"]') || document.querySelector('a[aria-label^="Playbar: Title"][href*="/song/"]');
+    if (!link) return null;
+    const href = link.getAttribute('href') || '';
+    const parts = href.split('/song/');
+    if (parts[1]) return parts[1];
+  } catch (_) {}
+  return null;
+}
+
+/**
+ * Insert our Download WAV button into the playbar controls, between Pin and More Options.
+ */
+function addPlaybarDownloadButton(playbarRoot) {
+  try {
+    if (!isExtensionEnabled) return;
+    if (playbarRoot.querySelector('.suno-booster-download-wrapper')) return;
+    const moreBtn = playbarRoot.querySelector('button[aria-label*="More"]');
+    if (!moreBtn) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'suno-booster-download-wrapper flex items-center';
+    const btn = document.createElement('button');
+    btn.className = 'download-button-custom';
+    btn.setAttribute('type','button');
+    btn.setAttribute('aria-label','Download WAV');
+    btn.innerHTML = '<span class="download-wav-text">WAV</span>';
+
+    const stop = (ev) => { ev.stopImmediatePropagation?.(); ev.stopPropagation(); };
+    ['pointerdown','mousedown','mouseup','touchstart','touchend','keydown','keyup'].forEach(t=>btn.addEventListener(t, stop, { capture:true }));
+    btn.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      try {
+        const clipId = getPlaybarSongId(playbarRoot) || getPlaybarSongId(document);
+        if (!clipId) { alert('Suno UI Booster: Could not find song ID.'); return; }
+        if (!btn.dataset.prevInner) btn.dataset.prevInner = btn.innerHTML;
+        const waveAnim = '<svg class="suno-wav-anim" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(12,12)"><rect class="animate-wave1" x="-10" y="-7" width="4" height="14" rx="2"></rect><rect class="animate-wave2" x="-2" y="-7" width="4" height="14" rx="2"></rect><rect class="animate-wave3" x="6" y="-7" width="4" height="14" rx="2"></rect></g></svg>';
+        btn.innerHTML = waveAnim;
+        btn.disabled = true;
+        btn.classList.add('suno-loading');
+        window.dispatchEvent(new CustomEvent('SunoDownloadWavRequest', { detail: { clipId } }));
+      } catch(err) { console.error('Suno UI Booster: playbar WAV click', err); }
+    });
+
+    wrapper.appendChild(btn);
+
+    // Place between Pin and More Options when possible
+    let insertionContainer = moreBtn.parentElement;
+    for (let n = 0; n < 5 && insertionContainer && !insertionContainer.classList.contains('flex'); n += 1) {
+      insertionContainer = insertionContainer.parentElement;
+    }
+    if (insertionContainer && moreBtn) {
+      // After Pin block if exists
+      const pin = insertionContainer.querySelector('button[aria-label*="Pin"][type="button"]');
+      if (pin) {
+        let top = pin; while (top && top.parentElement !== insertionContainer) top = top.parentElement;
+        if (top && top.nextSibling) { insertionContainer.insertBefore(wrapper, top.nextSibling); return; }
+      }
+      // Otherwise before More
+      let anchor = moreBtn; while (anchor && anchor.parentElement !== insertionContainer) anchor = anchor.parentElement;
+      if (anchor) { insertionContainer.insertBefore(wrapper, anchor); return; }
+    }
+    // Fallback
+    moreBtn.parentElement?.insertBefore(wrapper, moreBtn);
+  } catch (e) { console.error('Suno UI Booster: addPlaybarDownloadButton error', e); }
+}
+
+/** Insert our Trash button into playbar and wire native+fallback delete. */
+function addPlaybarTrashButton(playbarRoot) {
+  try {
+    if (!isExtensionEnabled) return;
+    if (playbarRoot.querySelector('.suno-booster-trash-wrapper')) return;
+    const moreBtn = playbarRoot.querySelector('button[aria-label*="More"]');
+    if (!moreBtn) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'suno-booster-trash-wrapper';
+    const btn = document.createElement('button');
+    btn.className = 'trash-button-custom';
+    btn.setAttribute('type','button');
+    btn.setAttribute('aria-label','Move to Trash');
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.308 20.5a1.74 1.74 0 0 1-1.277-.531 1.74 1.74 0 0 1-.531-1.277V6h-.25a.73.73 0 0 1-.534-.216.73.73 0 0 1-.216-.534q0-.32.216-.535A.73.73 0 0 1 5.25 4.5H9q0-.368.259-.626a.85.85 0 0 1 .625-.259h4.232q.367 0 .625.259A.85.85 0 0 1 15 4.5h3.75q.318 0 .534-.216a.73.73 0 0 1 .216.534q0 .32-.216-.534A.73.73 0 0 1 18.75 6h-.25v12.692q0 .746-.531 1.277a1.74 1.74 0 0 1-1.277.531zm2.846-3.5q.319 0 .534-.215a.73.73 0 0 0 .216-.535v-7.5a.73.73 0 0 0-.216-.535.73.73 0 0 0-.535-.215.73.73 0 0 0-.534.215.73.73 0 0 0-.215.535v7.5q0 .318.216.535a.73.73 0 0 0 .534.215m3.693 0q.318 0 .534-.215a.73.73 0 0 0 .215-.535v-7.5a.73.73 0 0 0-.216-.535.73.73 0 0 0-.534-.215.73.73 0 0 0-.534-.215.73.73 0 0 0-.216.535v7.5q0 .318.216.535a.73.73 0 0 0 .535.215"></path></svg>';
+
+    const stop = (ev) => { ev.stopImmediatePropagation?.(); ev.stopPropagation(); };
+    ['pointerdown','mousedown','mouseup','touchstart','touchend','keydown','keyup'].forEach(t=>btn.addEventListener(t, stop, { capture:true }));
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const clipId = getPlaybarSongId(playbarRoot) || getPlaybarSongId(document);
+      if (!clipId) { alert('Suno UI Booster: Could not find song ID.'); return; }
+      // Prefer native menu path for Undo toast
+      const usedNative = await (async () => {
+        try {
+          const mb = playbarRoot.querySelector('button[aria-label*="More"]');
+          if (!mb) return false;
+          mb.click();
+          const found = await waitForMenuItem([/move\s*to\s*trash/i, /trash/i, /delete/i], 1500);
+          if (found) { found.click(); return true; }
+        } catch(_) {}
+        return false;
+      })();
+      if (usedNative) return;
+      // Fallback via API
+      window.dispatchEvent(new CustomEvent('SunoDeleteRequest', { detail: { songId: clipId } }));
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+    });
+
+    wrapper.appendChild(btn);
+
+    // Place before More Options (mirroring row)
+    let insertionContainer = moreBtn.parentElement;
+    for (let n = 0; n < 5 && insertionContainer && !insertionContainer.classList.contains('flex'); n += 1) {
+      insertionContainer = insertionContainer.parentElement;
+    }
+    if (insertionContainer && moreBtn) {
+      let anchor = moreBtn; while (anchor && anchor.parentElement !== insertionContainer) anchor = anchor.parentElement;
+      if (anchor) { insertionContainer.insertBefore(wrapper, anchor); return; }
+    }
+    moreBtn.parentElement?.insertBefore(wrapper, moreBtn);
+  } catch (e) { console.error('Suno UI Booster: addPlaybarTrashButton error', e); }
+}
+
+/** Ensure playbar controls have our buttons. */
+function ensurePlaybarButtons(root = document) {
+  try {
+    const moreButtons = Array.from(root.querySelectorAll('button[aria-label*="More"]'))
+      .filter((b) => !b.closest('[data-testid="song-row"]'));
+    if (moreButtons.length === 0) return;
+    // Use nearest flex container as playbar root
+    for (const moreBtn of moreButtons) {
+      let pr = moreBtn.parentElement;
+      let steps = 0;
+      while (pr && steps < 8 && !(pr.querySelector?.('button[aria-label="Playbar: Like"], a[aria-label^="Playbar: Title"]'))) { pr = pr.parentElement; steps += 1; }
+      const rootNode = pr || moreBtn.parentElement || root;
+      addPlaybarDownloadButton(rootNode);
+      addPlaybarTrashButton(rootNode);
+    }
+  } catch (e) { console.error('Suno UI Booster: ensurePlaybarButtons error', e); }
 }
 
 /**
@@ -182,6 +327,35 @@ function waitForMenuItem(patterns, timeoutMs = 1500) {
             resolve(null);
         }, timeoutMs);
     });
+}
+
+/**
+ * Send a message to the background service worker safely.
+ * Resolves with the response or an object { success: false, error?, timeout: true }
+ */
+function safeSendMessage(message, timeoutMs = 700) {
+  return new Promise((resolve) => {
+    let finished = false;
+    try {
+      chrome.runtime.sendMessage(message, (resp) => {
+        if (finished) return;
+        finished = true;
+        const err = chrome.runtime.lastError;
+        if (err) return resolve({ success: false, error: err.message });
+        return resolve(resp || { success: false });
+      });
+    } catch (e) {
+      if (!finished) {
+        finished = true;
+        return resolve({ success: false, error: String(e) });
+      }
+    }
+    setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      return resolve({ success: false, timeout: true });
+    }, timeoutMs);
+  });
 }
 
 /**
@@ -463,12 +637,17 @@ function addDownloadButton(songRow) {
     if (!isExtensionEnabled) return;
     try {
         if (songRow.querySelector('.suno-booster-download-wrapper')) return;
-        // Be flexible: "More Options" or "More Actions" or any label containing "More"
-        const moreOptionsButton = songRow.querySelector('button[aria-label*="More"]');
+        // Target the bottom action row container precisely
+        const actionRow = songRow.querySelector('.css-1kcq9v9 > .flex.w-full.flex-row.items-center.gap-0.ml-4')
+          || songRow.querySelector('.flex.w-full.flex-row.items-center.gap-0.ml-4')
+          || songRow.querySelector('.css-1kcq9v9');
+        if (!actionRow) return;
+        // Look for the ellipsis button inside the action row
+        const moreOptionsButton = actionRow.querySelector('button[aria-label*="More"]');
         if (!moreOptionsButton) return;
 
         const wrapper = document.createElement('div');
-        wrapper.className = 'suno-booster-download-wrapper';
+        wrapper.className = 'suno-booster-download-wrapper flex items-center';
         const downloadButton = document.createElement('button');
         downloadButton.className = 'download-button-custom';
         downloadButton.setAttribute('aria-label', 'Download WAV');
@@ -487,13 +666,22 @@ function addDownloadButton(songRow) {
             e.preventDefault();
             e.stopPropagation();
             try {
-                const usedNative = await triggerNativeDownloadWAV(songRow);
-                if (usedNative) {
-                    downloadButton.disabled = true;
-                    setTimeout(() => { downloadButton.disabled = false; }, 1500);
+                const clipId = getSongId(songRow);
+                if (!clipId) {
+                    console.error('Suno UI Booster: Could not find song ID for WAV.');
+                    alert('Suno UI Booster: Could not find song ID.');
                     return;
                 }
-                alert('Suno UI Booster: Could not open native Download → WAV. The site UI might have changed.');
+                // Swap WAV label with a small 3-bar wave animation while preparing
+                const waveAnim = '<svg class="suno-wav-anim" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(12,12)"><rect class="animate-wave1" x="-10" y="-7" width="4" height="14" rx="2"></rect><rect class="animate-wave2" x="-2" y="-7" width="4" height="14" rx="2"></rect><rect class="animate-wave3" x="6" y="-7" width="4" height="14" rx="2"></rect></g></svg>';
+                if (!downloadButton.dataset.prevInner) {
+                  downloadButton.dataset.prevInner = downloadButton.innerHTML;
+                }
+                downloadButton.innerHTML = waveAnim;
+                downloadButton.classList.add('suno-loading');
+                downloadButton.disabled = true;
+                downloadButton.style.opacity = '1';
+                window.dispatchEvent(new CustomEvent('SunoDownloadWavRequest', { detail: { clipId } }));
             } catch (err) {
                 console.error('Suno UI Booster: Download WAV click error', err);
             }
@@ -501,27 +689,71 @@ function addDownloadButton(songRow) {
 
         wrapper.appendChild(downloadButton);
 
-        // Preferred placement: immediately BEFORE More Options (right after bookmark cluster)
-        const parentContainer = moreOptionsButton.parentElement;
-        if (parentContainer && moreOptionsButton) {
-            parentContainer.insertBefore(wrapper, moreOptionsButton);
-            return;
+        // Preferred placement: inside the inner action container (the button group) between Pin and More
+        const innerContainer = actionRow.querySelector('.flex.w-full.flex-row.items-center.gap-0, .flex.w-full.flex-row.items-center') || actionRow.querySelector('.flex.w-full.flex-row.items-center.gap-0.ml-4');
+        if (innerContainer) {
+            try {
+                // Find the top-level child that contains the Pin button
+                const children = Array.from(innerContainer.children);
+                let placed = false;
+                for (const child of children) {
+                    if (child.querySelector && child.querySelector('button[aria-label*="Pin"], [data-suno-bookmark-outlined]')) {
+                        // insert after this child
+                        if (child.nextSibling) {
+                            innerContainer.insertBefore(wrapper, child.nextSibling);
+                        } else {
+                            innerContainer.appendChild(wrapper);
+                        }
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed) {
+                    // Fallback: insert before direct child that contains More button
+                    for (const child of children) {
+                        if (child.querySelector && child.querySelector('button[aria-label*="More"]')) {
+                            innerContainer.insertBefore(wrapper, child);
+                            placed = true;
+                            break;
+                        }
+                    }
+                }
+                if (placed) return;
+            } catch (err) {
+                // continue to other fallbacks
+            }
         }
 
         // Fallback: try to append near like/dislike group
-        const buttonContainer = songRow.querySelector('.flex.w-full.flex-row.items-center.gap-0.ml-4, .css-1kcq9v9, [class*="flex"][class*="items-center"][class*="gap"]');
+        const buttonContainer = actionRow;
         if (buttonContainer) {
             const buttons = buttonContainer.querySelectorAll('button');
             if (buttons.length > 0) {
                 // Try to find a More/ellipsis button to insert before, otherwise after Pin
                 const moreBtnInContainer = Array.from(buttons).find(b => (b.getAttribute('aria-label') || '').toLowerCase().includes('more'));
                 if (moreBtnInContainer) {
-                    buttonContainer.insertBefore(wrapper, moreBtnInContainer);
+                    // Ensure anchor is a direct child of buttonContainer
+                    let anchorNode = moreBtnInContainer;
+                    while (anchorNode && anchorNode.parentElement !== buttonContainer) {
+                        anchorNode = anchorNode.parentElement;
+                    }
+                    if (anchorNode && anchorNode.parentElement === buttonContainer) {
+                        buttonContainer.insertBefore(wrapper, anchorNode);
+                        return;
+                    }
                     return;
                 }
                 const pinBtnInContainer = Array.from(buttons).find(b => (b.getAttribute('aria-label') || '').toLowerCase().includes('pin'));
                 if (pinBtnInContainer && pinBtnInContainer.nextSibling) {
-                    buttonContainer.insertBefore(wrapper, pinBtnInContainer.nextSibling);
+                    // Find the top-level child that holds pin button
+                    let anchorNode = pinBtnInContainer;
+                    while (anchorNode && anchorNode.parentElement !== buttonContainer) {
+                        anchorNode = anchorNode.parentElement;
+                    }
+                    if (anchorNode && anchorNode.nextSibling) {
+                        buttonContainer.insertBefore(wrapper, anchorNode.nextSibling);
+                        return;
+                    }
                     return;
                 }
                 // Otherwise append at end of this container
@@ -532,12 +764,12 @@ function addDownloadButton(songRow) {
         }
 
         // Final fallback: try to place right before any element whose aria-label contains More
-        const anyMore = songRow.querySelector('button[aria-label*="More"]');
+        const anyMore = actionRow.querySelector('button[aria-label*="More"]');
         if (anyMore && anyMore.parentElement) {
             anyMore.parentElement.insertBefore(wrapper, anyMore);
         } else {
             // If nothing matched, append to row (rare)
-            songRow.appendChild(wrapper);
+            actionRow.appendChild(wrapper);
         }
     } catch (error) {
         console.error('Suno UI Booster: Error adding download button:', error);
@@ -700,6 +932,91 @@ async function initialize() {
             }
         });
 
+        // Listen for WAV download responses
+        window.addEventListener('SunoDownloadWavResponse', (event) => {
+            try {
+                const { clipId, success, url } = event.detail || {};
+                const songRow = document.querySelector(`[data-clip-id="${clipId}"]`) || document.querySelector(`a[href*="/song/${clipId}"]`)?.closest('[data-testid="song-row"], .css-1b0cg3t, .css-1jkulof, .css-c1kosu');
+                const button = songRow?.querySelector('.download-button-custom');
+                if (!success || !url) {
+                    if (button) {
+                      button.disabled = false;
+                      button.style.opacity = '1';
+                      if (button.dataset.prevInner) {
+                        button.innerHTML = button.dataset.prevInner;
+                        delete button.dataset.prevInner;
+                      }
+                    }
+                    alert('Suno UI Booster: WAV not ready. Try again later.');
+                    return;
+                }
+                // Generate filename
+                const titleEl = songRow?.querySelector('a[href*="/song/"] span, span[title]');
+                const title = (titleEl?.textContent || titleEl?.getAttribute('title') || 'suno').replace(/[\\/:*?"<>|]+/g, ' ').trim();
+                const versionBadge = songRow?.querySelector('.css-1fb3o3p span');
+                const versionText = (versionBadge?.textContent || '').trim().replace(/\s+/g, '');
+                const baseName = [title, versionText ? `(${versionText})` : '', clipId].filter(Boolean).join(' - ');
+                const fileName = baseName.endsWith('.wav') ? baseName : `${baseName}.wav`;
+
+                // Ask the background service worker to perform the download (forces save, avoids in-tab play)
+                try {
+                    if (chrome?.runtime?.sendMessage) {
+                        (async () => {
+                          const resp = await safeSendMessage({ type: 'suno_download', url, filename: fileName, saveAs: false }, 800);
+                          if (!(resp && resp.success)) {
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.setAttribute('download', fileName);
+                            a.rel = 'noopener';
+                            a.target = '_self';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                          }
+                        })();
+                    } else {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download', fileName);
+                        a.rel = 'noopener';
+                        a.target = '_self';
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    }
+                } catch (e) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.setAttribute('download', fileName);
+                    a.rel = 'noopener';
+                    a.target = '_self';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                }
+
+                if (button) {
+                  // success state: white checkmark + tinted background, then revert after 1s
+                  const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17 4 12"/></svg>';
+                  if (!button.dataset.prevInner) { button.dataset.prevInner = button.innerHTML; }
+                  button.innerHTML = checkSvg;
+                  button.disabled = true;
+                  button.style.opacity = '1';
+                  button.classList.add('suno-success');
+                  setTimeout(() => {
+                    if (button.dataset.prevInner) {
+                      button.innerHTML = button.dataset.prevInner;
+                      delete button.dataset.prevInner;
+                    }
+                    button.disabled = false;
+                    button.classList.remove('suno-success');
+                  }, 3000);
+                }
+            } catch (e) {
+                console.error('Suno UI Booster: WAV response handling error', e);
+            }
+        });
+
         // Listen for storage changes to handle real-time state updates
         chrome.storage.onChanged.addListener((changes, namespace) => {
             if (namespace === 'sync' && changes.enabled) {
@@ -727,6 +1044,10 @@ async function initialize() {
                                 } else if (node.querySelector) {
                                     processSongRows(node);
                                     hideHeaderLabels(node);
+                                    // If new playbar parts appeared, ensure buttons
+                                    if (node.querySelector('a[aria-label^="Playbar: Title"], button[aria-label*="More"]')) {
+                                      ensurePlaybarButtons(node);
+                                    }
                                 }
                                 // Dropdown adjustment triggers
                                 if (node.querySelector?.('input[placeholder="Search..."]') || node.matches?.('input[placeholder="Search..."]')) {
@@ -763,6 +1084,7 @@ async function initialize() {
         observer.observe(document.body, { childList: true, subtree: true });
         processSongRows(document.body);
         hideHeaderLabels(document.body);
+        ensurePlaybarButtons(document.body);
         // Ensure Advanced Options is expanded and header hidden
         ensureAdvancedOptions(document.body);
         // Align Workspace dropdown width/position under the button
