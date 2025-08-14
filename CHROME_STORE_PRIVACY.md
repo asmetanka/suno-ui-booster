@@ -1,6 +1,6 @@
 ### **Single purpose description**
 
-This extension enhances the Suno.ai user experience with two key improvements. First, it applies custom CSS to improve visual aesthetics by creating a cleaner, more consistent layout with squared album art and better spacing. Second, it adds a much-needed "quick delete" button directly to each song row. This button allows users to remove tracks from their library by sending a direct, secure API request, mirroring the site's own functionality but making it more accessible and efficient. The extension's sole purpose is to improve the site's UI and streamline user workflow.
+This extension enhances the Suno.ai user experience with three key improvements. First, it applies custom CSS for a cleaner layout with squared album art. Second, it adds a "quick delete" button to each song row, allowing users to efficiently manage their library via a secure API request. Third, it adds a "download" button, enabling users to easily save their own creations directly to their computer. The extension's sole purpose is to improve the site's UI and streamline the user's workflow.
 
 ### **Permission justification**
 
@@ -15,6 +15,10 @@ While the extension primarily operates on suno.ai domains via host permissions, 
 #### **`storage` justification**
 
 The "storage" permission is used to save a single boolean value (`isEnabled`) via the popup menu. This allows the user's choice to enable or disable the extension's custom styles and features to persist across browser sessions. This provides a consistent user experience and respects the user's preference without storing any personal or sensitive data.
+
+#### **`downloads` justification**
+
+The "downloads" permission is essential for the extension's core "Download" feature. When a user clicks the download button added by our extension, we use the chrome.downloads.download() API to save the audio file of their own creation from Suno's servers to their local device. This action is strictly user-initiated and only occurs in response to a direct click. The permission is not used for any automatic or background downloads. It is solely to provide users with a convenient way to save their work locally.
 
 #### **Host permission justification**
 
