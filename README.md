@@ -94,7 +94,7 @@ suno-ui-booster/
 - `scripting`: insert/remove styles on Suno pages
 - `activeTab`: operate on the current tab
 - `storage`: persist extension enabled state
-- `downloads`: used to save WAV files directly (no opening in a new tab)
+- `downloads`: used to save WAV files quickly
 - `host_permissions`: limited to Suno domains and Suno studio API
 
 ## Notes on reliability
