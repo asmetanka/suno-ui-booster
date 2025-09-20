@@ -1,0 +1,45 @@
+{
+  "manifest_version": 2,
+  "name": "Suno UI Booster",
+  "version": "2.0",
+  "description": "Cleaner Suno UI: on‑track Trash button, bigger player controls, square covers, quick toggle. Works only on Suno.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads",
+    "scripting",
+    "*://*.suno.ai/*",
+    "*://*.suno.com/*",
+    "*://studio-api.prod.suno.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.suno.ai/*",
+        "*://*.suno.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    "injected.js"
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Suno UI Booster - Enhanced Interface",
+    "default_icon": {
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

@@ -1,0 +1,87 @@
+// Popup: toggles the extension enabled state and reflects it in the UI.
+// The switch updates browser.storage then reloads the active Suno tab.
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Show version at the top
+  try {
+    const v = browser.runtime.getManifest().version;
+    const el = document.getElementById('extVersion');
+    if (el) el.textContent = `Version ${v}`;
+  } catch(_) {}
+  const toggleContainer = document.getElementById('toggleContainer');
+  const toggleSwitch = document.getElementById('toggleSwitch');
+  const toggleLabel = document.getElementById('toggleLabel');
+  const whatsNew = document.getElementById('whatsNew');
+  const ackUpdate = document.getElementById('ackUpdate');
+
+  browser.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    const currentTab = tabs[0];
+    const isSunoPage = currentTab.url && (currentTab.url.includes('suno.ai') || currentTab.url.includes('suno.com'));
+
+    if (isSunoPage) {
+      browser.storage.sync.get(['enabled'], function(result) {
+        const isEnabled = result.enabled !== false; // default: enabled
+        updateToggleState(isEnabled);
+      });
+
+      toggleContainer.addEventListener('click', function() {
+        browser.storage.sync.get(['enabled'], function(result) {
+          const currentState = result.enabled !== false;
+          const newState = !currentState;
+          browser.storage.sync.set({ enabled: newState }, function() {
+            updateToggleState(newState);
+            browser.tabs.reload(currentTab.id);
+          });
+        });
+      });
+    } else {
+      toggleLabel.textContent = 'NOT ON SUNO';
+      toggleContainer.style.opacity = '0.5';
+      toggleContainer.style.cursor = 'not-allowed';
+    }
+  });
+
+  function updateToggleState(enabled) {
+    if (enabled) {
+      toggleContainer.classList.add('active');
+      toggleSwitch.classList.add('active');
+      toggleLabel.textContent = 'UI BOOSTED';
+    } else {
+      toggleContainer.classList.remove('active');
+      toggleSwitch.classList.remove('active');
+      toggleLabel.textContent = 'BOOST MUSIC';
+    }
+  }
+
+  // Show NEW banner and clear badge only when acknowledged
+  (async function initBadge() {
+    try {
+      const currentVersion = browser.runtime.getManifest().version;
+      const { updateAvailable, availableVersion } = await browser.storage.sync.get(['updateAvailable', 'availableVersion']);
+      if (updateAvailable && availableVersion) {
+        if (whatsNew) {
+          whatsNew.style.display = 'block';
+          whatsNew.querySelector('span').textContent = `Update available: ${availableVersion}`;
+        }
+        if (ackUpdate) {
+          ackUpdate.textContent = 'UPDATE';
+          ackUpdate.addEventListener('click', async () => {
+            try {
+              // Apply update if ready (Firefox will load the new version), then reload extension
+              await browser.browserAction.setBadgeText({ text: '' });
+              await browser.storage.sync.set({ updateAvailable: false });
+              if (whatsNew) whatsNew.style.display = 'none';
+              // Reload extension to apply update immediately
+              browser.runtime.reload();
+            } catch (_) {}
+          });
+        }
+        return;
+      }
+      // Already on latest or no info: ensure banner hidden and badge cleared
+      if (whatsNew) whatsNew.style.display = 'none';
+      await browser.browserAction.setBadgeText({ text: '' });
+    } catch (_) {}
+  })();
+});
+

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* Main popup container styling */
+        body {
+            width: 300px;
+            padding: 20px 20px 0 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #010214;
+            color: white;
+            margin: 0;
+        }
+        
+        /* Firefox popup container styling - ensures proper rounded corners */
+        html {
+            border-radius: 16px !important;
+            overflow: hidden !important;
+        }
+        
+        /* Alternative popup styling for better visual consistency */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Header section with icon and title */
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        /* Logo styling */
+        .header .logo {
+            width: 100%;
+            max-width: 280px;
+            height: 80px;
+            margin: 0 auto 12px;
+            display: block;
+            object-fit: contain;
+        }
+        
+        /* Toggle switch container with background */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            padding: 0;
+            background: #9399A4;
+            border-radius: 1000px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            height: 56px;
+            width: 300px;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .toggle-container:hover {
+            background: #9399A4;
+        }
+        
+        .toggle-container.active {
+            background: #00C94E;
+        }
+        
+        /* Toggle label text styling */
+        .toggle-label {
+            font-size: 20px;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            transition: opacity 0.15s ease-in-out;
+        }
+        
+        /* Custom toggle switch styling */
+        .toggle-switch {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            left: 4px;
+            top: 4px;
+        }
+        
+        /* Active state styling for toggle switch */
+        .toggle-switch.active {
+            transform: translateX(244px);
+        }
+        
+        /* Features list container */
+        .features {
+            margin-top: 12px;
+        }
+        
+        /* Individual feature item styling */
+        .feature {
+            margin-top: 6px;
+            margin-bottom: 2px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Feature description styling */
+        .feature-desc {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            line-height: 1.3;
+        }
+        
+        /* Support section styling */
+        .support-section {
+            text-align: center;
+            margin: 16px 0 0 0;
+            padding: 0;
+        }
+        
+        .support-section a {
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .support-section img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin: 0 0 12px 0;
+        }
+        
+        /* Author info section */
+        .author-info {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        
+        .author-info h3 {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .author-info p {
+            margin: 0 0 3px 0;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .author-info a {
+            color: #f43f5e;
+            text-decoration: none;
+        }
+        
+        .author-info a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Social links section */
+        .social-links {
+            text-align: center;
+            margin-top: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-separator {
+            color: white;
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        
+        /* Footer section styling */
+        .footer {
+            margin-top: 0;
+            text-align: center;
+            font-size: 10px;
+            opacity: 0.7;
+            color: white;
+        }
+        
+        /* Design credit section */
+        .design-credit {
+            background: linear-gradient(90deg, rgba(128,0,0,0.5), rgba(128,64,0,0.5), rgba(128,128,0,0.5), rgba(64,128,0,0.5), rgba(0,128,0,0.5), rgba(0,128,64,0.5), rgba(0,128,128,0.5), rgba(0,64,128,0.5), rgba(0,0,128,0.5), rgba(64,0,128,0.5), rgba(128,0,128,0.5), rgba(128,0,64,0.5));
+            background-size: 200% 100%;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            font-size: 10px;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        
+        .design-credit:hover {
+            animation: rainbow 2s linear infinite;
+            background: linear-gradient(90deg, rgba(255,0,0,0.9), rgba(255,128,0,0.9), rgba(255,255,0,0.9), rgba(128,255,0,0.9), rgba(0,255,0,0.9), rgba(0,255,128,0.9), rgba(0,255,255,0.9), rgba(0,128,255,0.9), rgba(0,0,255,0.9), rgba(128,0,255,0.9), rgba(255,0,255,0.9), rgba(255,0,128,0.9));
+            background-size: 200% 100%;
+        }
+        
+        .design-credit a {
+            color: #ffffff !important;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+            font-weight: bold;
+            mix-blend-mode: normal;
+            isolation: isolate;
+        }
+        
+        .design-credit:hover a {
+            text-decoration: none;
+            color: #ffffff !important;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section with logo -->
+    <div class="header">
+        <img src="logo.png" alt="Suno UI Booster" class="logo">
+    </div>
+    
+    <!-- Main toggle switch for enabling/disabling the extension -->
+    <div class="toggle-container active" id="toggleContainer">
+        <span class="toggle-label" id="toggleLabel">UI BOOSTED</span>
+        <div class="toggle-switch active" id="toggleSwitch"></div>
+    </div>
+    
+    <!-- What's new banner -->
+    <div id="whatsNew" style="display:none; margin-bottom: 10px; background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.35); color: #fff; border-radius: 8px; padding: 8px 10px; font-size: 12px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <span>Updated! See the latest UI tweaks (icons, play overlay, spacing).</span>
+            <button id="ackUpdate" style="background: transparent; color: #f43f5e; border: none; font-weight: 600; cursor: pointer;">OK</button>
+        </div>
+    </div>
+
+    <!-- List of features provided by the extension -->
+    <div class="features">
+        <div class="feature">Professional player experience</div>
+        <div class="feature-desc">Professional-grade player with bigger buttons for precise control, massive progress bar for accurate seeking, and consistent styling that feels native.</div>
+
+        
+        <div class="feature">Perfect cover display</div>
+        <div class="feature-desc">No more weird cropping! Because why make them rectangular when they're square by default?</div>
+
+        
+        <div class="feature">Streamlined interface</div>
+        <div class="feature-desc">Fixed those massive gaps, removed all the clutter, that funny font, full-width workspace button, better dropdown positioning, enhanced navigation, easy to access trash button!</div>
+
+    </div>
+    
+    <!-- Support button section -->
+    <div class="support-section">
+        <a href="https://www.buymeacoffee.com/asmetanka" target="_blank" style="text-decoration: none;">
+            <img src="https://img.buymeacoffee.com/button-api/?text=support development&emoji=🖤&slug=asmetanka&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff"
+                 alt="Support Development" 
+                 style="width: 100%; max-width: 200px; height: auto; border-radius: 8px;">
+        </a>
+    </div>
+    
+    <!-- Author info section -->
+    <div class="author-info">
+        <h3><span id="extVersion" style="font-weight:600; display:block;">Version </span>Made with ❤️ by Smetanka</h3>
+        <p><a href="https://smetanka.me" target="_blank">smetanka.me</a></p>
+        <p><a href="mailto:hello@smetanka.me">hello@smetanka.me</a></p>
+    </div>
+    
+    <!-- Social media links -->
+    <div class="social-links">
+        <a href="https://x.com/asmetanka" target="_blank">Follow on X</a>
+        <span class="social-separator">•</span>
+        <a href="https://www.linkedin.com/in/asmetanka/" target="_blank">Connect on LinkedIn</a>
+        <span class="social-separator">•</span>
+        <a href="https://github.com/asmetanka/suno-ui-booster" target="_blank">GitHub</a>
+    </div>
+    
+    <!-- Footer with author information -->
+    <div class="footer">
+        <small style="margin-top: 5px; display: block; font-size: 13px; color: #000000;">
+            <!-- Footer content removed -->
+        </small>
+    </div>
+    
+    <!-- Design credit -->
+    <div class="design-credit">
+        <a href="https://rnbw.agency" target="_blank">Looking for design? Contact RNBW.agency</a>
+    </div>
+    
+    <!-- JavaScript file for popup functionality -->
+    <script src="popup.js"></script>
+</body>
+</html>

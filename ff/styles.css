@@ -1,0 +1,1756 @@
+/*
+  Suno UI Booster styles
+  - Deterministic overrides for covers, buttons, and compact tiles
+  - Keep anchors pointer; controls default cursor
+  - Normalize cover aspect ratios; prevent overflow
+  - Avoid hover growth; prefer stable overlays
+*/
+
+/* ========================================
+   GLOBAL & ROOT VARIABLES
+   ======================================== */
+
+   :root {
+    --suno-customizer-active: 1;
+}
+
+* {
+    text-transform: none !important;
+}
+
+/* ========================================
+   GENERAL LAYOUT & SPACING
+   ======================================== */
+
+/* Hide unnecessary elements */
+.h-\[156px\],
+div.mr-4.h-40px.w-53px,
+div[class*="mr-4"][class*="h-["][class*="w-["],
+span.ml-2.rounded-md.bg-accent-pink.px-1.py-0\.5.text-xs.font-medium.text-foreground-primary-onDark {
+    display: none !important;
+}
+
+/* Hide specific elements but not player-related ones */
+div.flex.flex-1.flex-row.items-center.p-2:not([data-testid*="player"]):not([aria-label*="Playbar"]):not(.content-between),
+div.flex.h-\[60px\].flex-row.items-center.gap-\[5px\].px-4:not([data-testid*="player"]):not([aria-label*="Playbar"]) {
+    display: none !important;
+}
+
+/* Remove bottom padding */
+div.w-full.md\:pb-5,
+div[class*="w-full"][class*="md:pb-5"],
+*[class*="md:pb-5"] {
+    padding-bottom: 0 !important;
+}
+
+/* Spacing adjustments */
+.relative.flex.h-auto.w-full.flex-row.items-center.gap-2 {
+  margin-bottom: 0 !important;
+}
+
+.pb-\[120px\] {
+    padding-bottom: 200px !important;
+}
+
+.flex.flex-col.gap-\[5px\] .pb-\[120px\] {
+    padding-bottom: 20px !important;
+}
+
+.mx-4.mt-2 {
+    margin-top: 4px !important;
+}
+
+.flex.flex-col.gap-4 {
+    gap: 0.25rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 0.25rem !important;
+}
+
+.md\:pt-4 {
+    padding-top: 0.5rem !important;
+}
+
+/* ========================================
+   TYPOGRAPHY & TEXT STYLES
+   ======================================== */
+
+/* Force sans-serif font */
+.font-serif {
+    font-family: Neue Montreal, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !important;
+}
+
+/* Remove all underlines from links */
+a, a:hover, a span, a span:hover, .hover\:underline, .hover\:underline:hover {
+    text-decoration: none !important;
+}
+
+/* Credits link styling */
+.flex.items-center.justify-center.gap-1 a,
+.flex.items-center.justify-center.gap-1 a span {
+    font-size: 16px !important;
+    color: rgb(var(--rgb-strawberry-600)) !important;
+}
+
+a[href="/account"],
+a[href="/account"] span {
+    font-weight: bold !important;
+}
+
+.text-foreground-secondary {
+    color: rgb(var(--rgb-strawberry-600)) !important;
+}
+
+/* Keep credits visible */
+.flex.h-\[12px\] {
+    display: flex !important;
+    height: auto !important;
+}
+
+/* Hide the 'Credits' label but keep the numeric amount */
+.flex.h-\[12px\].flex-col.justify-center.gap-2 > .flex.items-center.justify-center.gap-1 > a[href="/account"] {
+  font-size: 0 !important;
+}
+.flex.h-\[12px\].flex-col.justify-center.gap-2 > .flex.items-center.justify-center.gap-1 > a[href="/account"] > .text-foreground-secondary {
+  font-size: 14px !important;
+}
+
+/* ========================================
+   HEADER & SIDEBAR
+   ======================================== */
+
+/* Hide sidebar elements */
+.border-t.border-border-secondary > .flex.flex-row.items-center.justify-center.gap-2.p-2.py-4,
+.flex.flex-col.gap-1.px-4 > button[type="button"] {
+    display: none !important;
+}
+
+/* Remove background images from header */
+*[style*="Aura-1.png"],
+*[style*="auras-v2/Aura-1.png"] {
+    background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.9) 25%) center top / cover !important;
+}
+
+*[style*="url(/auras-v2/"] {
+    background-image: none !important;
+}
+
+/* ========================================
+   SONG LIST & PREVIEWS
+   ======================================== */
+
+/* Shared styles for song list containers */
+.css-c1kosu,
+.css-1jkulof,
+.css-1fls2yz,
+.css-1btelbu,
+.css-1b51or {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    border-radius: 12px !important;
+    padding-left: 20px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+/* Playing track row background: dark pink tint */
+[data-testid="song-row"].css-1btelbu {
+  background-color: rgb(var(--rgb-strawberry-100)) !important;
+}
+
+/* Selected track row background (scope to selected row only) */
+[role="row"][aria-selected="true"] [data-testid="song-row"],
+[data-selected] [data-testid="song-row"] {
+  background: rgb(var(--rgb-dumbo-100)) !important;
+}
+
+/* Selected + playing track row: brighter pink */
+[role="row"][aria-selected="true"] [data-testid="song-row"].css-1btelbu,
+[data-selected] [data-testid="song-row"].css-1btelbu {
+  background: rgb(var(--rgb-strawberry-200)) !important;
+}
+
+.css-c1kosu .flex.flex-1.flex-row.items-center.gap-3,
+.css-1jkulof .flex.flex-1.flex-row.items-center.gap-3,
+.css-1fls2yz .flex.flex-1.flex-row.items-center.gap-3,
+.css-1btelbu .flex.flex-1.flex-row.items-center.gap-3,
+.css-1b51or .flex.flex-1.flex-row.items-center.gap-3 {
+    gap: 0px !important;
+}
+
+/* --- Square Preview Images --- */
+
+/* 80px preview images (large list) */
+.css-umyjtf,
+img[alt="Song Image"]:not(.css-gkadxh) {
+    aspect-ratio: 1 / 1 !important;
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
+}
+
+/* Additional song row classes for consistent spacing */
+.css-1btelbu,
+.css-1b51or {
+    margin-left: 8px !important;
+}
+
+.css-1twx8fn {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+    margin-left: -4px !important;
+}
+
+/* Ensure consistent image sizing for new song row classes */
+.css-1btelbu img[alt="Song Image"],
+.css-1b51or img[alt="Song Image"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
+}
+
+/* 42px preview images (small list) */
+.css-gkadxh {
+    aspect-ratio: 1 / 1 !important;
+    width: 42px !important;
+    height: 42px !important;
+    object-fit: cover !important;
+}
+
+.css-1r7i1wu {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    margin-left: -3px !important;
+}
+
+/* Other square image formats */
+a[aria-label*="Playbar: Title"],
+a[href*="/song/"] img[alt*="Cover image"],
+a.mr-2.h-16.w-10,
+a[class*="mr-2"][class*="h-16"][class*="w-10"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 64px !important;
+    height: 64px !important;
+}
+
+a.mr-2.h-16.w-10 img {
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+}
+
+.css-vvtra8,
+img.chakra-image.css-vvtra8 {
+    aspect-ratio: 1 / 1 !important;
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+}
+
+.flex-0.relative {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    overflow: hidden !important;
+    margin-right: 16px !important;
+}
+
+img.object-fit.h-77px.w-56px.rounded-xl,
+.flex.flex-row.items-center.gap-2 img[alt*="Image for"] {
+    aspect-ratio: 1 / 1 !important;
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+}
+
+
+/* --- Text Layout & Centering --- */
+
+/* Large song items (list view) */
+.css-c1kosu .line-clamp-1,
+.css-1btelbu .line-clamp-1,
+.css-1b51or .line-clamp-1 {
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+}
+
+.css-c1kosu .chakra-stack.css-1u7775a,
+.css-1btelbu .chakra-stack.css-1u7775a,
+.css-1b51or .chakra-stack.css-1u7775a {
+    justify-content: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-left: 12px !important;
+}
+
+/* Small song items (e.g., in a horizontally scrollable list) */
+.css-1jkulof .line-clamp-1,
+.css-1fls2yz .line-clamp-1 {
+    -webkit-line-clamp: 1 !important;
+    line-clamp: 1 !important;
+    white-space: nowrap !important;
+    max-width: 20ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h,
+.css-1jkulof .chakra-stack.css-1f0wxn3,
+.css-1fls2yz .chakra-stack.css-1bccw6h,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 {
+    max-width: 100px !important;
+    overflow: hidden !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
+    max-width: 100px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Shared line height for song descriptions */
+.chakra-stack.css-1f0wxn3,
+.chakra-stack.css-1f0wxn3 .gap-2.break-all.font-sans.line-clamp-1 {
+    line-height: 1.2 !important;
+}
+
+/* ========================================
+   PLAYER & PROGRESS BAR
+   ======================================== */
+
+/* --- Progress Bar --- */
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer {
+    height: 100px !important;
+    border-radius: 8px !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer .h-2.bg-foreground-primary {
+    height: 100% !important;
+    border-radius: 8px 0 0 8px !important;
+    position: relative !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer .h-2.bg-foreground-primary::after {
+    content: '' !important;
+    position: absolute !important;
+    right: -4px !important;
+    top: 0 !important;
+    width: 8px !important;
+    height: 100% !important;
+    background-color: rgb(var(--rgb-accent-pink)) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer button {
+    height: 20px !important;
+    width: 20px !important;
+    border-radius: 50% !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.group.flex.h-2.w-full.touch-none.flex-row.bg-background-tertiary.cursor-pointer:hover button {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+/* ========================================
+   PLAYER CONTROLS
+   ======================================== */
+
+/* Make play/pause/previous/next buttons rectangular with rounded corners and 3x wider */
+button[aria-label="Playbar: Previous Song button"],
+button[aria-label="Playbar: Play button"],
+button[aria-label="Playbar: Pause button"],
+button[aria-label="Playbar: Next Song button"] {
+    width: 168px !important; /* 3x wider than original 56px */
+    height: 56px !important;
+    padding: 12px !important;
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border-radius: 28px !important; /* More rounded - half of height for pill shape */
+}
+
+button[aria-label="Playbar: Previous Song button"] svg,
+button[aria-label="Playbar: Play button"] svg,
+button[aria-label="Playbar: Pause button"] svg,
+button[aria-label="Playbar: Next Song button"] svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Hide shuffle and repeat buttons */
+button[aria-label="Playbar: Toggle shuffle button"],
+button[aria-label="Playbar: Toggle repeat button"] {
+    display: none !important;
+}
+
+/* ========================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ======================================== */
+
+/* General button styling */
+button[data-testid="create-button"] {
+    background-image: none !important;
+    background-color: rgb(var(--rgb-strawberry-400)) !important;
+}
+
+button[aria-label="Back"] {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border: none !important;
+}
+
+/* Player action buttons (Like, Dislike, etc.) */
+button[aria-label="Playbar: Like"],
+button[aria-label="Playbar: Dislike"],
+button[aria-label="Pin to Project"],
+button[aria-label="More Options"],
+.trash-button-custom,
+.download-button-custom {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    padding: 8px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    outline: none !important;
+    cursor: default !important;
+    transition: background-color 0.2s ease !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
+}
+
+/* Hover effects for player action buttons */
+button[aria-label="Playbar: Like"]:hover,
+button[aria-label="Playbar: Dislike"]:hover,
+button[aria-label="Pin to Project"]:hover,
+button[aria-label="More Options"]:hover,
+.trash-button-custom:hover,
+.download-button-custom:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Active state for player action buttons */
+button[aria-label="Playbar: Like"]:active,
+button[aria-label="Playbar: Dislike"]:active,
+button[aria-label="Pin to Project"]:active,
+button[aria-label="More Options"]:active,
+.trash-button-custom:active,
+.download-button-custom:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+button[aria-label="Playbar: Like"] svg,
+button[aria-label="Playbar: Dislike"] svg,
+button[aria-label="Pin to Project"] svg,
+button[aria-label="More Options"] svg,
+.trash-button-custom svg,
+.download-button-custom svg {
+    width: 16px !important;
+    height: 16px !important;
+    color: inherit !important;
+}
+
+/* Active state for player action buttons */
+button[aria-label="Playbar: Like"].text-foreground-primary,
+button[aria-label="Playbar: Dislike"].text-foreground-primary,
+button[aria-label="Pin to Project"].text-foreground-primary,
+button[aria-label="More Options"].text-foreground-primary,
+.trash-button-custom.text-foreground-primary,
+.download-button-custom.text-foreground-primary {
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+button[aria-label="Playbar: Like"].text-foreground-primary svg,
+button[aria-label="Playbar: Dislike"].text-foreground-primary svg,
+button[aria-label="Pin to Project"].text-foreground-primary svg,
+button[aria-label="More Options"].text-foreground-primary svg,
+.trash-button-custom.text-foreground-primary svg,
+.download-button-custom.text-foreground-primary svg {
+    color: rgb(var(--rgb-background-primary)) !important;
+}
+
+/* Ensure mask-based icons also adopt contrast color on active */
+button[aria-label="Playbar: Like"].text-foreground-primary,
+button[aria-label="Playbar: Dislike"].text-foreground-primary {
+  color: rgb(var(--rgb-background-primary)) !important;
+}
+
+/* Disabled state for trash/download button */
+.trash-button-custom:disabled,
+.download-button-custom:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+/* Pagination buttons */
+button[aria-label="Previous Page"],
+button[aria-label="Next Page"],
+button.rounded-full.border.border-border-primary {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+    border: none !important;
+}
+
+/* Male/Female toggle buttons — generic fallback styles */
+button.bg-transparent.text-foreground-primary\/30 {
+  background-color: transparent !important;
+    border: none !important;
+  border-radius: 9999px !important;
+    min-width: 80px !important;
+    justify-content: center !important;
+}
+
+button.bg-background-fog-thick {
+    background-color: rgb(var(--rgb-accent-pink)) !important;
+    color: white !important;
+    min-width: 80px !important;
+    justify-content: center !important;
+  border-radius: 9999px !important;
+}
+
+/* Male/Female toggle buttons — mimic 'Write Lyrics' pill only inside the Vocal Gender row */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  border-radius: 9999px !important; /* rounded-full */
+  height: 36px !important;
+  min-height: 36px !important;
+  box-sizing: border-box !important;
+  padding: 0 12px !important; /* enforce constant inner spacing */
+  min-width: 96px !important; /* keep width stable even when site tweaks */
+  color: rgb(var(--rgb-white)) !important; /* default: white text */
+}
+/* Freeze geometry on pressed/active/selected; keep our overlay-driven look */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"],
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:active,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary {
+  background: transparent !important;
+  padding: 0 12px !important; /* keep same width on active */
+  height: 36px !important;
+  min-height: 36px !important;
+  min-width: 96px !important;
+  border-radius: 9999px !important;
+}
+
+/* Ensure inner padding stays constant even on pressed/active */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"] > span,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:active > span,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary > span {
+  padding: 0 12px !important;
+}
+
+/* When site toggles rounded-lg on active, keep pills */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.rounded-lg {
+  border-radius: 9999px !important;
+}
+
+/* Neutralize site-provided active background to keep constant pill width */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.bg-background-tertiary {
+  background: transparent !important;
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button:hover {
+  color: rgb(var(--rgb-white)) !important; /* keep white on hover */
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button > span {
+  position: relative !important;
+  z-index: 20 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 0 12px !important;
+  width: 100% !important;
+  height: 100% !important;
+  white-space: nowrap !important;
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  border-radius: 9999px !important;
+  background: rgb(255 255 255 / 0.1) !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+/* Selected state variants */
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"]::after,
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary::after {
+  background: rgb(var(--rgb-accent-pink)) !important; /* active: pink background */
+}
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button[aria-pressed="true"],
+.flex.flex-1.items-center.justify-between.rounded-\[10px\].bg-background-primary.px-4.py-1\.5 .flex.flex-row.gap-8 > button.text-foreground-primary {
+  color: rgb(var(--rgb-white)) !important; /* active: keep white text */
+}
+
+div.flex.flex-row.gap-8 {
+    gap: 8px !important;
+}
+
+/* ========================================
+   ACTION BUTTON REORDERING & SPACING
+   ======================================== */
+
+/* Reorder and adjust spacing for action buttons */
+.flex.w-full.flex-row.items-center.gap-0.ml-4 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: 12px !important;
+}
+
+.flex.w-full.flex-row.items-center.gap-0.ml-4 > div:last-child {
+    order: -1 !important; /* Move Like/Dislike to the start */
+}
+
+.flex.w-full.flex-row.items-center.gap-0.ml-4 > div:first-child {
+    order: 1 !important; /* Move Edit/Publish after */
+}
+
+div.flex.w-full.flex-row.items-center.gap-0 {
+    gap: 4px !important;
+}
+
+/* Hide comment button */
+a[aria-label="Playbar: Comment"] {
+    display: none !important;
+}
+
+/* Song row textual action buttons (Edit/Publish): transparent bg, primary text color */
+/* Bottom action group inside the row */
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button::before,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button > span,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button > span * {
+  color: inherit !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button[disabled] {
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Top action cluster near like/dislike */
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]):hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]):active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Publish button: pink hover like delete (bottom action group) */
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:nth-child(2):not([aria-label]):not([disabled]):hover,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:last-child:not([aria-label]):not([disabled]):hover {
+  background-color: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:nth-child(2):not([aria-label]):not([disabled]):active,
+[data-testid="song-row"] .css-1kcq9v9 > .flex.flex-row.items-center.gap-2 > button:last-child:not([aria-label]):not([disabled]):active {
+  background-color: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* Publish button: pink hover like delete (top action cluster) */
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 > button:not([aria-label]):first-child:not([disabled]):hover,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 .css-1hohgv6 > button:not([aria-label]):first-of-type:not([disabled]):hover {
+  background-color: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 > button:not([aria-label]):first-child:not([disabled]):active,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 .css-1hohgv6 > button:not([aria-label]):first-of-type:not([disabled]):active {
+  background-color: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* Extra robust: Publish identified by whitespace-nowrap class (top and bottom) */
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label]):not([disabled]):hover {
+  background: rgb(var(--rgb-accent-pink) / 0.15) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label]):not([disabled]):active {
+  background: rgb(var(--rgb-accent-pink) / 0.45) !important;
+  color: rgb(var(--rgb-accent-pink)) !important;
+}
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label])::before,
+[data-testid="song-row"] button.whitespace-nowrap:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label])::before,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) > span,
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button:not([aria-label]) > span * {
+  color: inherit !important;
+}
+[data-testid="song-row"] .css-1b0cg3t .css-1hohgv6 button[disabled]:not([aria-label]) {
+  color: rgb(var(--rgb-white)) !important;
+}
+
+/* Fallback: target any textual action button inside song row that still has bg-background-tertiary */
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgb(var(--rgb-white)) !important;
+  border-radius: 9999px !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]):hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]):active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgb(var(--rgb-white)) !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label])::before,
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label])::after {
+  background: transparent !important;
+}
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) > span,
+[data-testid="song-row"] button.bg-background-tertiary:not([aria-label]) > span * {
+  color: inherit !important;
+}
+
+
+/* ========================================
+   BUTTON GROUPS & TABS
+   ======================================== */
+
+/* Make button group buttons separate instead of connected tabs */
+.flex.w-full.max-w-full.flex-row.justify-start button {
+    border-radius: 20px !important;
+    margin-right: 4px !important;
+    border: none !important;
+    outline: none !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+/* Tabs container backdrop: Auto / Write Lyrics block */
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm {
+  background-color: color-mix(in oklab, rgb(var(--rgb-white) / 1) 5%, transparent) !important;
+}
+
+/* Tabs container and buttons fixed widths */
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm {
+  width: 192px !important;
+  min-width: 192px !important;
+  max-width: 192px !important;
+}
+.flex.h-auto.w-auto.flex-row.rounded-full.border-white\/10.transition.border-0.bg-transparent.p-0.text-sm > button {
+  flex: 0 0 96px !important;
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+}
+
+/* ========================================
+   SONG ROW PLAY BUTTONS
+   ======================================== */
+
+/* Style play buttons in song rows */
+[data-testid="song-row"] [data-testid="song-row-play-button"] svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+[data-testid="song-row"] [data-testid="song-row-play-button"]:hover svg {
+    color: rgb(var(--rgb-accent-pink)) !important;
+}
+
+/* ========================================
+   MISCELLANEOUS
+   ======================================== */
+
+/* Control settings panel styling */
+.m-4.rounded-md.bg-background-tertiary.p-4.font-sans {
+    background-color: rgb(var(--rgb-strawberry-100)) !important;
+}
+
+.m-4.rounded-md.bg-background-tertiary.p-4.font-sans .text-xs {
+    font-size: 16px !important;
+}
+
+/* Accent elements */
+.h-2.w-2.rounded-full.bg-accent {
+    height: 24px !important;
+    width: 8px !important;
+}
+
+.h-2.w-2.rounded-full {
+    height: 72px !important;
+    width: 8px !important;
+}
+
+/* Remove top padding from main container */
+.custom-scrollbar-transparent.mx-6.flex.overflow-y-hidden.overflow-x-scroll,
+.custom-scrollbar-transparent.flex-1.overflow-y-auto.container\/rows.px-2.md\:px-4,
+[class*="custom-scrollbar-transparent"][class*="flex-1"][class*="overflow-y-auto"][class*="@container/rows"][class*="pt-4"] {
+    padding-top: 0 !important;
+}
+
+/* Spacing for horizontal scroll container */
+.custom-scrollbar-transparent.mx-6.flex.overflow-y-hidden.overflow-x-scroll {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    gap: 0px !important;
+}
+
+/* ========================================
+   WORKSPACE BUTTON
+   ======================================== */
+
+/* Workspace button - make it full width and style like model dropdown */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button {
+    width: 100% !important;
+    flex: 1 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgb(var(--rgb-accent-pink-onPrimary)) !important;
+}
+
+/* Workspace row: remove top border/contour */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  border-top: 0 !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button:hover {
+    background-color: rgb(var(--rgb-background-tertiary)) !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button svg {
+    color: rgb(var(--rgb-accent-pink-onPrimary)) !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button::before {
+    border: none !important;
+    display: none !important;
+}
+
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button::after {
+    border: none !important;
+    display: none !important;
+}
+
+/* Make Workspace dropdown wider and move it left */
+.absolute.z-\[1500\].flex.h-auto.max-h-\[240px\].w-\[260px\].flex-col.gap-3.rounded-lg.bg-background-secondary.p-3.shadow-lg {
+    width: 360px !important;
+    transform: translateX(-100px) !important;
+}
+
+/* Center Workspace button content to the left */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pl-6.pr-\[10px\] button .relative.flex.flex-row.items-center.justify-center.gap-2 {
+    justify-content: flex-start !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+/* ========================================
+   SONG ITEMS
+   ======================================== */
+
+/* Reduce gap between text and buttons in small song items */
+.css-1jkulof .flex-1.flex.flex-row {
+    gap: 4px !important;
+}
+
+/* Container and spacing for song items */
+.w-\[230px\].flex-shrink-0,
+.css-1jkulof {
+    width: 230px !important;
+    min-width: 230px !important;
+}
+
+/* Ensure buttons have space */
+.css-1jkulof .css-1fuckjf,
+.css-1jkulof .css-1kcq9v9 {
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+/* ========================================
+   SPLIT BAR STYLES
+   ======================================== */
+
+/* Make split bar same width as other dividers */
+div[class*="w-split-bar"],
+div[class*="w-split-large-bar"],
+div.group.relative.text-\(--split-panel-bar\,transparent\).hover\:text-\(--split-panel-bar-hover\,var\(--color-overlay-on-primary\)\).w-split-bar.w-split-large-bar,
+div[class*="split-bar"],
+div[class*="split-panel"] {
+    width: 1px !important;
+    min-width: 1px !important;
+}
+
+/* Ensure split bar background is consistent */
+div[class*="w-split-bar"] div,
+div[class*="w-split-large-bar"] div,
+div.group.relative.text-\(--split-panel-bar\,transparent\).hover\:text-\(--split-panel-bar-hover\,var\(--color-overlay-on-primary\)\).w-split-bar.w-split-large-bar div,
+div[class*="split-bar"] div,
+div[class*="split-panel"] div {
+    width: 1px !important;
+    min-width: 1px !important;
+}
+
+/* ========================================
+   SEARCH FIELD STYLES
+   ======================================== */
+
+/* Make search input full width instead of max-w-[400px] */
+input[placeholder="Search"],
+input[placeholder*="Search"],
+input.bg-background-secondary.placeholder-foreground-primary\/50.hidden.h-10.w-full.max-w-\[400px\].rounded-full.pl-12.font-sans.outline-none.md\:block,
+input[class*="max-w-\[400px\]"],
+input[class*="max-w-"],
+input[type="text"][class*="max-w-"] {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* Remove max-width from all input fields */
+input[class*="max-w-"] {
+    max-width: none !important;
+}
+
+/* Make search containers full width */
+div:has(input[placeholder*="Search"]),
+div:has(input[class*="max-w-"]) {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* ========================================
+   SUNO UI BOOSTER TRASH BUTTON STYLES
+   ======================================== */
+
+/* Hide share buttons */
+button[aria-label*="Share"],
+
+button[aria-label*="Send"],
+button[aria-label*="Export"],
+button[aria-label*="Link"],
+button[aria-label*="Copy"],
+button[data-testid*="share"],
+button[data-testid*="send"],
+button[data-testid*="export"],
+button[data-testid*="link"],
+button[data-testid*="copy"] {
+    display: none !important;
+}
+
+/* Trash button wrapper positioning - now after More Options */
+.suno-booster-trash-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Download button wrapper positioning - after More Options */
+.suno-booster-download-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure proper spacing in button groups */
+.suno-booster-trash-wrapper + button[aria-label="More Options"] {
+    margin-left: 0 !important;
+}
+
+/* Spacing when trash button comes after More Options */
+button[aria-label="More Options"] + .suno-booster-trash-wrapper {
+    margin-left: 4px !important;
+}
+
+/* Spacing when download button comes after More Options */
+button[aria-label*="More"] + .suno-booster-download-wrapper {
+    margin-left: 4px !important;
+}
+
+/* Make sure trash button doesn't interfere with other buttons */
+.suno-booster-trash-wrapper .trash-button-custom {
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+}
+
+/* Make sure download button doesn't interfere with other buttons */
+.suno-booster-download-wrapper .download-button-custom {
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+}
+
+/* Red hover effect for trash button */
+.suno-booster-trash-wrapper .trash-button-custom:hover {
+    background-color: rgba(239, 68, 68, 0.35) !important; /* Red background with transparency */
+}
+
+.suno-booster-trash-wrapper .trash-button-custom:hover svg {
+    color: #ef4444 !important; /* Red icon on hover */
+}
+
+/* Accent hover effect for download button */
+.suno-booster-download-wrapper .download-button-custom:hover {
+    background-color: rgba(59, 130, 246, 0.35) !important; /* Blue-ish */
+}
+.suno-booster-download-wrapper .download-button-custom:hover .download-wav-text {
+    color: #60a5fa !important;
+}
+.download-button-custom.suno-loading,
+.download-button-custom.suno-success {
+  cursor: default !important;
+}
+.download-button-custom.suno-loading::before,
+.download-button-custom.suno-loading::after,
+.download-button-custom.suno-success::before,
+.download-button-custom.suno-success::after {
+  background: transparent !important; /* disable site hover overlays */
+}
+.download-button-custom.suno-loading,
+.download-button-custom.suno-loading:hover,
+.download-button-custom.suno-loading:focus,
+.download-button-custom.suno-loading:active {
+  background-color: rgba(59, 130, 246, 0.35) !important; /* same as hover tint */
+  color: #3b82f6 !important; /* wave bars take currentColor, but we tint them via fill below */
+}
+.suno-wav-anim rect { fill: #3b82f6 !important; }
+
+
+/* Inline text mark for WAV */
+.download-button-custom .download-wav-text {
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.5px !important;
+    color: rgb(var(--rgb-foreground-primary)) !important;
+}
+
+/* Success state: solid blue background and white icon */
+.download-button-custom.suno-success {
+  background-color: #3b82f6 !important; /* solid blue */
+  color: #ffffff !important; /* ensure white icon via currentColor */
+}
+.download-button-custom.suno-success:hover,
+.download-button-custom.suno-success:focus,
+.download-button-custom.suno-success:active,
+.suno-booster-download-wrapper .download-button-custom.suno-success:hover,
+.suno-booster-download-wrapper .download-button-custom.suno-success:focus,
+.suno-booster-download-wrapper .download-button-custom.suno-success:active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+.download-button-custom.suno-success:disabled {
+  opacity: 1 !important; /* keep fully opaque while disabled */
+}
+.download-button-custom.suno-success::before,
+.download-button-custom.suno-success::after,
+.suno-booster-download-wrapper .download-button-custom.suno-success::before,
+.suno-booster-download-wrapper .download-button-custom.suno-success::after {
+  background: transparent !important; /* kill any overlay */
+}
+
+/* Wave animation used while preparing WAV */
+.suno-wav-anim rect { fill: currentColor !important; }
+.animate-wave1 { animation: suno-wave 900ms infinite ease-in-out 0ms; transform-origin: center bottom; }
+.animate-wave2 { animation: suno-wave 900ms infinite ease-in-out 110ms; transform-origin: center bottom; }
+.animate-wave3 { animation: suno-wave 900ms infinite ease-in-out 220ms; transform-origin: center bottom; }
+@keyframes suno-wave {
+  0% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.2); }
+  100% { transform: scaleY(0.5); }
+}
+
+
+/* (Removed dual-icon toggling per user request) */
+
+
+
+/* ========================================
+   END OF SUNO UI BOOSTER STYLES
+   ======================================== */
+
+/* Square cover for the small 41x30 preview block */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden img[alt="Song Image"] {
+  aspect-ratio: 1 / 1 !important;
+  width: 41px !important;
+  height: 41px !important;
+  min-width: 41px !important;
+  min-height: 41px !important;
+  object-fit: cover !important;
+}
+
+/* Enlarge and center Play button on the small 41x41 cover */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: saturate(120%) blur(0.5px) !important;
+    padding: 0 !important;
+  margin: 0 !important;
+  z-index: 3 !important;
+}
+
+/* Remove side offset from inner wrapper */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] .ml-1 {
+  margin-left: 0 !important;
+}
+
+/* Enlarge play glyph */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] img[alt="Play"] {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Hover feedback */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  background: rgba(0, 0, 0, 0.45) !important;
+  transform: translate(-50%, -50%) scale(1.05) !important;
+}
+
+/* Nudge the small 41x41 play glyph slightly right for optical balance */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] img[alt="Play"] {
+  transform: translateX(1.2px) !important;
+}
+
+/* Add circular backdrop and nudge icon for row play overlay */
+[data-testid="song-row-play-button"] [aria-label="Play"] {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+[data-testid="song-row-play-button"] [aria-label="Pause"] {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+[data-testid="song-row-play-button"] [aria-label="Play"]::before,
+[data-testid="song-row-play-button"] [aria-label="Pause"]::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  z-index: 5 !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+[data-testid="song-row-play-button"] [aria-label="Play"] svg,
+[data-testid="song-row-play-button"] [aria-label="Pause"] svg {
+    position: relative !important;
+  z-index: 6 !important;
+  width: 20px !important;
+  height: 20px !important;
+  transform: translateX(1.2px) !important; /* slight right shift for optical centering */
+}
+
+/* Hover feedback */
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before,
+[data-testid="song-row-play-button"] [aria-label="Pause"]:hover::before {
+  background: rgba(0, 0, 0, 0.45) !important;
+  transform: translate(-50%, -50%) scale(1.05) !important;
+}
+
+/* Action bar under the cover: stronger pill buttons */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button {
+  border-radius: 9999px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: 0 14px !important;
+  color: rgb(var(--rgb-white)) !important; /* ensure numbers/text are white */
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button span {
+  display: inline-flex !important;
+    align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+    position: relative !important;
+}
+
+/* Replace 2nd button icon with Heart + circular backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span svg {
+  display: none !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 22px !important;
+  height: 22px !important;
+    border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  margin-right: 2px !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 11px !important; /* center of the 22px circle */
+  top: 50% !important;
+  transform: translate(calc(-50% + 1px), -50%) !important; /* slight right shift */
+  width: 12px !important;
+  height: 12px !important;
+  background: currentColor !important;
+  color: #ffffff !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+/* Replace Downvote button icon with Cross + circular backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span svg {
+  display: none !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  margin-right: 2px !important;
+}
+
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 11px !important; /* center of the 22px circle */
+  top: 50% !important;
+  transform: translate(calc(-50% + 1px), -50%) !important; /* slight right shift */
+  width: 12px !important;
+  height: 12px !important;
+  background: currentColor !important;
+  color: #ffffff !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+/* Action bar buttons: static translucent background (no hover change) */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Keep same background on hover/focus/active */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:focus,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Disable default ::before overlay from site classes */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button::before,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover::before {
+  background: transparent !important;
+}
+
+/* Remove dark backdrops (rgba(0, 0, 0, 0.35)) while preserving layout */
+/* Small 41x41 cover play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"],
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  background: transparent !important;
+}
+
+/* Row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+  background: transparent !important;
+}
+
+/* Restore dark backdrop ONLY for the Play buttons we modified earlier */
+/* Small 41x41 cover Play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]::before {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Ensure dark circular backdrop always appears on hover across all song rows */
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Pause"] {
+  opacity: 1 !important;
+}
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Play"]::before,
+[data-testid="song-row"]:hover [data-testid="song-row-play-button"] [aria-label="Pause"]::before {
+  background: rgba(0, 0, 0, 0.45) !important;
+  opacity: 1 !important;
+}
+
+/* Keep action-bar custom icons (heart/cross) without dark backdrop */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:nth-child(2) span::before,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button[aria-label='Downvote'] span::before {
+  background: transparent !important;
+}
+
+/* Keep same dark backdrop when hovering the small 41x41 play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden:hover button[aria-label="Play"] {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Remove hover growth animation for small 41x41 play circle */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover {
+  transform: translate(-50%, -50%) !important; /* no scale */
+}
+
+/* Remove hover growth animation for row play overlay circle */
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover::before {
+  transform: translate(-50%, -50%) !important; /* no scale */
+}
+
+/* Cursor policy: pointer only for text links; background buttons use default */
+a[href] {
+    cursor: pointer !important;
+}
+
+/* Small 41x41 Play button */
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"],
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:hover,
+.relative.h-\[41px\].w-\[30px\].overflow-hidden button[aria-label="Play"]:focus {
+  cursor: default !important;
+}
+
+/* Row play overlay */
+[data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row-play-button"] [aria-label="Play"]:hover,
+[data-testid="song-row-play-button"] [aria-label="Play"]:focus {
+  cursor: default !important;
+}
+
+/* Action bar buttons under the cover */
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:hover,
+.mt-2.mb-3.flex.flex-row.items-center.justify-center.gap-1\.5 > button:focus {
+  cursor: default !important;
+}
+
+/* Broader default cursor for non-link controls */
+button,
+[type="button"],
+[role="button"],
+[data-react-aria-pressable] {
+  cursor: default !important;
+}
+
+/* Utility override: keep pointer only for real text links */
+.cursor-pointer:not(a[href]) {
+  cursor: default !important;
+}
+
+/* Optional safety: button-like SVG/img shouldn't show pointer */
+svg[role="button"],
+img[role="button"] {
+  cursor: default !important;
+}
+
+/* Fix spacing/overlap in small horizontal rows (css-1jkulof) */
+.css-1jkulof .relative.flex.w-full.items-center,
+.css-1fls2yz .relative.flex.w-full.items-center {
+  flex-wrap: nowrap !important;
+}
+
+.css-1jkulof .flex-1.flex.flex-row,
+.css-1fls2yz .flex-1.flex.flex-row {
+  min-width: 0 !important;
+  gap: 6px !important;
+    align-items: center !important;
+}
+
+.css-1jkulof .chakra-stack.css-1bccw6h,
+.css-1jkulof .chakra-stack.css-1f0wxn3,
+.css-1fls2yz .chakra-stack.css-1bccw6h,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: hidden !important;
+}
+
+.css-1jkulof .chakra-stack.css-1f0wxn3 .gap-2,
+.css-1jkulof .chakra-stack.css-1bccw6h .line-clamp-1,
+.css-1fls2yz .chakra-stack.css-1f0wxn3 .gap-2,
+.css-1fls2yz .chakra-stack.css-1bccw6h .line-clamp-1 {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.css-1jkulof .css-1fuckjf,
+.css-1jkulof .css-1kcq9v9,
+.css-1fls2yz .css-1fuckjf,
+.css-1fls2yz .css-1kcq9v9 {
+  flex: 0 0 auto !important;
+  margin-left: 6px !important;
+}
+
+/* Increase gap from 4px to 6px for icon row inside song-row */
+[data-testid="song-row"].css-c1kosu .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Keep the same gap for the non-selected large row variant to avoid jump on selection */
+[data-testid="song-row"].css-1b51or .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Keep the same gap for the playing large row variant to avoid jump on play */
+[data-testid="song-row"].css-1btelbu .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 8px !important;
+}
+/* Small-card variant support */
+[data-testid="song-row"].css-1jkulof .css-1kcq9v9 .flex.flex-row.gap-1,
+[data-testid="song-row"].css-1fls2yz .css-1kcq9v9 .flex.flex-row.gap-1 {
+  gap: 6px !important;
+}
+
+/* Set 16px margin for the custom trash button wrapper */
+[data-testid="song-row"] .suno-booster-trash-wrapper {
+  margin-inline-start: 16px !important; /* RTL-safe */
+}
+
+/* Set 8px margin for the custom download button wrapper to keep compact */
+[data-testid="song-row"] .suno-booster-download-wrapper {
+  margin-inline-start: 12px !important;
+}
+
+/* Do not add extra margin for trash wrapper on small horizontal cards */
+[data-testid="song-row"].css-1jkulof .suno-booster-trash-wrapper,
+[data-testid="song-row"].css-1fls2yz .suno-booster-trash-wrapper {
+  margin-inline-start: 4px !important;
+}
+
+/* Do not add extra margin for download wrapper on small horizontal cards */
+[data-testid="song-row"].css-1jkulof .suno-booster-download-wrapper,
+[data-testid="song-row"].css-1fls2yz .suno-booster-download-wrapper {
+  margin-inline-start: 4px !important;
+}
+
+/* Make small horizontal card thumbnails square and contained */
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] {
+  min-width: 42px !important;
+  min-height: 42px !important;
+}
+
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative,
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] .relative {
+  width: 42px !important;
+  height: 42px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] .relative > img[alt="Song Image"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] .relative > img[alt="Song Image"] {
+  width: 42px !important;
+  height: 42px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  display: block !important;
+  border: none !important;
+}
+
+/* Ensure horizontal small song-row occupies full 230px tile width */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
+  width: 300px !important;
+  max-width: 300px !important;
+  display: block !important;
+}
+
+/* Make inner wrapper stretch to full width for consistent hover area */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof > .relative,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz > .relative {
+  width: 100% !important;
+}
+
+/* Horizontal 230px tile: full interactive/hover area */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
+  width: 300px !important;
+  max-width: 300px !important;
+  box-sizing: border-box !important;
+  padding-right: 16px !important; /* space for trash button */
+    position: relative !important;
+}
+
+/* Make tile wrapper positioned so absolute children align correctly */
+.w-\[230px\] {
+  position: relative !important;
+}
+
+/* Trash button: pin to the right within the 230px tile without shrinking hover area */
+.w-\[230px\] > .suno-booster-trash-wrapper {
+  position: absolute !important;
+  right: 4px !important; /* keep your 4px spacing */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 3 !important;
+}
+
+/* Download button: pin to the right within the 230px tile as well (next to trash if both present) */
+.w-\[230px\] > .suno-booster-download-wrapper {
+  position: absolute !important;
+  right: 40px !important; /* leave space for trash at 4px */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 3 !important;
+}
+
+/* Hide play overlay by default for small horizontal rows; reveal on hover */
+[data-testid="song-row"].css-1jkulof [data-testid="song-row-play-button"] [aria-label="Play"],
+[data-testid="song-row"].css-1fls2yz [data-testid="song-row-play-button"] [aria-label="Play"] {
+  opacity: 0 !important;
+}
+/* When hovering the whole row, show the play overlay too */
+.w-\[230px\] > [data-testid="song-row"].css-1jkulof:hover [data-testid="song-row-play-button"] [aria-label="Play"],
+.w-\[230px\] > [data-testid="song-row"].css-1fls2yz:hover [data-testid="song-row-play-button"] [aria-label="Play"] {
+    opacity: 1 !important;
+}
+
+/* Horizontal scroller tiles: enforce 300px item width and basis */
+.custom-scrollbar-transparent > .w-\[230px\] {
+  width: 300px !important;
+  max-width: 300px !important;
+  flex: 0 0 300px !important;
+    position: relative !important;
+}
+
+/* Inner row should fit its tile wrapper to avoid overflow */
+.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1jkulof,
+.custom-scrollbar-transparent > .w-\[230px\] > [data-testid="song-row"].css-1fls2yz {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Reduce left padding to 10px for the Song Title row only */
+.flex.w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.py-2.pr-\[10px\].pl-6:has(> .flex-1 > input[placeholder="Enter song title"]) {
+  padding-left: 10px !important;
+  padding-bottom: 0 !important;
+  margin-bottom: -6px !important;
+}
+
+/* Reduce left padding to 10px for the Workspace row only */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  padding-left: 10px !important;
+}
+
+/* Workspace row: set total row height to 64px so 8px top/bottom around 48px button */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) {
+  height: 64px !important;
+  margin-top: calc(var(--spacing) * 2) !important;
+}
+
+/* Workspace row button: make visual height exactly 48px and center content */
+.flex.h-\[60px\].w-full.flex-row.items-center.border-t-\[0\.5px\].border-border-primary.pr-\[10px\].pl-6:has(> .flex.flex-1.flex-row-reverse) .flex.flex-1.flex-row-reverse > button {
+  box-sizing: border-box !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* Center Playbar action icons visually by neutralizing site margins */
+button[aria-label="Playbar: Like"] > span,
+button[aria-label="Playbar: Dislike"] > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+button[aria-label="Playbar: Like"] > span > svg,
+button[aria-label="Playbar: Dislike"] > span > svg {
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Enforce full-span centering for all Playbar buttons */
+button[aria-label^="Playbar"] > span {
+  width: 100% !important;
+  height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+button[aria-label^="Playbar"] > span > svg {
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Optical centering for asymmetrical heart/cross glyphs */
+button[aria-label="Playbar: Like"] > span > svg,
+button[aria-label="Playbar: Dislike"] > span > svg {
+  transform: translateX(1.2px) !important;
+}
+
+/* Replace Like icon with Heart and Dislike with Cross via masks */
+button[aria-label="Playbar: Like"] > span > svg { display: none !important; }
+button[aria-label="Playbar: Like"] > span::after {
+  content: '' !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: currentColor !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1 4.22 2.44C11.09 5 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  display: block !important;
+  margin: 0 !important;
+  transform: translateX(1.2px) !important; /* optical centering */
+}
+button[aria-label="Playbar: Dislike"] > span > svg { display: none !important; }
+button[aria-label="Playbar: Dislike"] > span::after {
+  content: '' !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: currentColor !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29 10.59 10.59 16.89 4.29z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+  display: block !important;
+  margin: 0 !important;
+  transform: translateX(1.2px) !important; /* optical centering */
+}
+
+/* Hide icons in the two action buttons (Full Song / By Line) in the controls row */
+.flex.flex-row.items-center.gap-2.px-2.pt-0 .flex.flex-1.flex-row-reverse > button span > svg {
+  display: none !important;
+}
+
+/* Make left padding equal to right (12px) for the action buttons row */
+.flex.flex-row.items-center.gap-2.px-2.pt-0 .flex.flex-1.flex-row-reverse > button {
+  padding-left: 12px !important;
+}
+
+/* Robust targeting: convert aura background button (active/disabled) to text label */
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] {
+  aspect-ratio: auto !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 6px 12px !important;
+  line-height: 24px !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span {
+  gap: 0 !important;
+  white-space: nowrap !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span > svg {
+  display: none !important;
+}
+.flex.flex-row.gap-2 > button[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] span::before {
+  content: 'Boost Creativity' !important;
+}
+
+/* Active Boost Creativity button: background tint */
+.flex.flex-row.gap-2 > button:not([disabled])[class*="bg-[url(/auras-v2/aura_horizontal.jpg)]"] {
+  background: color-mix(in oklab, rgb(var(--rgb-white) / 1) 10%, transparent) !important;
+}
+
+/* Force perfect circle and equal side padding for small round icon buttons */
+button.before\:border-border-primary.rounded-full.aspect-square {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+button.before\:border-border-primary.rounded-full.aspect-square > span {
+  width: 100% !important;
+  height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+  justify-content: center !important;
+}
+button.before\:border-border-primary.rounded-full.aspect-square > span > svg {
+  margin: 0 !important;
+}
+
+/* Advanced Options panel: force label texts to white */
+.h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-secondary,
+.h-auto.rounded-\[20px\].bg-background-secondary.p-2[data-suno-adv-processed="1"] .text-foreground-tertiary {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* ========================================
+   RADIUS OVERRIDES
+   ======================================== */
+
+/* Upgrade any 10px rounded blocks to design token 2xl radius */
+.rounded-\[10px\] {
+  border-radius: var(--radius-2xl) !important;
+}

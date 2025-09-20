@@ -55,6 +55,32 @@ dist/
 build/
 *.crx
 *.zip
+*.xpi
+
+# Extension build artifacts
+suno-ui-booster-ff.xpi
+suno-ui-booster-chrome.zip
+suno-ui-booster-*.xpi
+suno-ui-booster-*.zip
+*.pem
+*.p12
+key.pem
+
+# Browser extension temporary files
+*.tmp
+*.temp
+web-ext-artifacts/
+*.crx
+*.xpi
+
+# Firefox extension development
+.mozilla/
+firefox-profile/
+
+# Chrome extension development
+chrome-profile/
+*.pem
+key.pem
 
 # Backup files
 *_backup.*
@@ -64,4 +90,30 @@ build/
 _metadata/generated_indexed_rulesets/
 
 # Pages directory (should not be in repository)
-pages/ 
+pages/
+
+# Extension development artifacts
+*.log
+debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Browser extension testing
+test-results/
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.tmp/
+
+# Local development files
+local-*.json
+dev-*.json
+
+# Extension manifests (local copies)
+manifest.local.json
+manifest.dev.json 
